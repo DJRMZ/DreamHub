@@ -24,7 +24,7 @@ Megan Faith Seibert-Hughes
 - Julian: I can write a large volume of code pretty quickly
 - Raphael:  Doing research and development, problem solver.
 - Zoe: I will pick up on things, and ensure we avoid conflicts.
-- Megan: UMLs, wireframing, general support and RESEARCH QUEEN
+- Megan: UMLs, enjoys CSS/SCSS and visualizing designs.
 
 3. In which professional competencies do you each want to develop greater strength?
 
@@ -32,7 +32,7 @@ Megan Faith Seibert-Hughes
 - Julian: Better at TDD
 - Raphael: Managing state, TDD, routing / navigation
 - Zoe: I want to improve my confidence and competency. I want to improve on my technical strength as well.
-- Megan:
+- Megan: Better communication, collaboration, and increased confidence in technical skillset
 
 4. Knowing that every person in your team needs to understand all aspects of the project, how do you plan to approach the day-to-day work?
 
