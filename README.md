@@ -38,3 +38,27 @@ Megan Faith Seibert-Hughes
 4. What is the minimum required for you to present on your demo day?
 
 - MVP
+
+## Links
+
+### Project DreamCatcher
+
+[Github](https://github.com/DJRMZ/DreamCatcher)
+
+[Trello Board](https://trello.com/b/mMaqS3zv/dreamers)
+
+[Whiteboard | UML](https://www.figma.com/file/QyzI6kh0zmEUBHKJB7KrFX/Project-DreamCatcher?node-id=0%3A1&t=Ox0v8YmWvbhF9jum-0)
+
+### Technologies Used
+
+[React Native](https://reactnative.dev/docs/environment-setup)
+
+[Expo](https://docs.expo.dev/)
+
+[Clerk](https://clerk.dev/docs/quickstarts/get-started-with-expo)
+
+[Supabase](https://supabase.com/docs/guides/getting-started/tutorials/with-expo)
+
+[tailwind](https://tailwindcss.com/docs/installation)
+
+[nativewind](https://www.nativewind.dev/)
