@@ -5,29 +5,39 @@ import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
+  // apiKey: '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',
 });
 
 const AIDreamGen = () => {
   const [dream, setDream] = useState('');
   const [dreamImg, setDreamImg] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  const openai = new OpenAIApi(configuration);
+  
+  console.log('OPENAI', openai);
 
   const handleDreamChange = (input) => {
     setDream(input);
+    console.log('DREAM', dream);
   };
 
   const handleSubmitDream = async () => {
     setLoading(true);
-    const openai = new OpenAIApi(configuration);
-    let image_url;
+    let dreamObject = {
+      prompt: dream, // dream from state
+      n: 1, // number of images to generate
+      size: "1024x1024",
+    };
+    console.log('DREAM OBJECT', dreamObject);
     try {
-      const response = await openai.createImage({
-        prompt: dream, // dream from state
-        n: 1, // number of images to generate
-        size: "1024x1024",
-      })
-      image_url = response.data.data[0].url;
+      const response = await openai.createImage(dreamObject);
+
+      console.log('RESPONSE BODY', response);
+      console.log('RESPONSE URL', response.data.data[0].url);
+      let image_url = response.data.data[0].url;
       setDreamImg(image_url);
+      console.log('IMAGE URL', image_url);
     } catch (error) {
       console.log(error);
     }
@@ -53,12 +63,18 @@ const AIDreamGen = () => {
             disabled={loading}
           />
         </View>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={{ uri: dreamImg }}
-          />
-        </View>
+        {dreamImg && (
+          <>
+            <Text style={styles.subtitle}>Here is your dream</Text>
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={{ uri: dreamImg }}
+              />
+            </View>
+          </>
+        )}
+
       </View>
     </>
   );
