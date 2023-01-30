@@ -15,7 +15,7 @@ const SignInWithOAuth = () => {
       });
 
       await signIn.create({
-        strategy: "oauth_discord",
+        strategy: "oauth_google",
         redirectUrl,
       });
 
@@ -76,7 +76,7 @@ const SignInWithOAuth = () => {
   return (
     <View className="rounded-lg border-2 border-gray-500 p-4">
       <Button
-        title="Sign in with Discord"
+        title="Sign in with Google"
         onPress={handleSignInWithDiscordPress}
       />
     </View>
