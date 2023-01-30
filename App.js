@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
 import SignInScreen from './components/SignIn';
+import SignInWithOAuth from './components/SignInWithOAuth';
 import * as SecureStore from 'expo-secure-store';
 import { CLERK_PUBLISHABLE_KEY as clerkKey } from '@env';
 

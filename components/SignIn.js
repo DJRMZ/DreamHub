@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
+import SignInWithOAuth from "./SignInWithOAuth";
 
 
 
@@ -32,6 +33,7 @@ export default function SignInScreen({ navigation }) {
   return (
     <View className='bg-purple-300 flex-1 flex items-center justify-center' >
     {/* <View style={styles.container}> */}
+      <SignInWithOAuth />
 
       <View>
         <TextInput
