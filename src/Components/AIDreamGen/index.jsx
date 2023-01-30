@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, TextInput, Image, StyleSheet, Button } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
