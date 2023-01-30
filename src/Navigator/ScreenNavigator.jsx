@@ -14,7 +14,7 @@ const StackNav = () => {
   return (
     <Stack.Navigator headerMode="none">
       {signedIn ? (
-        <Stack.Screen name="Welcome" component={MainNavigator} />
+        <Stack.Screen name="Welcome to Dreamcatcher" component={MainNavigator} />
       ) : (
         <>
           <Stack.Screen name="Sign In" component={SignInScreen} />

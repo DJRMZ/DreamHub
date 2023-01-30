@@ -14,8 +14,7 @@ export default function MainNavigator() {
         tabBarActiveTintColor: "#283769",
         tabBarInactiveTintColor: "#000",
         tabBarActiveBackgroundColor: "#ced8f7",
-        tabBarStyle: { height: 50 },
-
+        tabBarStyle: { height: 80 },
       }}
     >
       <Tab.Screen
