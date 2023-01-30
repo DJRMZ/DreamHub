@@ -1,12 +1,12 @@
-import { View, Text, Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text } from "react-native";
+
+import SignOutButton from "../Auth/SignOut";
 
 const AccountScreen = () => {
-  const nav = useNavigation();
   return (
-    <View >
-      <Text >Account</Text>
-      <Button title="Sign Out" onPress={() => nav.navigate("Sign In")} />
+    <View>
+      <Text>Account</Text>
+      <SignOutButton />
     </View>
   );
 };

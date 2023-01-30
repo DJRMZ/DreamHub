@@ -3,7 +3,7 @@ import { ClerkLoaded, useUser } from '@clerk/clerk-expo';
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import SignInScreen from '../Auth/SignIn';
+import SignInScreen from '../Screens/SignIn';
 import MainNavigator from './MainNavigator';
 
 const Stack = createNativeStackNavigator();
