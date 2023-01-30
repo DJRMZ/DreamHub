@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
-import SignInWithOAuth from "./SignInWithOAuth";
-
+import SignInWithOAuth from "../SigninWithOAuth";
 
 
 export default function SignInScreen({ navigation }) {
