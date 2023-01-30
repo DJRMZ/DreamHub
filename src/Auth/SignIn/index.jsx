@@ -23,7 +23,7 @@ export default function SignInScreen({ navigation }) {
 
       await setSession(completeSignIn.createdSessionId);
     } catch (err) {
-      conosle.log("Error:> ", (err.errors ? err.errors[0].message : err));
+      console.log("Error:> ", (err.errors ? err.errors[0].message : err));
     }
   };
 
@@ -36,6 +36,7 @@ export default function SignInScreen({ navigation }) {
 
       <View>
         <TextInput
+          className="bg-gray-200 my-2 border-2 border-gray-400 rounded-md p-2 w-60"
           autoCapitalize="none"
           value={emailAddress}
           placeholder="Email..."
@@ -46,6 +47,7 @@ export default function SignInScreen({ navigation }) {
 
       <View>
         <TextInput
+          className="bg-gray-200 my-2 border-2 border-gray-400 rounded-md p-2 w-60"
           value={password}
           placeholder="Password..."
           placeholderTextColor="#000"

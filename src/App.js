@@ -1,15 +1,13 @@
 import "react-native-gesture-handler";
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { ClerkProvider, SignedIn, SignedOut } from '@clerk/clerk-expo';
-import SignInScreen from './src/Auth/SignIn';
-import SignInWithOAuth from './src/Auth/SigninWithOAuth';
+import SignInScreen from './Auth/SignIn';
 import * as SecureStore from 'expo-secure-store';
 import { CLERK_PUBLISHABLE_KEY as clerkKey } from '@env';
 
 import * as React from "react";
-import { StyleSheet, View, Text, Button } from "react-native";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -85,7 +83,7 @@ const MainNavigator = () => (
       }}
       tabBarBadge={3}
     />
-    <Tab.Screen
+    {/* <Tab.Screen
       name="Location"
       component={LocationFinder}
       options={{
@@ -99,8 +97,8 @@ const MainNavigator = () => (
         ),
       }}
       tabBarBadge={3}
-    />
-    <Tab.Screen
+    /> */}
+    {/* <Tab.Screen
       name="Contacts"
       component={ContactList}
       options={{
@@ -114,7 +112,7 @@ const MainNavigator = () => (
         ),
       }}
       tabBarBadge={3}
-    />
+    /> */}
     <Tab.Screen
       name="Account"
       component={AccountScreen}
@@ -144,16 +142,16 @@ const StackNav = () => (
 );
 
 const App = () => (
-  <NavigationContainer>
-    <ClerkProvider publishableKey={clerkKey} tokenCache={tokenCache} >
-      <SignedIn>
+  <ClerkProvider publishableKey={clerkKey} tokenCache={tokenCache} >
+    <SignedIn>
+      <NavigationContainer>
         <StackNav />
-      </SignedIn>
-      <SignedOut>
-        <SignInScreen />
-      </SignedOut>
-    </ClerkProvider>
-  </NavigationContainer>
+      </NavigationContainer>
+    </SignedIn>
+    <SignedOut>
+      <SignInScreen />
+    </SignedOut>
+  </ClerkProvider>
 );
 
 export default App;
