@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HomeScreen from "../Screens/HomeScreen";
+import AIDreamGen from "../Components/AIDreamGen";
+import DreamCalendar from "../Components/DreamCalendar";
 import AccountScreen from "../Screens/AccountScreen";
 
 const Tab = createBottomTabNavigator();
@@ -23,7 +25,41 @@ export default function MainNavigator() {
         options={{
           tabBarLabel: "Home",
           tabBarIcon: () => (
-            <MaterialCommunityIcons name="home-circle" color={"#000"} size={26} />
+            <MaterialCommunityIcons
+              name="home-circle"
+              color={"#000"}
+              size={26}
+            />
+          ),
+        }}
+        tabBarBadge={3}
+      />
+      <Tab.Screen
+        name="DreamStudio"
+        component={AIDreamGen}
+        options={{
+          tabBarLabel: "DreamUI",
+          tabBarIcon: () => (
+            <MaterialCommunityIcons
+              name="cloud-circle"
+              color={"#000"}
+              size={26}
+            />
+          ),
+        }}
+        tabBarBadge={3}
+      />
+      <Tab.Screen
+        name="DreamCalendar"
+        component={DreamCalendar}
+        options={{
+          tabBarLabel: "DreamCalendar",
+          tabBarIcon: () => (
+            <MaterialCommunityIcons
+              name="calendar-multiselect"
+              color={"#000"}
+              size={26}
+            />
           ),
         }}
         tabBarBadge={3}
@@ -44,5 +80,5 @@ export default function MainNavigator() {
         tabBarBadge={3}
       />
     </Tab.Navigator>
-  )
+  );
 }
