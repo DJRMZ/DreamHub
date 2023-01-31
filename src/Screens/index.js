@@ -1,7 +1,7 @@
 import Home from "./Home";
-import DreamLog from "./DreamLog";
+import DreamLogger from "./DreamLogger";
 import Account from "./Account";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
-export { Home, DreamLog, Account, SignIn, SignUp };
+export { Home, DreamLogger, Account, SignIn, SignUp };

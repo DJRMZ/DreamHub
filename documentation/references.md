@@ -31,5 +31,3 @@ NativeBase - component library - [Docs](https://docs.nativebase.io)
 NativeWind - ReactNative port of TailwindCSS - [Docs](https://www.nativewind.dev)
 
 TailwindCSS - Utility-first styling library - [Docs](https://tailwindcss.com/docs)
-
-
