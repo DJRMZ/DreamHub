@@ -40,7 +40,9 @@
     "react-native-svg": "13.4.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-web": "~0.18.7",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "expo-media-library": "~15.0.0",
+    "expo-camera": "~13.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
