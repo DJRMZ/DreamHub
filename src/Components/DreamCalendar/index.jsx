@@ -52,7 +52,7 @@ const DreamCalendar = () => {
           }
         }
       }
-      console.log(items);
+      // console.log(items);
 
       // create a new array for items
       const newItems = {};

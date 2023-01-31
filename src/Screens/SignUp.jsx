@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View, StyleSheet } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
+
+import SignInWithOAuth from "../Auth/SignInWithOAuth";
 
 export default function SignUpScreen({ navigation }) {
   const { isLoaded, signUp } = useSignUp();
@@ -27,8 +29,8 @@ export default function SignUpScreen({ navigation }) {
 
       navigation.navigate("VerifyCode");
     } catch (err) {
-        console.log("Error:> ", err?.status || '');
-        console.log("Error:> ", err?.errors ? JSON.stringify(err.errors) : err);
+      console.log("Error:> ", err?.status || '');
+      console.log("Error:> ", err?.errors ? JSON.stringify(err.errors) : err);
     }
   };
 
@@ -37,7 +39,7 @@ export default function SignUpScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.oauthView}>
-        <SignUpWithOauth />
+        <SignInWithOAuth />
       </View>
 
       <View style={styles.inputView}>
@@ -99,3 +101,6 @@ export default function SignUpScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+});
