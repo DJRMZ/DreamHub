@@ -1,7 +1,9 @@
+
 import { useState } from "react";
 import { View, Text, TextInput, Image, Button as RNButton } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { Modal, Button } from "native-base";
+import { Button as KittenButton, Card, Modal as KittenModal, Text } from '@ui-kitten/components';
 
 import { OPENAI_API_KEY } from "@env";
 
@@ -18,7 +20,10 @@ const AIDreamGen = ({ dream, setDream }) => {
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
 
+  const [visible, setVisible] = React.useState(false);
+
   const openai = new OpenAIApi(configuration);
+
   // console.log('OPENAI', openai);
 
   const handleContentChange = (input) => {
@@ -60,6 +65,26 @@ const AIDreamGen = ({ dream, setDream }) => {
   return (
     <>
       {dream.imageUrl ? null : <Button onPress={() => setShowModal(true)}>add a dream</Button>}
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <View style={styles.container}>
+
+          <Button onPress={() => setVisible(true)}>
+            TOGGLE MODAL
+          </Button>
+
+          <Modal
+            visible={visible}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setVisible(false)}>
+            <Card disabled={true}>
+              <Text>Welcome to UI Kitten 😻</Text>
+              <Button onPress={() => setVisible(false)}>
+                DISMISS
+              </Button>
+            </Card>
+          </Modal>
+        </View>
+      </View>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
         <Modal.Content maxWidth="350">
           <Modal.CloseButton />
@@ -136,9 +161,18 @@ const AIDreamGen = ({ dream, setDream }) => {
             </Button>
           </Modal.Footer>
         </Modal.Content>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
 
 export default AIDreamGen;
+
+const styles = StyleSheet.create({
+  container: {
+    minHeight: 192,
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+});
