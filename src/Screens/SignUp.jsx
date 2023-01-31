@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useSignUp } from "@clerk/clerk-expo";
-import { styles } from "../components/Styles";
-import { SignUpWithOauth } from "../components/SignUpWithOauth";
 
 export default function SignUpScreen({ navigation }) {
   const { isLoaded, signUp } = useSignUp();

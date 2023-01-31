@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
-import SignInWithOAuth from "../Auth/SignInWithOAuth";
+import { LinearGradient } from 'expo-linear-gradient';
 
+import SignInWithOAuth from "../Auth/SignInWithOAuth";
 
 export default function SignInScreen({ navigation }) {
   const { signIn, setSession, isLoaded } = useSignIn();
@@ -30,50 +31,66 @@ export default function SignInScreen({ navigation }) {
   const onSignUpPress = () => navigation.replace("SignUp");
 
   return (
-    <View className='bg-purple-300 flex-1 flex items-center justify-center' >
-    {/* <View style={styles.container}> */}
-      <SignInWithOAuth />
-      <Text className='text-2xl my-4'>- OR -</Text>
-      <View className='flex flex-col items-center'>
-        <Text className='text-2xl font-bold mb-4'>Sign in with Email</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View className='flex-1 flex items-center justify-center' >
+      {/* <View style={styles.container}> */}
+      
+        <LinearGradient
+          colors={['#6130b0', '#3b5998']}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            height: '100%',
+            width: '100%',
+          }}
+        />
+        <View className='flex flex-col items-center'>
+          <Text className='text-2xl text-violet-50 font-bold mb-4'>Use Auth Provider</Text>
+          <SignInWithOAuth />
 
-        <View>
-          <TextInput
-            className="bg-gray-200 my-2 border-2 border-gray-400 rounded-md p-2 w-60"
-            autoCapitalize="none"
-            value={emailAddress}
-            placeholder="Email..."
-            placeholderTextColor="#000"
-            onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-          />
         </View>
+        <Text className='text-2xl text-violet-50 my-4'>- OR -</Text>
+        <View className='flex flex-col items-center'>
+          <Text className='text-2xl text-violet-50 font-bold mb-4'>Sign in with Email</Text>
 
-        <View>
-          <TextInput
-            className="bg-gray-200 my-2 border-2 border-gray-400 rounded-md p-2 w-60"
-            value={password}
-            placeholder="Password..."
-            placeholderTextColor="#000"
-            secureTextEntry={true}
-            onChangeText={(password) => setPassword(password)}
-          />
-        </View>
+          <View>
+            <TextInput
+              className="bg-gray-200 my-2 rounded-md p-2 w-60"
+              autoCapitalize="none"
+              value={emailAddress}
+              placeholder="Email..."
+              placeholderTextColor="#000"
+              onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+            />
+          </View>
 
-        <TouchableOpacity onPress={onSignInPress}>
-          <Text className='bg-violet-500 px-6 py-2 text-lg font-medium text-gray-200'>Sign In</Text>
-        </TouchableOpacity>
+          <View>
+            <TextInput
+              className="bg-gray-200 my-2 rounded-md p-2 w-60"
+              value={password}
+              placeholder="Password..."
+              placeholderTextColor="#000"
+              secureTextEntry={true}
+              onChangeText={(password) => setPassword(password)}
+            />
+          </View>
 
-        <View className='flex flex-col items-center mt-8'>
-          <Text className='text-base'>Have an account?</Text>
-
-          <TouchableOpacity
-            onPress={onSignUpPress}
-          >
-            <Text className='text-blue-700 text-base'>Sign up</Text>
+          <TouchableOpacity onPress={onSignInPress}>
+            <Text className='bg-violet-500 px-6 py-2 text-lg font-medium text-gray-200'>Sign In</Text>
           </TouchableOpacity>
+
+          <View className='flex flex-col items-center mt-8'>
+            <Text className='text-base text-violet-50'>No account?</Text>
+
+            <TouchableOpacity
+              onPress={onSignUpPress}
+            >
+              <Text className='text-blue-300 text-base'>Sign up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 }
 

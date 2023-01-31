@@ -139,19 +139,21 @@ const SignInWithOAuth = () => {
   };
 
   return (
-    <View className="flex flex-col items-center">
-      <Text className="text-2xl font-bold mb-4">Sign in with OAuth</Text>
-      <View className="bg-gray-100 mb-1 rounded-lg border-2 border-gray-500 px-4 py-0.5 w-40">
-        <Button
-          title="Google"
-          onPress={() => handleSignInWithProvider("google")()}
-        />
-      </View>
-      <View className="bg-gray-100 mb-1 rounded-lg border-2 border-gray-500 px-4 py-0.5 w-40">
-        <Button
-          title="Facebook"
-          onPress={() => handleSignInWithProvider("facebook")()}
-        />
+    <View className="flex flex-col items-center gap-1">
+      <View className="mb-1 px-8 py-3">
+        <View className="absolute inset-0 bg-gray-600 opacity-30 my-1 px-4 rounded-md"></View>
+        <View className="bg-gray-100 my-1 px-4 w-40">
+          <Button
+            title="Google"
+            onPress={() => handleSignInWithProvider("google")()}
+          />
+        </View>
+        <View className="bg-gray-100 mb-1 px-4 w-40">
+          <Button
+            title="Facebook"
+            onPress={() => handleSignInWithProvider("facebook")()}
+          />
+        </View>
       </View>
     </View>
   );

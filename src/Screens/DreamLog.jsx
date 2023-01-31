@@ -3,9 +3,12 @@ import { View, Text, TextInput, Image, StyleSheet, Button, Share } from "react-n
 import { Configuration, OpenAIApi } from "openai";
 import { useAuth } from "@clerk/clerk-expo";
 import { LinearGradient } from "expo-linear-gradient";
+import { Slider } from "native-base";
 import { OPENAI_API_KEY } from "@env";
 
-import supabaseClient from "../../lib/supabaseClient";
+import supabaseClient from "../lib/supabaseClient";
+import SleepNotes from "../Components/SleepNotes";
+import DreamGenerator from "../Components/AIDreamGen";
 
 const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
@@ -63,46 +66,17 @@ const AIDreamGen = () => {
 
   return (
     <>
-      <View className='flex-1 flex flex-col items-center justify-center'>
-        <Text className='text-3xl font-bold'>tell us about your dream</Text>
-        <Text className='text-xl font-medium'>what happened in your dream?</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            className='bg-gray-50'
-            placeholder="your dream here"
-            onChangeText={handleDreamChange}
-          />
-        </View>
-        <Text className='text-xl font-medium'>how did your dream make you feel?</Text>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            className='bg-gray-50'
-            placeholder="your feelings here"
-            // onChangeText={handleDreamChange}
-          />
-        </View>
-        
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Submit"
-            onPress={handleSubmitDream}
-            disabled={loading}
-          />
-        </View>
-        {dreamImg && (
-          <>
-            <Text style={styles.subtitle}>Here is your dream</Text>
-            <View style={styles.imageContainer}>
-              <Image
-                style={styles.image}
-                source={{ uri: dreamImg }}
-              />
-            </View>
-          </>
-        )}
-      </View>
+      <LinearGradient
+        colors={['#a07efe', '#3b5998']}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          height: '100%',
+          width: '100%',
+        }}
+      />
+      <SleepNotes />
+      <DreamGenerator />
     </>
   );
 };
