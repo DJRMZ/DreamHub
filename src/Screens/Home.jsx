@@ -7,10 +7,10 @@ const HomeScreen = () => (
   <View>
     <>
       <Text>Home</Text>
-      <Camera />
+      {/* <Camera /> */}
       {/* Links to different features? */}
-      {/* < AIDreamGen /> */}
-      {/* < DreamCalendar /> */}
+      {/* <AIDreamGen /> */}
+      {/* <DreamCalendar /> */}
     </>
   </View>
 );
