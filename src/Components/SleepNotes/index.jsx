@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, TextInput } from "react-native";
 import { Slider, Radio } from "native-base";
 
 const SleepNotes = ({ hadDream, setHadDream }) => {
@@ -14,7 +13,6 @@ const SleepNotes = ({ hadDream, setHadDream }) => {
         <TextInput
           className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
           placeholder="stressed, relaxed...?"
-        // onChangeText={handleDreamChange}
         />
       </View>
       <Text className='text-xl font-medium'>how long did you sleep?</Text>
@@ -39,7 +37,6 @@ const SleepNotes = ({ hadDream, setHadDream }) => {
         <TextInput
           className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
           placeholder="groggy, alert...?"
-        // onChangeText={handleDreamChange}
         />
       </View>
       <Text className='text-xl font-medium'>can you remember your dreams?</Text>
