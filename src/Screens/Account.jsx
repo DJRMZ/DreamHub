@@ -4,7 +4,7 @@ import SignOutButton from "../Auth/SignOut";
 
 const AccountScreen = () => {
   return (
-    <View>
+    <View className='flex-1 flex flex-col h-screen'>
       <Text>Account</Text>
       <SignOutButton />
     </View>
