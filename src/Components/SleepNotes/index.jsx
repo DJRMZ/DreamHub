@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, TextInput } from "react-native";
 //import { Slider, Radio } from "native-base";
 import { Button, Card, Modal, Text, Input } from "@ui-kitten/components";
+import { StyleSheet } from "react-native";
 
 const SleepNotes = ({ notes, setNotes, hadDream, setHadDream }) => {
   const [hours, setHours] = useState(0);

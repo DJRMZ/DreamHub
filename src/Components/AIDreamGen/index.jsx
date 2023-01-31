@@ -8,7 +8,7 @@ import {
   Modal as KittenModal,
   Text,
 } from "@ui-kitten/components";
-
+import { StyleSheet } from "react-native";
 import { OPENAI_API_KEY } from "@env";
 
 const configuration = new Configuration({
@@ -172,7 +172,6 @@ const AIDreamGen = ({ dream, setDream }) => {
           </Modal.Footer>
         </Modal.Content>
       </Modal>{" "}
-      */}
     </>
   );
 };
