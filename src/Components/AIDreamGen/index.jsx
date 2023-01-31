@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, Image, StyleSheet, Button, Share } from "react-native";
+import { View, Text, TextInput, Image, Button as RNButton, Share } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { useAuth } from "@clerk/clerk-expo";
-import { LinearGradient } from "expo-linear-gradient";
-import { OPENAI_API_KEY } from "@env";
+import { Modal, VStack, Radio, Button } from "native-base";
 
+import { OPENAI_API_KEY } from "@env";
 import supabaseClient from "../../lib/supabaseClient";
 
 const configuration = new Configuration({
@@ -16,6 +16,9 @@ const AIDreamGen = () => {
   const [dreamImg, setDreamImg] = useState('');
   const [loading, setLoading] = useState(false);
   const [supabase, setSupabase] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
 
   const openai = new OpenAIApi(configuration);
 
@@ -63,71 +66,88 @@ const AIDreamGen = () => {
 
   return (
     <>
-      <View className='flex-1 flex flex-col items-center justify-center'>
-        <Text className='text-3xl font-bold'>tell us about your dream</Text>
-        <Text className='text-xl font-medium'>what happened in your dream?</Text>
-        <View className='m-4 w-5/6'>
-          <TextInput
-            className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
-            placeholder="your dream here"
-            onChangeText={handleDreamChange}
-          />
-        </View>
-        <Text className='text-xl font-medium'>how did your dream make you feel?</Text>
-        <View className='m-4 w-5/6'>
-          <TextInput
-            className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
-            placeholder="your feelings here"
-          // onChangeText={handleDreamChange}
-          />
-        </View>
-
-        <View className='m-4 w-5/6'>
-          <Button
-            title="Submit"
-            onPress={handleSubmitDream}
-            disabled={loading}
-          />
-        </View>
-        {dreamImg && (
-          <>
-            <Text className='text-xl font-medium'>Here is your dream</Text>
+      <Button onPress={() => setShowModal(true)}>Button</Button>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>tell us about your dream</Modal.Header>
+          <Modal.Body>
+            {/* <Text className='text-3xl font-bold'>tell us about your dream</Text> */}
+            <Text className='text-xl font-medium'>what happened in your dream?</Text>
             <View className='m-4 w-5/6'>
-              <Image
-                className='h-72 w-72'
-                source={{ uri: dreamImg }}
+              <TextInput
+                className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
+                placeholder="your dream here"
+                onChangeText={handleDreamChange}
               />
             </View>
-          </>
-        )}
-      </View>
+            <Text className='text-xl font-medium'>how did your dream make you feel?</Text>
+            <View className='m-4 w-5/6'>
+              <TextInput
+                className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
+                placeholder="your feelings here"
+              // onChangeText={handleDreamChange}
+              />
+            </View>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" onPress={() => {
+              setShowModal(false);
+              setShowModal2(true);
+              handleSubmitDream();
+            }}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+      <Modal isOpen={showModal2} onClose={() => setShowModal2(false)} size="lg">
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Here is your dream</Modal.Header>
+          <Modal.Body>
+            {dreamImg && (
+              <>
+                {/* <Text className='text-xl font-medium'>Here is your dream</Text> */}
+                <View className='m-4 w-5/6'>
+                  <Image
+                    className='h-72 w-72'
+                    source={{ uri: dreamImg }}
+                  />
+                </View>
+              </>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" onPress={() => {
+              setShowModal2(false);
+              setShowModal3(true);
+            }}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
+
+      <Modal isOpen={showModal3} size="lg" onClose={() => setShowModal3(false)}>
+        <Modal.Content maxWidth="350">
+          <Modal.CloseButton />
+          <Modal.Header>Payment Options</Modal.Header>
+          <Modal.Body>
+            <Text className='text-xl font-medium'>Done!!</Text>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button flex="1" onPress={() => {
+              setShowModal3(false);
+            }}>
+              Checkout
+            </Button>
+          </Modal.Footer>
+        </Modal.Content>
+      </Modal>
     </>
   );
 };
 
 export default AIDreamGen;
-
-// const styles = StyleSheet.create({
-//   inputContainer: {
-//     width: "80%",
-//     margin: 10,
-//   },
-//   input: {
-//     height: 40,
-//     borderColor: "gray",
-//     borderWidth: 1,
-//     padding: 10,
-//   },
-//   buttonContainer: {
-//     width: "80%",
-//     margin: 10,
-//   },
-//   imageContainer: {
-//     width: "80%",
-//     margin: 10,
-//   },
-//   image: {
-//     width: 300,
-//     height: 300,
-//   },
-// });
