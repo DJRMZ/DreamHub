@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { ScrollView, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import SleepNotes from "../Components/SleepNotes";
@@ -5,6 +7,10 @@ import DreamGenerator from "../Components/AIDreamGen";
 
 
 const DreamLogger = () => {
+  const [hadDream, setHadDream] = useState(false);
+  const [dream, setDream] = useState({});
+
+
   return (
     <>
       <LinearGradient
@@ -16,8 +22,17 @@ const DreamLogger = () => {
           width: '100%',
         }}
       />
-      <SleepNotes />
-      <DreamGenerator />
+      <ScrollView>
+        <SleepNotes hadDream={hadDream} setHadDream={setHadDream} />
+        {hadDream ?
+          <>
+
+
+            <DreamGenerator />
+          </> :
+          null
+        }
+      </ScrollView>
     </>
   );
 };

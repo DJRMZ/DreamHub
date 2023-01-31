@@ -12,10 +12,10 @@ const StackNav = () => {
   const { isSignedIn: signedIn } = useUser();
 
   return (
-    <Stack.Navigator 
+    <Stack.Navigator
       screenOptions={{
         headerStyle: { backgroundColor: '#283769' },
-        headerTitleStyle: { 
+        headerTitleStyle: {
           color: '#fff',
           fontSize: 18,
           fontWeight: 'bold',
@@ -25,11 +25,11 @@ const StackNav = () => {
 
     >
       {signedIn ? (
-        <Stack.Screen name="Home" component={MainNavigator} options={{ title: 'Welcome to DreamHub' }} />
+        <Stack.Screen name="App" component={MainNavigator} options={{ title: 'Welcome to DreamHub' }} />
       ) : (
         <>
-          <Stack.Screen name="Sign In" component={SignIn} />
-          <Stack.Screen name="Sign Up" component={SignUp} />
+          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="SignUp" component={SignUp} />
         </>
       )}
     </Stack.Navigator>
