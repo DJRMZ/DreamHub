@@ -1,10 +1,14 @@
-
 import { useState } from "react";
-import { View, Text, TextInput, Image, Button as RNButton } from "react-native";
+import { View, TextInput, Image, Button as RNButton } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { Modal, Button } from "native-base";
-import { Button as KittenButton, Card, Modal as KittenModal, Text } from '@ui-kitten/components';
-
+import {
+  Button as KittenButton,
+  Card,
+  Modal as KittenModal,
+  Text,
+} from "@ui-kitten/components";
+import { StyleSheet } from "react-native";
 import { OPENAI_API_KEY } from "@env";
 
 const configuration = new Configuration({
@@ -12,9 +16,9 @@ const configuration = new Configuration({
 });
 
 const AIDreamGen = ({ dream, setDream }) => {
-  const [dreamContent, setDreamContent] = useState('');
-  const [dreamFeelings, setDreamFeelings] = useState('');
-  const [dreamImg, setDreamImg] = useState('');
+  const [dreamContent, setDreamContent] = useState("");
+  const [dreamFeelings, setDreamFeelings] = useState("");
+  const [dreamImg, setDreamImg] = useState("");
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -28,12 +32,12 @@ const AIDreamGen = ({ dream, setDream }) => {
 
   const handleContentChange = (input) => {
     setDreamContent(input);
-    console.log('DREAM CONTENT', dreamContent);
+    console.log("DREAM CONTENT", dreamContent);
   };
 
   const handleFeelingsChange = (input) => {
     setDreamFeelings(input);
-    console.log('DREAM FEELINGS', dreamFeelings);
+    console.log("DREAM FEELINGS", dreamFeelings);
   };
 
   const handleSubmitDream = async () => {
@@ -43,18 +47,18 @@ const AIDreamGen = ({ dream, setDream }) => {
       n: 1, // number of images to generate
       size: "1024x1024",
     };
-    console.log('DREAM OBJECT', dreamObject);
+    console.log("DREAM OBJECT", dreamObject);
     try {
       const response = await openai.createImage(dreamObject);
 
       // console.log('RESPONSE BODY', response);
-      console.log('RESPONSE URL', response.data.data[0].url);
+      console.log("RESPONSE URL", response.data.data[0].url);
       let image_url = response.data.data[0].url;
       setDreamImg(image_url);
-      console.log('IMAGE URL', image_url);
+      console.log("IMAGE URL", image_url);
       setDream({
         prompt: `${dreamContent} ${dreamFeelings}`,
-        imageUrl: image_url
+        imageUrl: image_url,
       });
     } catch (error) {
       console.log(error);
@@ -64,23 +68,21 @@ const AIDreamGen = ({ dream, setDream }) => {
 
   return (
     <>
-      {dream.imageUrl ? null : <Button onPress={() => setShowModal(true)}>add a dream</Button>}
+      {dream.imageUrl ? null : (
+        <Button onPress={() => setShowModal(true)}>add a dream</Button>
+      )}
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <View style={styles.container}>
-
-          <Button onPress={() => setVisible(true)}>
-            TOGGLE MODAL
-          </Button>
+          <Button onPress={() => setVisible(true)}>TOGGLE MODAL</Button>
 
           <Modal
             visible={visible}
             backdropStyle={styles.backdrop}
-            onBackdropPress={() => setVisible(false)}>
+            onBackdropPress={() => setVisible(false)}
+          >
             <Card disabled={true}>
               <Text>Welcome to UI Kitten 😻</Text>
-              <Button onPress={() => setVisible(false)}>
-                DISMISS
-              </Button>
+              <Button onPress={() => setVisible(false)}>DISMISS</Button>
             </Card>
           </Modal>
         </View>
@@ -90,35 +92,41 @@ const AIDreamGen = ({ dream, setDream }) => {
           <Modal.CloseButton />
           <Modal.Header>tell us about your dream</Modal.Header>
           <Modal.Body>
-            <Text className='text-xl font-medium'>what happened in your dream?</Text>
-            <View className='m-4 w-5/6'>
+            <Text className="text-xl font-medium">
+              what happened in your dream?
+            </Text>
+            <View className="m-4 w-5/6">
               <TextInput
-                className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
+                className="h-8 border-2 border-gray-300 bg-gray-50 p-2"
                 placeholder="your dream here"
                 onChangeText={handleContentChange}
               />
             </View>
-            <Text className='text-xl font-medium'>how did your dream make you feel?</Text>
-            <View className='m-4 w-5/6'>
+            <Text className="text-xl font-medium">
+              how did your dream make you feel?
+            </Text>
+            <View className="m-4 w-5/6">
               <TextInput
-                className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
+                className="h-8 border-2 border-gray-300 bg-gray-50 p-2"
                 placeholder="your feelings here"
                 onChangeText={handleFeelingsChange}
               />
             </View>
           </Modal.Body>
           <Modal.Footer>
-            <Button flex="1" onPress={() => {
-              setShowModal(false);
-              setShowModal2(true);
-              handleSubmitDream();
-            }}>
+            <Button
+              flex="1"
+              onPress={() => {
+                setShowModal(false);
+                setShowModal2(true);
+                handleSubmitDream();
+              }}
+            >
               Continue
             </Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-
       <Modal isOpen={showModal2} onClose={() => setShowModal2(false)} size="lg">
         <Modal.Content maxWidth="350">
           <Modal.CloseButton />
@@ -126,42 +134,44 @@ const AIDreamGen = ({ dream, setDream }) => {
           <Modal.Body>
             {dreamImg && (
               <>
-                <View className='m-4 w-5/6'>
-                  <Image
-                    className='h-72 w-72'
-                    source={{ uri: dreamImg }}
-                  />
+                <View className="m-4 w-5/6">
+                  <Image className="h-72 w-72" source={{ uri: dreamImg }} />
                 </View>
               </>
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button flex="1" onPress={() => {
-              setShowModal2(false);
-              setShowModal3(true);
-            }}>
+            <Button
+              flex="1"
+              onPress={() => {
+                setShowModal2(false);
+                setShowModal3(true);
+              }}
+            >
               Continue
             </Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-
       <Modal isOpen={showModal3} size="lg" onClose={() => setShowModal3(false)}>
         <Modal.Content maxWidth="350">
           <Modal.CloseButton />
           <Modal.Header>Payment Options</Modal.Header>
           <Modal.Body>
-            <Text className='text-xl font-medium'>Done!!</Text>
+            <Text className="text-xl font-medium">Done!!</Text>
           </Modal.Body>
           <Modal.Footer>
-            <Button flex="1" onPress={() => {
-              setShowModal3(false);
-            }}>
+            <Button
+              flex="1"
+              onPress={() => {
+                setShowModal3(false);
+              }}
+            >
               Checkout
             </Button>
           </Modal.Footer>
         </Modal.Content>
-      </Modal> */}
+      </Modal>{" "}
     </>
   );
 };
@@ -173,6 +183,6 @@ const styles = StyleSheet.create({
     minHeight: 192,
   },
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });

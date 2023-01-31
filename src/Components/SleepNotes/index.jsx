@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, TextInput } from "react-native";
 //import { Slider, Radio } from "native-base";
-import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
+import { Button, Card, Modal, Text, Input } from "@ui-kitten/components";
+import { StyleSheet } from "react-native";
 
 const SleepNotes = ({ notes, setNotes, hadDream, setHadDream }) => {
   const [hours, setHours] = useState(0);
@@ -10,21 +11,17 @@ const SleepNotes = ({ notes, setNotes, hadDream, setHadDream }) => {
   return (
     <>
       <View style={styles.container}>
-
-        <Button onPress={() => setVisible(true)}>
-          GENERATE NEW DREAM
-        </Button>
+        <Button onPress={() => setVisible(true)}>GENERATE NEW DREAM</Button>
 
         <Modal
           visible={visible}
           backdropStyle={styles.backdrop}
-          onBackdropPress={() => setVisible(false)}>
+          onBackdropPress={() => setVisible(false)}
+        >
           <Card disabled={true}>
-            <Text className='text-3xl font-bold'>How did you sleep?</Text>
+            <Text className="text-3xl font-bold">How did you sleep?</Text>
 
-            <Button onPress={() => setVisible(false)}>
-              DISMISS
-            </Button>
+            <Button onPress={() => setVisible(false)}>DISMISS</Button>
           </Card>
         </Modal>
       </View>
@@ -87,13 +84,12 @@ export default SleepNotes;
 const styles = StyleSheet.create({
   container: {
     minHeight: 192,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
 });
