@@ -16,7 +16,7 @@ const AIDreamGen = () => {
   const [dreamImg, setDreamImg] = useState('');
   const [loading, setLoading] = useState(false);
   const [supabase, setSupabase] = useState(null);
-  
+
   const openai = new OpenAIApi(configuration);
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const AIDreamGen = () => {
 
   const { getToken } = useAuth();
 
-  
+
   // console.log('OPENAI', openai);
 
   const handleDreamChange = (input) => {
@@ -66,25 +66,23 @@ const AIDreamGen = () => {
       <View className='flex-1 flex flex-col items-center justify-center'>
         <Text className='text-3xl font-bold'>tell us about your dream</Text>
         <Text className='text-xl font-medium'>what happened in your dream?</Text>
-        <View style={styles.inputContainer}>
+        <View className='m-4 w-5/6'>
           <TextInput
-            style={styles.input}
-            className='bg-gray-50'
+            className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
             placeholder="your dream here"
             onChangeText={handleDreamChange}
           />
         </View>
         <Text className='text-xl font-medium'>how did your dream make you feel?</Text>
-        <View style={styles.inputContainer}>
+        <View className='m-4 w-5/6'>
           <TextInput
-            style={styles.input}
-            className='bg-gray-50'
+            className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
             placeholder="your feelings here"
-            // onChangeText={handleDreamChange}
+          // onChangeText={handleDreamChange}
           />
         </View>
-        
-        <View style={styles.buttonContainer}>
+
+        <View className='m-4 w-5/6'>
           <Button
             title="Submit"
             onPress={handleSubmitDream}
@@ -93,10 +91,10 @@ const AIDreamGen = () => {
         </View>
         {dreamImg && (
           <>
-            <Text style={styles.subtitle}>Here is your dream</Text>
-            <View style={styles.imageContainer}>
+            <Text className='text-xl font-medium'>Here is your dream</Text>
+            <View className='m-4 w-5/6'>
               <Image
-                style={styles.image}
+                className='h-72 w-72'
                 source={{ uri: dreamImg }}
               />
             </View>
@@ -109,27 +107,27 @@ const AIDreamGen = () => {
 
 export default AIDreamGen;
 
-const styles = StyleSheet.create({
-  inputContainer: {
-    width: "80%",
-    margin: 10,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    padding: 10,
-  },
-  buttonContainer: {
-    width: "80%",
-    margin: 10,
-  },
-  imageContainer: {
-    width: "80%",
-    margin: 10,
-  },
-  image: {
-    width: 300,
-    height: 300,
-  },
-});
+// const styles = StyleSheet.create({
+//   inputContainer: {
+//     width: "80%",
+//     margin: 10,
+//   },
+//   input: {
+//     height: 40,
+//     borderColor: "gray",
+//     borderWidth: 1,
+//     padding: 10,
+//   },
+//   buttonContainer: {
+//     width: "80%",
+//     margin: 10,
+//   },
+//   imageContainer: {
+//     width: "80%",
+//     margin: 10,
+//   },
+//   image: {
+//     width: 300,
+//     height: 300,
+//   },
+// });

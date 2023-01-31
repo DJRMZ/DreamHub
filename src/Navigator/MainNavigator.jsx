@@ -2,8 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
-import { Home, Account, DreamLog } from "../Screens";
-import AIDreamGen from "../Components/AIDreamGen";
+import { Home, Account, DreamLogger } from "../Screens";
 import DreamCalendar from "../Components/DreamCalendar";
 
 const Tab = createBottomTabNavigator();
@@ -37,7 +36,7 @@ export default function MainNavigator() {
         />
         <Tab.Screen
           name="DreamStudio"
-          component={DreamLog}
+          component={DreamLogger}
           options={{
             tabBarLabel: "DreamUI",
             tabBarIcon: () => (
