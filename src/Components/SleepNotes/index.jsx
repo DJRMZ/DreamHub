@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { View, StyleSheet, TextInput } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-// import { Slider, Radio } from "native-base";
+import { View, Text, TextInput } from "react-native";
+//import { Slider, Radio } from "native-base";
 import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
 
-const SleepNotes = ({ hadDream, setHadDream }) => {
+const SleepNotes = ({ notes, setNotes, hadDream, setHadDream }) => {
   const [hours, setHours] = useState(0);
   const [visible, setVisible] = useState(false);
 
