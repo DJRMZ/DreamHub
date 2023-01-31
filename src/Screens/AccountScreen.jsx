@@ -6,6 +6,8 @@ const AccountScreen = () => {
   return (
     <View>
       <Text>Account</Text>
+      <Text>How to use our app:</Text>
+      <Text>Tips and Tricks</Text>
       <SignOutButton />
     </View>
   );
