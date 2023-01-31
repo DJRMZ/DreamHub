@@ -4,9 +4,9 @@ import Constants from "expo-constants";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
 import { MaterialIcons } from "@expo/vector-icons";
-import Button from "./src/components/Button";
+import Button from "../Components/Button/Button";
 
-export default function Camera() {
+export default function CameraScreen() {
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
