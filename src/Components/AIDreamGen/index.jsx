@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, Image, Button as RNButton, Share } from "react-native";
+import { View, StyleSheet, TextInput, Image, Button as RNButton, Share } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { useAuth } from "@clerk/clerk-expo";
-import { Modal, VStack, Radio, Button } from "native-base";
+import { Button, Card, Modal, Text } from '@ui-kitten/components';
 
 import { OPENAI_API_KEY } from "@env";
 import supabaseClient from "../../lib/supabaseClient";
@@ -20,6 +20,8 @@ const AIDreamGen = () => {
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
 
+  const [visible, setVisible] = React.useState(false);
+
   const openai = new OpenAIApi(configuration);
 
   useEffect(() => {
@@ -33,7 +35,6 @@ const AIDreamGen = () => {
   }, []);
 
   const { getToken } = useAuth();
-
 
   // console.log('OPENAI', openai);
 
@@ -66,13 +67,33 @@ const AIDreamGen = () => {
 
   return (
     <>
-      <Button onPress={() => setShowModal(true)}>Button</Button>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <View style={styles.container}>
+
+          <Button onPress={() => setVisible(true)}>
+            TOGGLE MODAL
+          </Button>
+
+          <Modal
+            visible={visible}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setVisible(false)}>
+            <Card disabled={true}>
+              <Text>Welcome to UI Kitten 😻</Text>
+              <Button onPress={() => setVisible(false)}>
+                DISMISS
+              </Button>
+            </Card>
+          </Modal>
+        </View>
+      </View>
+      {/* <Button onPress={() => setShowModal(true)}>Button</Button>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
         <Modal.Content maxWidth="350">
           <Modal.CloseButton />
           <Modal.Header>tell us about your dream</Modal.Header>
           <Modal.Body>
-            {/* <Text className='text-3xl font-bold'>tell us about your dream</Text> */}
+            <Text className='text-3xl font-bold'>tell us about your dream</Text>
             <Text className='text-xl font-medium'>what happened in your dream?</Text>
             <View className='m-4 w-5/6'>
               <TextInput
@@ -109,7 +130,7 @@ const AIDreamGen = () => {
           <Modal.Body>
             {dreamImg && (
               <>
-                {/* <Text className='text-xl font-medium'>Here is your dream</Text> */}
+                <Text className='text-xl font-medium'>Here is your dream</Text>
                 <View className='m-4 w-5/6'>
                   <Image
                     className='h-72 w-72'
@@ -145,9 +166,18 @@ const AIDreamGen = () => {
             </Button>
           </Modal.Footer>
         </Modal.Content>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
 
 export default AIDreamGen;
+
+const styles = StyleSheet.create({
+  container: {
+    minHeight: 192,
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+});
