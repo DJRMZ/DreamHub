@@ -4,7 +4,7 @@ Dustin Apodaca
 Raphael Chookagian
 Megan Faith Seibert-Hughes
 
-# DREAMCATCHER(TEMP NAME)
+# CODENAME: DREAMCATCHER
 
 ## Features
 
