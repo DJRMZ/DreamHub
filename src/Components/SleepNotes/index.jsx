@@ -21,7 +21,7 @@ const SleepNotes = () => {
         }}
       />
       
-      <View className='flex-1 flex flex-col items-start justify-center mx-4'>
+      <View className='flex-1 flex flex-col items-center justify-center' >
         <Text className='text-3xl font-bold'>tell us about your sleep</Text>
         <Text className='text-xl font-medium'>how did you feel when you went to bed?</Text>
         <View style={styles.inputContainer}>
