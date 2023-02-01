@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import AIDreamGen from "../Components/AIDreamGen";
 import DreamCalendar from "../Components/DreamCalendar";
 import Camera from "./Camera";
@@ -8,7 +7,7 @@ import { ScrollView } from "native-base";
 
 import * as React from "react";
 import { Dimensions, View } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
+// import Carousel from "react-native-reanimated-carousel";
 
 const HomeScreen = () => {
   const width = Dimensions.get("window").width;
@@ -62,12 +61,12 @@ const HomeScreen = () => {
           </Button>
         </Card>
         <View style={{ flex: 1 }}>
-          <Carousel
+          {/* <Carousel
             loop
             width={width}
             height={width / 2}
             autoPlay={true}
-            data={[...new Array(6).keys()]}
+            // data={[...new Array(6).keys()]}
             scrollAnimationDuration={1000}
             onSnapToItem={(index) => console.log("current index:", index)}
             renderItem={({ index }) => (
@@ -83,7 +82,7 @@ const HomeScreen = () => {
                 </Text>
               </View>
             )}
-          />
+          /> */}
         </View>
       </View>
     </View>

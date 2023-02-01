@@ -17,6 +17,7 @@
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/native-stack": "^6.9.8",
     "@supabase/supabase-js": "^2.5.0",
+    "@types/react-native-snap-carousel": "^3.8.5",
     "@ui-kitten/components": "^5.1.2",
     "@ui-kitten/eva-icons": "^5.1.2",
     "axios": "^1.2.6",
