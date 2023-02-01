@@ -5,6 +5,8 @@ import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
 import { IndexPath, Select, SelectItem, Radio, Layout } from '@ui-kitten/components';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "@clerk/clerk-expo";
+import * as FileSystem from 'expo-file-system';
+import { decode } from 'base64-arraybuffer';
 
 import { OPENAI_API_KEY } from "@env";
 import supabaseCtor from "../../lib/supabaseClient";
@@ -13,18 +15,26 @@ const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
+function dateToFileName(date) {
+  console.log('🚀 ~ file: index.jsx:19 ~ dateToFileName ~ date', date);
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+
 const AIDreamGen = () => {
-  const [hours, setHours] = useState('');
+  const [token, setToken] = useState('');
 
   const [loading, setLoading] = useState(false); // async state for querying the api
   const [writing, setWriting] = useState(false); // async state for writing to the database
 
   const [selectedSleepIndex, setSelectedSleepIndex] = useState(new IndexPath(0));
   const [selectedFeelingsIndex, setSelectedFeelingsIndex] = useState([new IndexPath(0)]);
+  const [hours, setHours] = useState('');
   const [hadDream, setHadDream] = useState(false);
   const [dreamContent, setDreamContent] = useState('');
   const [dreamFeelings, setDreamFeelings] = useState('');
   const [dreamImg, setDreamImg] = useState('');
+
+  const [downloadProgress, setDownloadProgress] = useState(0);
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -44,11 +54,56 @@ const AIDreamGen = () => {
   });
 
   const { getToken, userId } = useAuth();
-  console.log('🚀 ~ file: index.jsx:48 ~ AIDreamGen ~ userId', userId);
+  // console.log('🚀 ~ file: index.jsx:48 ~ AIDreamGen ~ userId', userId);
 
-  useEffect(() => {
-    handleSubmitLog();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const token = await getToken({ template: 'supabase' });
+  //     console.log('🚀 ~ file: index.jsx:61 ~ token', token);
+  //     setToken(token);
+  //   })();
+
+  //   saveImage();
+  // }, []);
+
+  const tempName = () => Math.trunc(Math.random() * 1000000).toString();
+
+  async function saveImage(link = 'https://picsum.photos/500.jpg', format = 'jpg', name = tempName()) {
+    const fileName = `${name}_${tempName()}.${format}`;
+
+    const file = await FileSystem.downloadAsync(
+      link,
+      FileSystem.cacheDirectory + fileName
+    ).then(({ uri }) => {
+      console.log('Finished downloading to ', uri, '\n');
+      return FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+    }).then((base64) => {
+      return base64;
+    }).catch((e) => {
+      console.error(e);
+    });
+
+    // console.log('🚀 ~ file: index.jsx:89 ~ saveImage ~ file', file, '\n');
+
+    const decodedFile = decode(file);
+    // console.log('🚀 ~ file: index.jsx:124 ~ saveImage ~ decodedFile', decodedFile);
+
+    const supabaseClient = await supabaseCtor(token);
+    // console.log('🚀 ~ file: index.jsx:103 ~ saveImage ~ supabaseClient', supabaseClient, '\n');
+
+    const { data, error } = await supabaseClient.storage
+      .from('dream-images')
+      .upload(`${userId}/${fileName}`, decodedFile, {
+        contentType: `image/${format}`,
+      });
+
+    console.log('🚀 ~ file: index.jsx:110 ~ saveImage ~ data', data, '\n');
+    console.log('🚀 ~ file: index.jsx:106 ~ saveImage ~ error', error);
+    if (error) {
+      throw new Error(error);
+    }
+    return data.path;
+  };
 
   const hoursData = [
     'Less than 4 hours',
@@ -117,11 +172,11 @@ const AIDreamGen = () => {
   };
 
   async function handleSubmitLog() {
-    const token = await getToken({ template: 'supabase' });
-    console.log('🚀 ~ file: index.jsx:142 ~ handleSubmitLog ~ token', token);
-
     const supabaseClient = await supabaseCtor(token);
     console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
+
+    const localFileName = dateToFileName(notes.date);
+    const imagePath = dream.imageUrl ? await saveImage(dream.imageUrl, 'png', localFileName) : null;
 
     const { data, error } = await supabaseClient
       .from('sleep_logs')
@@ -132,11 +187,12 @@ const AIDreamGen = () => {
         wakeup_mood: notes.wakeup_mood,
         hours_sleep: notes.hours_sleep,
         dream_prompt: dream.prompt,
-        dream_link: dream.imageUrl,
+        dream_link: imagePath,
       })
       .select();
     console.log('DATA', data);
     console.log('ERROR', error);
+
   }
 
   return (
@@ -148,10 +204,10 @@ const AIDreamGen = () => {
             color={'#d7eefa'}
             size={70}
           />
-        {dream.imageUrl ? null : <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>CREATE NEW DREAM INSTANCE</Button>}
+          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>CREATE NEW DREAM INSTANCE</Button>
         </View>
       </View>
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
         <Modal
           visible={showModal}
           backdropStyle={styles.backdrop}
@@ -276,11 +332,11 @@ const AIDreamGen = () => {
               ))}
             </Select>
             {/* <Input
-                style={styles.input}
-                size='medium'
-                placeholder="your feelings here"
-                onChangeText={handleFeelingsChange}
-              /> */}
+      style={styles.input}
+      size='medium'
+      placeholder="your feelings here"
+      onChangeText={handleFeelingsChange}
+    /> */}
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
                 DISMISS
@@ -388,7 +444,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    
+
   },
   iconLayout: {
     flexDirection: 'row',
