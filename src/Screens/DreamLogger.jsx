@@ -9,7 +9,7 @@ const DreamLogger = () => {
   return (
     <>
       <LinearGradient
-        colors={['#181d37','#535c75']}
+        colors={['#333c59','#535c75']}
         style={{
           position: 'absolute',
           inset: 0,

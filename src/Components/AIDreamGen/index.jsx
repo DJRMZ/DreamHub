@@ -13,7 +13,6 @@ const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
-
 const AIDreamGen = () => {
   const [supabase, setSupabase] = useState(null);
   const [hours, setHours] = useState('');
@@ -153,7 +152,16 @@ const AIDreamGen = () => {
 
   return (
     <>
-      {dream.imageUrl ? null : <Button onPress={() => setShowModal(true)}>add a dream</Button>}
+      <View style={styles.container}>
+        <View style={styles.newDreamLayout}>
+          <MaterialCommunityIcons
+            name="cloud-circle"
+            color={'#d7eefa'}
+            size={70}
+          />
+        {dream.imageUrl ? null : <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>CREATE NEW DREAM INSTANCE</Button>}
+        </View>
+      </View>
       <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
       
         <Modal
@@ -166,7 +174,7 @@ const AIDreamGen = () => {
             <View style={styles.iconLayout}>
               <MaterialCommunityIcons
                 name="cloud-circle"
-                color={"#fff"}
+                color={'#d7eefa'}
                 size={40}
               />
             </View>
@@ -245,7 +253,7 @@ const AIDreamGen = () => {
             <View style={styles.iconLayout}>
               <MaterialCommunityIcons
                 name="cloud-circle"
-                color={"#fff"}
+                color={'#d7eefa'}
                 size={40}
               />
             </View>
@@ -308,7 +316,7 @@ const AIDreamGen = () => {
             <View style={styles.iconLayout}>
               <MaterialCommunityIcons
                 name="cloud-circle"
-                color={"#fff"}
+                color={'#d7eefa'}
                 size={40}
               />
             </View>
@@ -370,6 +378,7 @@ const AIDreamGen = () => {
           </Layout>
         </Card>
       </Modal> */}
+
     </>
   );
 };
@@ -378,8 +387,12 @@ export default AIDreamGen;
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: 192,
-
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    // marginTop: 100,
   },
   layout: {
     flexDirection: 'row',
@@ -387,12 +400,33 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
   },
+  newDreamLayout: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    color: '#d7eefa',
+    backgroundColor: '#232f4f',
+    borderRadius: 10,
+    paddingVertical: 20,
+    paddingTop: 25,
+    paddingHorizontal: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    
+  },
   iconLayout: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 10,
     marginTop: 2,
   },
   modal: {
@@ -412,6 +446,11 @@ const styles = StyleSheet.create({
   buttonNext: {
     marginVertical: 12,
     width: '40%',
+    backgroundColor: '#181d37',
+  },
+  buttonCreate: {
+    marginVertical: 12,
+    width: '70%',
     backgroundColor: '#181d37',
   },
 });
