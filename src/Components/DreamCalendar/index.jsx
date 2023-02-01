@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useAuth } from "@clerk/clerk-expo";
+import { StyleSheet, Text, View, Button } from "react-native";
 import {
   Agenda,
   DateData,
@@ -8,70 +9,87 @@ import {
   AgendaSchedule,
 } from "react-native-calendars";
 
+function transformData(data) {
+  const result = {};
+  data.forEach((item) => {
+    const date = item.date;
+    if (!result[date]) {
+      result[date] = [];
+    }
+    result[date].push({
+      createdAt: item.created_at,
+      title: item.date,
+      sleepQuality: item.sleep_quality,
+      sleepLength: item.sleep_length,
+      bedtimeMood: item.bedtime_mood,
+      notes: item.notes,
+      prompt: item.dream_prompt,
+      imageLink: item.dream_link,
+    });
+  });
+  return result;
+}
+
+import supabaseCtor from "../../lib/supabaseClient";
+
 const DreamCalendar = () => {
   const [items, setItems] = useState({});
+  const [token, setToken] = useState("");
+
+  const { getToken, userId } = useAuth();
+
+  useEffect(() => {
+    (async () => {
+      const token = await getToken({ template: 'supabase' });
+      console.log('🚀 ~ file: index.jsx:61 ~ token', token);
+      setToken(token);
+    })();
+
+  }, [userId]);
 
   let today = new Date().toISOString().substring(0, 10);
-  console.log(today);
+  // console.log(today);
 
-  // THIS IS ALL TEMP RANDOMIZER TO LOAD ITEMS FROM THE THEIR EXAMPLE
+  const loadItems = async (day) => {
+    const supabaseClient = await supabaseCtor(token);
+    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
 
-  // WE NEED TO CREATE A FUNCTION THAT WILL SAVE ITEMS FROM THE IMAGE GENERATOR, DREAM JOURNAL TO THE SUPABASE DB, 
-  // A FUNCTION THAT WILL LOAD ITEMS FROM THE SUPABASE DB
-  // AND A FUNCTION THAT WILL DELETE ITEMS FROM THE SUPABASE DB
+    // console.log('USER ID', userId);
 
-  // SOMETHING SIMILAR TO THE IMPLEMENTATION OF THE TODOS EXAMPLE HERE
-  // https://clerk.dev/blog/nextjs-supabase-todos-with-multifactor-authentication
+    const { data, error } = await supabaseClient
+      .from('sleep_logs')
+      .select('*')
+      .eq('user_id', userId);
 
-  const loadItems = (day) => {
-    setTimeout(() => {
-      // for each day in range -15 to 85
-      for (let i = -15; i < 85; i++) {
-        // generate the time for that day
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = timeToString(time);
+    console.log('🚀 ~ file: index.jsx:35 ~ loadItems ~ data', data[0]);
 
-        // if there is not an item already for that time
-        if (!items[strTime]) {
-          // create an array for that time
-          items[strTime] = [];
+    const items = transformData(data);
+    setItems(items);
+  };
 
-          // generate a random number of items for that day
-          const numItems = Math.floor(Math.random() * 3 + 1);
+  const loadImage = async (link) => {
+    const supabaseClient = await supabaseCtor(token);
+    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
 
-          // for each item
-          for (let j = 0; j < numItems; j++) {
-            // create a random height for each item
-            const height = Math.max(50, Math.floor(Math.random() * 150));
+    const { data, error } = await supabaseClient.storage
+      .from('dream_images')
+      .download(link);
 
-            // create the item
-            items[strTime].push({
-              name: "Item for " + strTime + " #" + j,
-              height: height,
-            });
-          }
-        }
-      }
-      // console.log(items);
-
-      // create a new array for items
-      const newItems = {};
-
-      // for each item in the array of items
-      Object.keys(items).forEach((key) => {
-        // create a new item for that array
-        newItems[key] = items[key];
-      });
-
-      // set the new items for the array of items
-      setItems(newItems);
-    }, 1000);
+    console.log('🚀 ~ file: index.jsx:78 ~ loadImage ~ data', data);
+    console.log('🚀 ~ file: index.jsx:79 ~ loadImage ~ error', error);
   };
 
   const renderItem = (item) => {
     return (
       <View style={[styles.item, { height: item.height }]}>
-        <Text>{item.name}</Text>
+        <Text>{item.title}</Text>
+        {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
+        <Text>Sleep Quality: {item.sleepQuality}</Text>
+        <Text>Length of Sleep: {item.sleepLength} hr</Text>
+        <Text>Notes: {item.notes}</Text>
+        <Text>Dream Prompt: {item.prompt}</Text>
+        <Text>Dream Image: {item.imageLink}</Text>
+        <Button title='View Image (BROKEN)' onPress={() => loadImage(item.imageLink)} />
       </View>
     );
   };
@@ -79,7 +97,7 @@ const DreamCalendar = () => {
   const renderEmptyDate = () => {
     return (
       <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
+        <Text>No logs for this day...</Text>
       </View>
     );
   };

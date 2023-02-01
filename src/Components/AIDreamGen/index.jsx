@@ -56,15 +56,15 @@ const AIDreamGen = () => {
   const { getToken, userId } = useAuth();
   // console.log('🚀 ~ file: index.jsx:48 ~ AIDreamGen ~ userId', userId);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const token = await getToken({ template: 'supabase' });
-  //     console.log('🚀 ~ file: index.jsx:61 ~ token', token);
-  //     setToken(token);
-  //   })();
+  useEffect(() => {
+    (async () => {
+      const token = await getToken({ template: 'supabase' });
+      console.log('🚀 ~ file: index.jsx:61 ~ token', token);
+      setToken(token);
+    })();
 
-  //   saveImage();
-  // }, []);
+    // saveImage();
+  }, []);
 
   const tempName = () => Math.trunc(Math.random() * 1000000).toString();
 
