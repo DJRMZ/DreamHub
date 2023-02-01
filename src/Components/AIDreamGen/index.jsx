@@ -7,19 +7,18 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useAuth } from "@clerk/clerk-expo";
 
 import { OPENAI_API_KEY } from "@env";
-import supabaseClient from "../../lib/supabaseClient";
+import supabaseCtor from "../../lib/supabaseClient";
 
 const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
 const AIDreamGen = () => {
-  const [supabase, setSupabase] = useState(null);
   const [hours, setHours] = useState('');
-  
+
   const [loading, setLoading] = useState(false); // async state for querying the api
   const [writing, setWriting] = useState(false); // async state for writing to the database
-  
+
   const [selectedSleepIndex, setSelectedSleepIndex] = useState(new IndexPath(0));
   const [selectedFeelingsIndex, setSelectedFeelingsIndex] = useState([new IndexPath(0)]);
   const [hadDream, setHadDream] = useState(false);
@@ -35,7 +34,7 @@ const AIDreamGen = () => {
   const [notes, setNotes] = useState({
     bedtime_mood: '',
     wakeup_mood: '',
-    sleep_hours: 0,
+    hours_sleep: 0,
     date: new Date(),
 
   });
@@ -45,17 +44,10 @@ const AIDreamGen = () => {
   });
 
   const { getToken, userId } = useAuth();
+  console.log('🚀 ~ file: index.jsx:48 ~ AIDreamGen ~ userId', userId);
 
   useEffect(() => {
-    const supabase = (async () => {
-      const token = await getToken({ template: 'supabase' });
-      const withToken = await supabaseClient(token);
-      console.log('🚀 ~ file: DreamLogger.jsx:32 ~ supabase ~ withToken', withToken);
-
-      return withToken;
-    });
-
-    setSupabase(supabase);
+    handleSubmitLog();
   }, []);
 
   const hoursData = [
@@ -97,13 +89,8 @@ const AIDreamGen = () => {
 
   const handleContentChange = (input) => {
     setDreamContent(input);
-    console.log("DREAM CONTENT", dreamContent);
+    // console.log("DREAM CONTENT", dreamContent);
   };
-
-  // const handleFeelingsChange = (input) => {
-  //   setDreamFeelings(input);
-  //   console.log('DREAM FEELINGS', dreamFeelings);
-  // };
 
   const handleSubmitDream = async () => {
     setLoading(true);
@@ -116,11 +103,9 @@ const AIDreamGen = () => {
     try {
       const response = await openai.createImage(dreamObject);
 
-      // console.log('RESPONSE BODY', response);
-      console.log("RESPONSE URL", response.data.data[0].url);
+      // console.log("RESPONSE URL", response.data.data[0].url);
       let image_url = response.data.data[0].url;
       setDreamImg(image_url);
-      console.log("IMAGE URL", image_url);
       setDream({
         prompt: `${dreamContent}. My dream made me feel ${dreamFeelings}`,
         imageUrl: image_url
@@ -132,20 +117,24 @@ const AIDreamGen = () => {
   };
 
   async function handleSubmitLog() {
-    console.log(supabase);
-    const { data, error } = await supabase
+    const token = await getToken({ template: 'supabase' });
+    console.log('🚀 ~ file: index.jsx:142 ~ handleSubmitLog ~ token', token);
+
+    const supabaseClient = await supabaseCtor(token);
+    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
+
+    const { data, error } = await supabaseClient
       .from('sleep_logs')
-      .insert([
-        {
-          user_id: userId,
-          date: notes.date,
-          bedtime_mood: notes.bedtime_mood,
-          wakeup_mood: notes.wakeup_mood,
-          sleep_hours: notes.sleep_hours,
-          dream_prompt: dream.prompt,
-          dream_link: dream.imageUrl,
-        },
-      ]);
+      .insert({
+        user_id: userId,
+        date: notes.date,
+        bedtime_mood: notes.bedtime_mood,
+        wakeup_mood: notes.wakeup_mood,
+        hours_sleep: notes.hours_sleep,
+        dream_prompt: dream.prompt,
+        dream_link: dream.imageUrl,
+      })
+      .select();
     console.log('DATA', data);
     console.log('ERROR', error);
   }
@@ -163,12 +152,11 @@ const AIDreamGen = () => {
         </View>
       </View>
       <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-      
         <Modal
           visible={showModal}
           backdropStyle={styles.backdrop}
           style={styles.modal}
-          onBackdropPress={() => setShowModal(false)}  
+          onBackdropPress={() => setShowModal(false)}
         >
           <Card disabled={true}>
             <View style={styles.iconLayout}>
@@ -195,9 +183,9 @@ const AIDreamGen = () => {
                 setHours(hoursData[index]);
               }}
             >
-                {hoursData.map((title) => (
-                  <SelectItem key={title} title={title}/>
-                ))}
+              {hoursData.map((title) => (
+                <SelectItem key={title} title={title} />
+              ))}
             </Select>
             <Text style={styles.text} category='h6'>How did you feel when you woke up?</Text>
             <Input
@@ -224,14 +212,20 @@ const AIDreamGen = () => {
               <Button style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
                 DISMISS
               </Button>
-              <Button 
-                style={styles.buttonNext} 
+              <Button
+                style={styles.buttonNext}
                 onPress={() => {
                   setShowModal(false);
-                  if(hadDream) {
+                  setNotes({
+                    date: new Date(),
+                    bedtime_mood: '', // Must change!
+                    wakeup_mood: '', // Must change!
+                    hours_sleep: hours,
+                  })
+                  if (hadDream) {
                     setShowModal2(true);
                   } else {
-                    // submit entry to db
+                    handleSubmitLog();
                   }
                 }}
               >
@@ -242,10 +236,10 @@ const AIDreamGen = () => {
         </Modal>
       </TouchableWithoutFeedback>
 
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-        <Modal 
-          visible={showModal2} 
-          onClose={() => setShowModal2(false)} 
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
+        <Modal
+          visible={showModal2}
+          onClose={() => setShowModal2(false)}
           backdropStyle={styles.backdrop}
           style={styles.modal}
         >
@@ -266,22 +260,22 @@ const AIDreamGen = () => {
               onChangeText={handleContentChange}
             />
             <Text style={styles.text} category='h6'>How did your dream make you feel?</Text>
-              <Select
-                style={styles.input}
-                placeholder='Default'
-                multiSelect={true}
-                value={displayFeelingsValue}
-                selectedIndex={selectedFeelingsIndex}
-                onSelect={index => {
-                  setSelectedFeelingsIndex(index);
-                  setDreamFeelings(selectedFeelingsIndex.map((el, idx) => feelingsData[idx]).join(', '))
-                }}
-              >
-                  {feelingsData.map((title) => (
-                    <SelectItem key={title} title={title}/>
-                  ))}
-              </Select>
-              {/* <Input
+            <Select
+              style={styles.input}
+              placeholder='Default'
+              multiSelect={true}
+              value={displayFeelingsValue}
+              selectedIndex={selectedFeelingsIndex}
+              onSelect={index => {
+                setSelectedFeelingsIndex(index);
+                setDreamFeelings(selectedFeelingsIndex.map((el, idx) => feelingsData[idx]).join(', '))
+              }}
+            >
+              {feelingsData.map((title) => (
+                <SelectItem key={title} title={title} />
+              ))}
+            </Select>
+            {/* <Input
                 style={styles.input}
                 size='medium'
                 placeholder="your feelings here"
@@ -291,8 +285,8 @@ const AIDreamGen = () => {
               <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
                 DISMISS
               </Button>
-              <Button 
-                style={styles.buttonNext} 
+              <Button
+                style={styles.buttonNext}
                 onPress={() => {
                   setShowModal2(false);
                   setShowModal3(true);
@@ -306,10 +300,10 @@ const AIDreamGen = () => {
         </Modal>
       </TouchableWithoutFeedback>
 
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-        <Modal 
-          visible={showModal3} 
-          onClose={() => setShowModal3(false)} 
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
+        <Modal
+          visible={showModal3}
+          onClose={() => setShowModal3(false)}
           size="lg"
         >
           <Card disabled={true}>
@@ -320,12 +314,12 @@ const AIDreamGen = () => {
                 size={40}
               />
             </View>
-            {dreamImg && (
+            {dream.imageUrl && (
               <>
                 <View className='mx-auto mb-4'>
                   <Image
                     className='h-72 w-72 rounded-lg shadow-lg shadow-black'
-                    source={{ uri: dreamImg }}
+                    source={{ uri: dream.imageUrl }}
                   />
                 </View>
                 <View className='mx-auto w-5/6'>
@@ -339,8 +333,8 @@ const AIDreamGen = () => {
               <Button style={styles.buttonDismiss} onPress={() => setShowModal3(false)}>
                 DISMISS
               </Button>
-              <Button 
-                style={styles.buttonNext} 
+              <Button
+                style={styles.buttonNext}
                 onPress={() => {
                   setShowModal3(false);
                   // Submit into DB
@@ -354,31 +348,6 @@ const AIDreamGen = () => {
           </Card>
         </Modal>
       </TouchableWithoutFeedback>
-
-
-      {/* <Modal 
-        isOpen={showModal4} 
-        size="lg" 
-        onClose={() => setShowModal4(false)}
-      >
-        <Card disabled={true}>
-          <Text className='text-xl font-medium'>Done!!</Text>
-          <Layout style={styles.layout} level='1'>
-            <Button style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
-              DISMISS
-            </Button>
-            <Button 
-              style={styles.buttonNext} 
-              onPress={() => {
-                setShowModal4(false);
-              }}
-            >
-              CLOSE
-            </Button>
-          </Layout>
-        </Card>
-      </Modal> */}
-
     </>
   );
 };
