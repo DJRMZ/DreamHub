@@ -1,29 +1,98 @@
-
-import { useState } from "react";
-import { View, Text, TextInput, Image, Button as RNButton } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Image, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
-import { Modal, Button } from "native-base";
-import { Button as KittenButton, Card, Modal as KittenModal, Text } from '@ui-kitten/components';
+import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
+import { IndexPath, Select, SelectItem, Radio, Layout } from '@ui-kitten/components';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useAuth } from "@clerk/clerk-expo";
 
 import { OPENAI_API_KEY } from "@env";
+import supabaseClient from "../../lib/supabaseClient";
 
 const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
-const AIDreamGen = ({ dream, setDream }) => {
+const AIDreamGen = () => {
+  const [supabase, setSupabase] = useState(null);
+  const [hours, setHours] = useState('');
+  
+  const [loading, setLoading] = useState(false); // async state for querying the api
+  const [writing, setWriting] = useState(false); // async state for writing to the database
+  
+  const [selectedSleepIndex, setSelectedSleepIndex] = useState(new IndexPath(0));
+  const [selectedFeelingsIndex, setSelectedFeelingsIndex] = useState([new IndexPath(0)]);
+  const [hadDream, setHadDream] = useState(false);
   const [dreamContent, setDreamContent] = useState('');
   const [dreamFeelings, setDreamFeelings] = useState('');
   const [dreamImg, setDreamImg] = useState('');
-  const [loading, setLoading] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
 
-  const [visible, setVisible] = React.useState(false);
+  const [notes, setNotes] = useState({
+    bedtime_mood: '',
+    wakeup_mood: '',
+    sleep_hours: 0,
+    date: new Date(),
+
+  });
+  const [dream, setDream] = useState({
+    prompt: '',
+    imageUrl: '',
+  });
+
+  const { getToken, userId } = useAuth();
+
+  useEffect(() => {
+    const supabase = (async () => {
+      const token = await getToken({ template: 'supabase' });
+      const withToken = await supabaseClient(token);
+      console.log('🚀 ~ file: DreamLogger.jsx:32 ~ supabase ~ withToken', withToken);
+
+      return withToken;
+    });
+
+    setSupabase(supabase);
+  }, []);
+
+  const hoursData = [
+    'Less than 4 hours',
+    '4 - 6 hours',
+    '6 - 8 hours',
+    '8 - 10 hours',
+    '10 - 14 hours',
+    'More than 14 hours',
+  ];
+
+  const feelingsData = [
+    'happy',
+    'scared',
+    'angry',
+    'sad',
+    'confused',
+    'excited',
+    'bored',
+    'tired',
+    'relaxed',
+    'anxious',
+    'frustrated',
+    'lonely',
+    'guilty',
+    'ashamed',
+    'disgusted',
+    'proud',
+    'hopeful',
+    'jealous',
+    'surprised',
+  ];
+
+  const displayValue = hoursData[selectedSleepIndex.row];
+  const displayFeelingsValue = feelingsData[selectedFeelingsIndex.row];
 
   const openai = new OpenAIApi(configuration);
-
   // console.log('OPENAI', openai);
 
   const handleContentChange = (input) => {
@@ -31,15 +100,15 @@ const AIDreamGen = ({ dream, setDream }) => {
     console.log('DREAM CONTENT', dreamContent);
   };
 
-  const handleFeelingsChange = (input) => {
-    setDreamFeelings(input);
-    console.log('DREAM FEELINGS', dreamFeelings);
-  };
+  // const handleFeelingsChange = (input) => {
+  //   setDreamFeelings(input);
+  //   console.log('DREAM FEELINGS', dreamFeelings);
+  // };
 
   const handleSubmitDream = async () => {
     setLoading(true);
     let dreamObject = {
-      prompt: `${dreamContent} ${dreamFeelings}`, // dream from state
+      prompt: `${dreamContent}. My dream made me feel ${dreamFeelings}`, // dream from state
       n: 1, // number of images to generate
       size: "1024x1024",
     };
@@ -53,7 +122,7 @@ const AIDreamGen = ({ dream, setDream }) => {
       setDreamImg(image_url);
       console.log('IMAGE URL', image_url);
       setDream({
-        prompt: `${dreamContent} ${dreamFeelings}`,
+        prompt: `${dreamContent}. My dream made me feel ${dreamFeelings}`,
         imageUrl: image_url
       });
     } catch (error) {
@@ -62,105 +131,243 @@ const AIDreamGen = ({ dream, setDream }) => {
     setLoading(false);
   };
 
+  async function handleSubmitLog() {
+    console.log(supabase);
+    const { data, error } = await supabase
+      .from('sleep_logs')
+      .insert([
+        {
+          user_id: userId,
+          date: notes.date,
+          bedtime_mood: notes.bedtime_mood,
+          wakeup_mood: notes.wakeup_mood,
+          sleep_hours: notes.sleep_hours,
+          dream_prompt: dream.prompt,
+          dream_link: dream.imageUrl,
+        },
+      ]);
+    console.log('DATA', data);
+    console.log('ERROR', error);
+  }
+
   return (
     <>
       {dream.imageUrl ? null : <Button onPress={() => setShowModal(true)}>add a dream</Button>}
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <View style={styles.container}>
-
-          <Button onPress={() => setVisible(true)}>
-            TOGGLE MODAL
-          </Button>
-
-          <Modal
-            visible={visible}
-            backdropStyle={styles.backdrop}
-            onBackdropPress={() => setVisible(false)}>
-            <Card disabled={true}>
-              <Text>Welcome to UI Kitten 😻</Text>
-              <Button onPress={() => setVisible(false)}>
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+      
+        <Modal
+          visible={showModal}
+          backdropStyle={styles.backdrop}
+          style={styles.modal}
+          onBackdropPress={() => setShowModal(false)}  
+        >
+          <Card disabled={true}>
+            <View style={styles.iconLayout}>
+              <MaterialCommunityIcons
+                name="cloud-circle"
+                color={"#fff"}
+                size={40}
+              />
+            </View>
+            <Text style={styles.text} category='h6'>How did you sleep?</Text>
+            <Input
+              style={styles.input}
+              size='medium'
+              placeholder='stressed, relaxed...?'
+            />
+            <Text style={styles.text} category='h6'>How long did you sleep?</Text>
+            <Select
+              style={styles.input}
+              placeholder='Default'
+              value={displayValue}
+              selectedIndex={selectedSleepIndex}
+              onSelect={index => {
+                setSelectedSleepIndex(index);
+                setHours(hoursData[index]);
+              }}
+            >
+                {hoursData.map((title) => (
+                  <SelectItem key={title} title={title}/>
+                ))}
+            </Select>
+            <Text style={styles.text} category='h6'>How did you feel when you woke up?</Text>
+            <Input
+              style={styles.input}
+              size='medium'
+              placeholder='well-rested, groggy, energetic... ?'
+            />
+            <Text style={styles.text} category='h6'>Did you have a dream?</Text>
+            <Layout style={styles.layout} level='1'>
+              <Radio
+                style={styles.input}
+                checked={hadDream}
+                onChange={nextChecked => setHadDream(nextChecked)}>
+                Yes
+              </Radio>
+              <Radio
+                style={styles.input}
+                checked={!hadDream}
+                onChange={nextChecked => setHadDream(!nextChecked)}>
+                No
+              </Radio>
+            </Layout>
+            <Layout style={styles.layout} level='1'>
+              <Button style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
                 DISMISS
               </Button>
-            </Card>
-          </Modal>
-        </View>
-      </View>
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)} size="lg">
-        <Modal.Content maxWidth="350">
-          <Modal.CloseButton />
-          <Modal.Header>tell us about your dream</Modal.Header>
-          <Modal.Body>
-            <Text className='text-xl font-medium'>what happened in your dream?</Text>
-            <View className='m-4 w-5/6'>
-              <TextInput
-                className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
-                placeholder="your dream here"
-                onChangeText={handleContentChange}
+              <Button 
+                style={styles.buttonNext} 
+                onPress={() => {
+                  setShowModal(false);
+                  if(hadDream) {
+                    setShowModal2(true);
+                  } else {
+                    // submit entry to db
+                  }
+                }}
+              >
+                {hadDream ? 'NEXT' : 'SUBMIT'}
+              </Button>
+            </Layout>
+          </Card>
+        </Modal>
+      </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+        <Modal 
+          visible={showModal2} 
+          onClose={() => setShowModal2(false)} 
+          backdropStyle={styles.backdrop}
+          style={styles.modal}
+        >
+          <Card disabled={true}>
+            <View style={styles.iconLayout}>
+              <MaterialCommunityIcons
+                name="cloud-circle"
+                color={"#fff"}
+                size={40}
               />
             </View>
-            <Text className='text-xl font-medium'>how did your dream make you feel?</Text>
-            <View className='m-4 w-5/6'>
-              <TextInput
-                className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
+            <Text style={styles.text} category='h6'>What happened in your dream?</Text>
+            <Input
+              multiline={true}
+              style={styles.input}
+              textStyle={{ minHeight: 64 }}
+              placeholder='Please describe your dream here...'
+              onChangeText={handleContentChange}
+            />
+            <Text style={styles.text} category='h6'>How did your dream make you feel?</Text>
+              <Select
+                style={styles.input}
+                placeholder='Default'
+                multiSelect={true}
+                value={displayFeelingsValue}
+                selectedIndex={selectedFeelingsIndex}
+                onSelect={index => {
+                  setSelectedFeelingsIndex(index);
+                  setDreamFeelings(selectedFeelingsIndex.map((el, idx) => feelingsData[idx]).join(', '))
+                }}
+              >
+                  {feelingsData.map((title) => (
+                    <SelectItem key={title} title={title}/>
+                  ))}
+              </Select>
+              {/* <Input
+                style={styles.input}
+                size='medium'
                 placeholder="your feelings here"
                 onChangeText={handleFeelingsChange}
+              /> */}
+            <Layout style={styles.layout} level='1'>
+              <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
+                DISMISS
+              </Button>
+              <Button 
+                style={styles.buttonNext} 
+                onPress={() => {
+                  setShowModal2(false);
+                  setShowModal3(true);
+                  handleSubmitDream();
+                }}
+              >
+                NEXT
+              </Button>
+            </Layout>
+          </Card>
+        </Modal>
+      </TouchableWithoutFeedback>
+
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+        <Modal 
+          visible={showModal3} 
+          onClose={() => setShowModal3(false)} 
+          size="lg"
+        >
+          <Card disabled={true}>
+            <View style={styles.iconLayout}>
+              <MaterialCommunityIcons
+                name="cloud-circle"
+                color={"#fff"}
+                size={40}
               />
             </View>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button flex="1" onPress={() => {
-              setShowModal(false);
-              setShowModal2(true);
-              handleSubmitDream();
-            }}>
-              Continue
-            </Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
-
-      <Modal isOpen={showModal2} onClose={() => setShowModal2(false)} size="lg">
-        <Modal.Content maxWidth="350">
-          <Modal.CloseButton />
-          <Modal.Header>Here is your dream</Modal.Header>
-          <Modal.Body>
             {dreamImg && (
               <>
-                <View className='m-4 w-5/6'>
+                <View className='mx-auto mb-4'>
                   <Image
-                    className='h-72 w-72'
+                    className='h-72 w-72 rounded-lg shadow-lg shadow-black'
                     source={{ uri: dreamImg }}
                   />
                 </View>
+                <View className='mx-auto w-5/6'>
+                  <Text style={styles.input} category='s1'>{dreamContent}</Text>
+                  <Text style={styles.input} category='s1'>{dreamFeelings}</Text>
+                </View>
+
               </>
             )}
-          </Modal.Body>
-          <Modal.Footer>
-            <Button flex="1" onPress={() => {
-              setShowModal2(false);
-              setShowModal3(true);
-            }}>
-              Continue
-            </Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+            <Layout style={styles.layout} level='1'>
+              <Button style={styles.buttonDismiss} onPress={() => setShowModal3(false)}>
+                DISMISS
+              </Button>
+              <Button 
+                style={styles.buttonNext} 
+                onPress={() => {
+                  setShowModal3(false);
+                  // Submit into DB
+                  setShowModal4(true);
+                  handleSubmitLog();
+                }}
+              >
+                SAVE
+              </Button>
+            </Layout>
+          </Card>
+        </Modal>
+      </TouchableWithoutFeedback>
 
-      <Modal isOpen={showModal3} size="lg" onClose={() => setShowModal3(false)}>
-        <Modal.Content maxWidth="350">
-          <Modal.CloseButton />
-          <Modal.Header>Payment Options</Modal.Header>
-          <Modal.Body>
-            <Text className='text-xl font-medium'>Done!!</Text>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button flex="1" onPress={() => {
-              setShowModal3(false);
-            }}>
-              Checkout
+
+      {/* <Modal 
+        isOpen={showModal4} 
+        size="lg" 
+        onClose={() => setShowModal4(false)}
+      >
+        <Card disabled={true}>
+          <Text className='text-xl font-medium'>Done!!</Text>
+          <Layout style={styles.layout} level='1'>
+            <Button style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
+              DISMISS
             </Button>
-          </Modal.Footer>
-        </Modal.Content>
+            <Button 
+              style={styles.buttonNext} 
+              onPress={() => {
+                setShowModal4(false);
+              }}
+            >
+              CLOSE
+            </Button>
+          </Layout>
+        </Card>
       </Modal> */}
     </>
   );
@@ -171,8 +378,39 @@ export default AIDreamGen;
 const styles = StyleSheet.create({
   container: {
     minHeight: 192,
+
+  },
+  layout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  iconLayout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginBottom: 20,
+    marginTop: 2,
+  },
+  modal: {
+    width: '90%',
   },
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  input: {
+    marginVertical: 12,
+  },
+  buttonDismiss: {
+    marginVertical: 12,
+    width: '40%',
+    backgroundColor: '#232f4f',
+  },
+  buttonNext: {
+    marginVertical: 12,
+    width: '40%',
+    backgroundColor: '#181d37',
   },
 });

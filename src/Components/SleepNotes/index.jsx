@@ -1,84 +1,92 @@
-import { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import React, { useState } from "react";
+import { View, TextInput, StyleSheet } from "react-native";
 //import { Slider, Radio } from "native-base";
 import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
+import { IndexPath, Select, SelectItem, Radio, Layout } from '@ui-kitten/components';
+
 
 const SleepNotes = ({ notes, setNotes, hadDream, setHadDream }) => {
-  const [hours, setHours] = useState(0);
+  // const [hours, setHours] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
+
+  const data = [
+    'Less than 4 hours',
+    '4 - 6 hours',
+    '6 - 8 hours',
+    '8 - 10 hours',
+    '10 - 14 hours',
+    'More than 14 hours',
+  ];
+
+  const displayValue = data[selectedIndex.row];
+
+  const renderOption = (title) => (
+    <SelectItem key={title} title={title}/>
+  );
 
   return (
     <>
       <View style={styles.container}>
 
         <Button onPress={() => setVisible(true)}>
-          GENERATE NEW DREAM
+          GENERATE DREAM INSTANCE
         </Button>
 
         <Modal
           visible={visible}
           backdropStyle={styles.backdrop}
+          style={styles.modal}
           onBackdropPress={() => setVisible(false)}>
           <Card disabled={true}>
-            <Text className='text-3xl font-bold'>How did you sleep?</Text>
-
-            <Button onPress={() => setVisible(false)}>
-              DISMISS
-            </Button>
+            <Text style={styles.text} category='h6'>How did you sleep?</Text>
+            <Input
+              style={styles.input}
+              size='medium'
+              placeholder='stressed, relaxed...?'
+            />
+            <Text style={styles.text} category='h6'>How long did you sleep?</Text>
+            <Select
+              style={styles.input}
+              placeholder='Default'
+              value={displayValue}
+              selectedIndex={selectedIndex}
+              onSelect={index => setSelectedIndex(index)}>
+                {data.map(renderOption)}
+            </Select>
+            <Text style={styles.text} category='h6'>How did you feel when you woke up?</Text>
+            <Input
+              style={styles.input}
+              size='medium'
+              placeholder='well-rested, groggy, energetic... ?'
+            />
+            <Text style={styles.text} category='h6'>Did you have a dream?</Text>
+            <Layout style={styles.layout} level='1'>
+              <Radio
+                style={styles.input}
+                checked={hadDream}
+                onChange={nextChecked => setHadDream(nextChecked)}>
+                Yes
+              </Radio>
+              <Radio
+                style={styles.input}
+                checked={!hadDream}
+                onChange={nextChecked => setHadDream(!nextChecked)}>
+                No
+              </Radio>
+            </Layout>
+            <Layout style={styles.layout} level='1'>
+              <Button style={styles.buttonDismiss} onPress={() => setVisible(false)}>
+                DISMISS
+              </Button>
+              <Button style={styles.buttonNext} onPress={() => setVisible(false)}>
+                SUBMIT
+              </Button>
+            </Layout>
           </Card>
         </Modal>
       </View>
     </>
-    // <View className='flex-1 flex flex-col items-center justify-center ' >
-    //   <Text className='text-xl font-medium'>how did you feel when you went to bed?</Text>
-    //   <View className='m-4 w-5/6'>
-    //     <TextInput
-    //       className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
-    //       placeholder="stressed, relaxed...?"
-    //     // onChangeText={handleDreamChange}
-    //     />
-    //   </View>
-    //   <Text className='text-xl font-medium'>how long did you sleep?</Text>
-    //   <Slider
-    //     accessibilityLabel="hello world"
-    //     w="3/4"
-    //     maxW="300"
-    //     defaultValue={8}
-    //     minValue={0.5}
-    //     maxValue={20}
-    //     step={0.5}
-    //     onChange={v => setHours(v)}
-    //   >
-    //     <Slider.Track>
-    //       <Slider.FilledTrack />
-    //     </Slider.Track>
-    //     <Slider.Thumb />
-    //   </Slider>
-    //   <Text className='text-xl font-medium'>{hours} hours</Text>
-    //   <Text className='text-xl font-medium'>how did you feel when you woke up?</Text>
-    //   <View className='m-4 w-5/6'>
-    //     <TextInput
-    //       className='bg-gray-50 h-8 p-2 border-2 border-gray-300'
-    //       placeholder="groggy, alert...?"
-    //     // onChangeText={handleDreamChange}
-    //     />
-    //   </View>
-    //   <Text className='text-xl font-medium'>can you remember your dreams?</Text>
-    //   <View className='m-4 w-5/6'>
-    //     <Radio.Group
-    //       name="myRadioGroup"
-    //       accessibilityLabel="favorite number"
-    //       value={hadDream}
-    //       onChange={nextValue => { setHadDream(nextValue) }}>
-    //       <Radio value={true} my={1}>
-    //         Yes
-    //       </Radio>
-    //       <Radio value={false} my={1}>
-    //         No
-    //       </Radio>
-    //     </Radio.Group>
-    //   </View>
-    // </View>
   );
 };
 
@@ -93,7 +101,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
   },
+  layout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  modal: {
+    width: '90%',
+  },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  input: {
+    marginVertical: 12,
+  },
+  buttonDismiss: {
+    marginVertical: 12,
+    width: '40%',
+    backgroundColor: '#232f4f',
+  },
+  buttonNext: {
+    marginVertical: 12,
+    width: '40%',
+    backgroundColor: '#181d37',
   },
 });
