@@ -10,10 +10,10 @@ import { Dimensions, Image, View } from "react-native";
 import Gallery from "../Components/Gallery";
 import { Link } from "@react-navigation/native";
 // import Carousel from "react-native-reanimated-carousel";
+// import exampleImage from "../../assets/example.png";
 
 const HomeScreen = () => {
   const width = Dimensions.get("window").width;
-  const exampleImage = require("../../assets/example.png");
 
   return (
     <ScrollView>
@@ -67,12 +67,16 @@ const HomeScreen = () => {
             </Button>
           </Card>
           <View style={{ flex: 1 }}>
-            <Card>
+            {/* <Card>
               <Image style={styles.image} source={exampleImage} />
+
             </Card>
             <Link>
               <Gallery />
             </Link>
+
+            </Card> */}
+
             {/* <Carousel
             loop
             width={width}

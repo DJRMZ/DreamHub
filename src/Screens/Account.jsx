@@ -9,15 +9,15 @@ import * as React from "react";
 import { Dimensions } from "react-native";
 // import Carousel from "react-native-reanimated-carousel";
 
+// import exampleImage from "../../assets/example.png";
+
 const AccountScreen = () => {
   const width = Dimensions.get("window").width;
-  const exampleImage = require("../../assets/example.png");
 
   return (
     <View style={styles.backdrop}>
       <ScrollView>
         <View style={styles.container}>
-          <Text>Account</Text>
           <Text>How to use this app:</Text>
           <Text>
             Use the prompt window to describe your dream. Here are a couple
@@ -27,7 +27,7 @@ const AccountScreen = () => {
             <Text>
               A pink bunny at the beach with a giraffe drinking lemonade
             </Text>
-            <Image style={styles.image} source={exampleImage} />
+            {/* <Image style={styles.image} source={exampleImage} /> */}
           </Card>
           <Text>
             The Dream UI button on the home screen or the Dream UI tab at the
