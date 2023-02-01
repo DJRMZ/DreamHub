@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { View, Image, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
 import { IndexPath, Select, SelectItem, Radio, Layout } from '@ui-kitten/components';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "@clerk/clerk-expo";
+import ViewShot from "react-native-view-shot";
+
+import { Grid } from 'react-native-animated-spinkit'
 
 import { OPENAI_API_KEY } from "@env";
 import supabaseCtor from "../../lib/supabaseClient";
@@ -31,6 +34,8 @@ const AIDreamGen = () => {
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
 
+  const ref = useRef();
+
   const [notes, setNotes] = useState({
     bedtime_mood: '',
     wakeup_mood: '',
@@ -46,9 +51,9 @@ const AIDreamGen = () => {
   const { getToken, userId } = useAuth();
   console.log('🚀 ~ file: index.jsx:48 ~ AIDreamGen ~ userId', userId);
 
-  useEffect(() => {
-    handleSubmitLog();
-  }, []);
+  // useEffect(() => {
+  //   handleSubmitLog();
+  // }, []);
 
   const hoursData = [
     'Less than 4 hours',
@@ -311,10 +316,19 @@ const AIDreamGen = () => {
               <MaterialCommunityIcons
                 name="cloud-circle"
                 color={'#d7eefa'}
-                size={40}
+                size={50}
               />
             </View>
-            {dream.imageUrl && (
+            {loading ? (
+              <>
+                <View style={styles.loadingLayout}>
+                  <Grid
+                    size={70}
+                    color='#d7eefa'
+                  />
+                </View>
+              </>
+            ) : (
               <>
                 <View className='mx-auto mb-4'>
                   <Image
@@ -326,7 +340,6 @@ const AIDreamGen = () => {
                   <Text style={styles.input} category='s1'>{dreamContent}</Text>
                   <Text style={styles.input} category='s1'>{dreamFeelings}</Text>
                 </View>
-
               </>
             )}
             <Layout style={styles.layout} level='1'>
@@ -388,7 +401,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    
+
   },
   iconLayout: {
     flexDirection: 'row',
@@ -421,5 +434,13 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     width: '70%',
     backgroundColor: '#181d37',
+  },
+  loadingLayout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginVertical: 50,
+    marginBottom: 60,
   },
 });

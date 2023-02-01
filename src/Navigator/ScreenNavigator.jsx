@@ -28,7 +28,7 @@ const StackNav = () => {
         <Stack.Screen name="App" component={MainNavigator} options={{ title: 'Welcome to DreamHub' }} />
       ) : (
         <>
-          <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="Welcome" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
         </>
       )}
