@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import Button from "./Button";
+// import Button from "./Button";
+import Button from "../../Components/Button/Button";
 
 describe("Button", () => {
   it("renders correctly with title and icon", () => {

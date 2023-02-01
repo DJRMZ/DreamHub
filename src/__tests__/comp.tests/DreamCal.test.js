@@ -1,4 +1,6 @@
-import DreamCalendar from "./DreamCalendar";
+// import DreamCalendar from "./DreamCalendar";
+// import DreamCalendar from "../../Components/DreamCalendar";
+const DreamCalendar = require("../../Components/DreamCalendar");
 
 describe("DreamCalendar component", () => {
   it("should load items", async () => {
