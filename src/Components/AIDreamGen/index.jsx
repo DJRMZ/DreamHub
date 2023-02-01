@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { View, Image, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
-import { IndexPath, Select, SelectItem, Radio, Layout } from '@ui-kitten/components';
+import { IndexPath, Select, SelectItem, Radio, Layout, Divider } from '@ui-kitten/components';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "@clerk/clerk-expo";
 import ViewShot from "react-native-view-shot";
@@ -64,30 +64,30 @@ const AIDreamGen = () => {
     'More than 14 hours',
   ];
 
-  const feelingsData = [
-    'happy',
-    'scared',
-    'angry',
-    'sad',
-    'confused',
-    'excited',
-    'bored',
-    'tired',
-    'relaxed',
-    'anxious',
-    'frustrated',
-    'lonely',
-    'guilty',
-    'ashamed',
-    'disgusted',
-    'proud',
-    'hopeful',
-    'jealous',
-    'surprised',
-  ];
+  // const feelingsData = [
+  //   'happy',
+  //   'scared',
+  //   'angry',
+  //   'sad',
+  //   'confused',
+  //   'excited',
+  //   'bored',
+  //   'tired',
+  //   'relaxed',
+  //   'anxious',
+  //   'frustrated',
+  //   'lonely',
+  //   'guilty',
+  //   'ashamed',
+  //   'disgusted',
+  //   'proud',
+  //   'hopeful',
+  //   'jealous',
+  //   'surprised',
+  // ];
 
   const displayValue = hoursData[selectedSleepIndex.row];
-  const displayFeelingsValue = feelingsData[selectedFeelingsIndex.row];
+  // const displayFeelingsValue = feelingsData[selectedFeelingsIndex.row];
 
   const openai = new OpenAIApi(configuration);
   // console.log('OPENAI', openai);
@@ -100,7 +100,7 @@ const AIDreamGen = () => {
   const handleSubmitDream = async () => {
     setLoading(true);
     let dreamObject = {
-      prompt: `${dreamContent}. My dream made me feel ${dreamFeelings}`, // dream from state
+      prompt: `From the perspective of a dreamer, ${dreamContent}. My dream made me feel ${dreamFeelings}.`, // dream from state
       n: 1, // number of images to generate
       size: "1024x1024",
     };
@@ -265,7 +265,7 @@ const AIDreamGen = () => {
               onChangeText={handleContentChange}
             />
             <Text style={styles.text} category='h6'>How did your dream make you feel?</Text>
-            <Select
+            {/* <Select
               style={styles.input}
               placeholder='Default'
               multiSelect={true}
@@ -279,13 +279,13 @@ const AIDreamGen = () => {
               {feelingsData.map((title) => (
                 <SelectItem key={title} title={title} />
               ))}
-            </Select>
-            {/* <Input
+            </Select> */}
+            <Input
                 style={styles.input}
                 size='medium'
-                placeholder="your feelings here"
-                onChangeText={handleFeelingsChange}
-              /> */}
+                placeholder="happy, scared, confused, angry...?"
+                onChangeText={(feelings) => setDreamFeelings(feelings)}
+              />
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
                 DISMISS
@@ -311,7 +311,7 @@ const AIDreamGen = () => {
           onClose={() => setShowModal3(false)}
           size="lg"
         >
-          <Card disabled={true}>
+          <Card style={styles.card} disabled={true}>
             <View style={styles.iconLayout}>
               <MaterialCommunityIcons
                 name="cloud-circle"
@@ -337,12 +337,15 @@ const AIDreamGen = () => {
                   />
                 </View>
                 <View className='mx-auto w-5/6'>
-                  <Text style={styles.input} category='s1'>{dreamContent}</Text>
-                  <Text style={styles.input} category='s1'>{dreamFeelings}</Text>
+                  <Card style={styles.dreamPrompt} >
+                    <Text style={{fontSize: 16, fontWeight: "bold"}}>Your Dream:</Text>
+                    <Text style={{fontStyle: "italic", marginVertical: 4}} category='s1'>"{dreamContent}"</Text>
+                    {/* <Text style={styles.input} category='s1'>{dreamFeelings}</Text> */}
+                  </Card>
                 </View>
               </>
             )}
-            <Layout style={styles.layout} level='1'>
+            <View style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal3(false)}>
                 DISMISS
               </Button>
@@ -357,7 +360,7 @@ const AIDreamGen = () => {
               >
                 SAVE
               </Button>
-            </Layout>
+            </View>
           </Card>
         </Modal>
       </TouchableWithoutFeedback>
@@ -391,8 +394,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#232f4f',
     borderRadius: 10,
     paddingVertical: 20,
-    paddingTop: 25,
-    paddingHorizontal: 25,
+    paddingTop: 35,
+    paddingHorizontal: 30,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -401,7 +404,37 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-
+  },
+  card: {
+    backgroundColor: '#232f4f',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  dreamPrompt: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    color: '#d7eefa',
+    backgroundColor: '#232f4f',
+    borderRadius: 10,
+    // paddingVertical: 20,
+    // paddingTop: 25,
+    // paddingHorizontal: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    maxHeight: 200,
+    overflow: 'scroll',
   },
   iconLayout: {
     flexDirection: 'row',
@@ -421,18 +454,18 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   buttonDismiss: {
-    marginVertical: 12,
+    marginVertical: 16,
     width: '40%',
     backgroundColor: '#232f4f',
   },
   buttonNext: {
-    marginVertical: 12,
+    marginVertical: 16,
     width: '40%',
     backgroundColor: '#181d37',
   },
   buttonCreate: {
-    marginVertical: 12,
-    width: '70%',
+    marginVertical: 18,
+    width: '75%',
     backgroundColor: '#181d37',
   },
   loadingLayout: {
