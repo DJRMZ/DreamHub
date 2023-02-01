@@ -42,6 +42,7 @@
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-native": "0.70.5",
+    "react-native-animated-spinkit": "^1.5.2",
     "react-native-calendars": "^1.1293.0",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-reanimated": "~2.12.0",
@@ -50,6 +51,7 @@
     "react-native-screens": "~3.18.0",
     "react-native-svg": "^13.4.0",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-view-shot": "3.4.0",
     "react-native-web": "~0.18.7",
     "url": "^0.11.0"
   },

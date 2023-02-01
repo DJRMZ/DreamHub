@@ -1,9 +1,22 @@
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { TouchableOpacity, View, Keyboard, TouchableWithoutFeedback, StyleSheet } from "react-native";
 import { useSignIn } from "@clerk/clerk-expo";
-import { LinearGradient } from 'expo-linear-gradient';
-
 import SignInWithOAuth from "../Auth/SignInWithOAuth";
+
+import {
+  Input,
+  Button,
+  Card,
+  Layout,
+  Text,
+  Divider,
+} from '@ui-kitten/components';
+
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+const DreamIcon = (props) => (
+  <MaterialCommunityIcons name="cloud-circle" size={50} color='#d7eefa' />
+);
 
 export default function SignInScreen({ navigation }) {
   const { signIn, setSession, isLoaded } = useSignIn();
@@ -32,72 +45,97 @@ export default function SignInScreen({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className='flex-1 flex items-center justify-center' >
-      {/* <View style={styles.container}> */}
-      
-        <LinearGradient
-          colors={['#6130b0', '#3b5998']}
-          style={{
-            position: 'absolute',
-            inset: 0,
-            height: '100%',
-            width: '100%',
-          }}
-        />
-        <View className='flex flex-col items-center'>
-          <Text className='text-2xl text-violet-50 font-bold mb-4'>Use Auth Provider</Text>
+      <Layout style={styles.layout}>
+        <Card style={styles.card}>
+          <View style={styles.iconLayout}>
+            <DreamIcon />
+          </View>
+          <Text category="h5" style={{ textAlign: "center" }}>
+            Sign In to DreamHub
+          </Text>
           <SignInWithOAuth />
-
-        </View>
-        <Text className='text-2xl text-violet-50 my-4'>- OR -</Text>
-        <View className='flex flex-col items-center'>
-          <Text className='text-2xl text-violet-50 font-bold mb-4'>Sign in with Email</Text>
-
-          <View>
-            <TextInput
-              className="bg-gray-200 my-2 rounded-md p-2 w-60"
-              autoCapitalize="none"
-              value={emailAddress}
-              placeholder="Email..."
-              placeholderTextColor="#000"
-              onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
-            />
-          </View>
-
-          <View>
-            <TextInput
-              className="bg-gray-200 my-2 rounded-md p-2 w-60"
-              value={password}
-              placeholder="Password..."
-              placeholderTextColor="#000"
-              secureTextEntry={true}
-              onChangeText={(password) => setPassword(password)}
-            />
-          </View>
-
-          <TouchableOpacity onPress={onSignInPress}>
-            <Text className='bg-violet-500 px-6 py-2 text-lg font-medium text-gray-200'>Sign In</Text>
+          <Divider />
+          <Text category="s1" style={{ textAlign: "center", marginVertical: 10 }}>
+            OR
+          </Text>
+          <Divider />
+          <Input
+            placeholder="Email Address"
+            value={emailAddress}
+            onChangeText={(emailAddress) => setEmailAddress(emailAddress)}
+            style={{ marginTop: 20 }}
+            required={true}
+          />
+          <Input
+            placeholder="Password"
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+            secureTextEntry={true}
+            style={{ marginTop: 20 }}
+            required={true}
+          />
+          <TouchableOpacity onPress={onSignInPress} style={styles.buttonContainer}>
+            <Button onPress={onSignInPress} style={styles.button}>Sign In</Button>
           </TouchableOpacity>
-
-          <View className='flex flex-col items-center mt-8'>
-            <Text className='text-base text-violet-50'>No account?</Text>
-
-            <TouchableOpacity
-              onPress={onSignUpPress}
-            >
-              <Text className='text-blue-300 text-base'>Sign up</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
+          <Divider />
+          <Text category="s1" style={{ textAlign: "center", marginTop: 10 }}>
+            No Account?
+          </Text>
+          <TouchableOpacity onPress={onSignUpPress} style={styles.buttonContainer}>
+            <Button onPress={onSignUpPress} style={styles.buttonSignUp}>Sign Up</Button>
+          </TouchableOpacity>
+        </Card>
+      </Layout>
     </TouchableWithoutFeedback>
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
+const styles = StyleSheet.create({
+  layout: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    height: "100%",
+    paddingTop: 50,
+    backgroundColor: '#333c59',
+  },
+  card: { 
+    width: "90%", 
+    maxWidth: 400, 
+    paddingHorizontal: 14,
+    paddingBottom: 16,
+    paddingTop: 4,
+    backgroundColor: '#232f4f',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonContainer: {
+    display: 'flex',
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    width: 200,
+    height: 45,
+    marginVertical: 20,
+    backgroundColor: '#181d37',
+  },
+  buttonSignUp: {
+    width: 200,
+    height: 45,
+    marginTop: 10,
+    backgroundColor: '#181d37',
+  },
+  iconLayout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+});

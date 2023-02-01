@@ -1,7 +1,17 @@
 import { useSignUp, useSignIn } from "@clerk/clerk-expo";
-import { Button, View, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import * as AuthSession from "expo-auth-session";
+import { Button } from '@ui-kitten/components';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+const FacebookIcon = (props) => (
+  <MaterialCommunityIcons name="facebook" size={30} color='#d7eefa' />
+);
+
+const GoogleIcon = (props) => (
+  <MaterialCommunityIcons name="google" size={28} color='#d7eefa' />
+);
 
 const SignInWithOAuth = () => {
   const { isLoaded, signIn, setSession } = useSignIn();
@@ -140,23 +150,43 @@ const SignInWithOAuth = () => {
 
   return (
     <View className="flex flex-col items-center gap-1">
-      <View className="mb-1 px-8 py-3">
-        <View className="absolute inset-0 bg-gray-600 opacity-30 my-1 px-4 rounded-md"></View>
-        <View className="bg-gray-100 my-1 px-4 w-40">
-          <Button
-            title="Google"
-            onPress={() => handleSignInWithProvider("google")()}
-          />
-        </View>
-        <View className="bg-gray-100 mb-1 px-4 w-40">
-          <Button
-            title="Facebook"
-            onPress={() => handleSignInWithProvider("facebook")()}
-          />
-        </View>
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.button}
+          accessoryLeft={GoogleIcon}
+          onPress={() => handleSignInWithProvider("google")()} />
+        <Button 
+          style={styles.button}
+          accessoryLeft={FacebookIcon} 
+          onPress={() => handleSignInWithProvider("facebook")()} />
+
       </View>
     </View>
   );
 };
 
 export default SignInWithOAuth;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '80%',
+    marginVertical: 20,
+    paddingTop: 12,
+  },
+  button: {
+    backgroundColor: '#3b5998',
+    borderColor: '#181d37',
+    borderWidth: 2,
+    borderRadius: 12,
+    width: 80,
+    height: 56,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row',
+    display: 'flex',
+    marginVertical: 6,
+  },
+});
