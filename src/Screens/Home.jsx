@@ -7,6 +7,8 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import * as React from "react";
 import { Dimensions, Image, View } from "react-native";
+import Gallery from "../Components/Gallery";
+import { Link } from "@react-navigation/native";
 // import Carousel from "react-native-reanimated-carousel";
 // import exampleImage from "../../assets/example.png";
 
@@ -67,7 +69,14 @@ const HomeScreen = () => {
           <View style={{ flex: 1 }}>
             {/* <Card>
               <Image style={styles.image} source={exampleImage} />
+
+            </Card>
+            <Link>
+              <Gallery />
+            </Link>
+
             </Card> */}
+
             {/* <Carousel
             loop
             width={width}

@@ -104,6 +104,7 @@ const AccountScreen = () => {
 };
 
 export default AccountScreen;
+
 const styles = StyleSheet.create({
   container: {
     minHeight: 192,
