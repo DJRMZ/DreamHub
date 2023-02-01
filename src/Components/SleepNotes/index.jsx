@@ -95,11 +95,10 @@ export default SleepNotes;
 const styles = StyleSheet.create({
   container: {
     minHeight: 192,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   layout: {
     flexDirection: 'row',
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
   input: {
     marginVertical: 12,

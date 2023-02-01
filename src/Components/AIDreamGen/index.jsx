@@ -13,6 +13,7 @@ const configuration = new Configuration({
   apiKey: OPENAI_API_KEY,
 });
 
+
 const AIDreamGen = () => {
   const [supabase, setSupabase] = useState(null);
   const [hours, setHours] = useState('');
@@ -97,7 +98,7 @@ const AIDreamGen = () => {
 
   const handleContentChange = (input) => {
     setDreamContent(input);
-    console.log('DREAM CONTENT', dreamContent);
+    console.log("DREAM CONTENT", dreamContent);
   };
 
   // const handleFeelingsChange = (input) => {
@@ -112,15 +113,15 @@ const AIDreamGen = () => {
       n: 1, // number of images to generate
       size: "1024x1024",
     };
-    console.log('DREAM OBJECT', dreamObject);
+    console.log("DREAM OBJECT", dreamObject);
     try {
       const response = await openai.createImage(dreamObject);
 
       // console.log('RESPONSE BODY', response);
-      console.log('RESPONSE URL', response.data.data[0].url);
+      console.log("RESPONSE URL", response.data.data[0].url);
       let image_url = response.data.data[0].url;
       setDreamImg(image_url);
-      console.log('IMAGE URL', image_url);
+      console.log("IMAGE URL", image_url);
       setDream({
         prompt: `${dreamContent}. My dream made me feel ${dreamFeelings}`,
         imageUrl: image_url
