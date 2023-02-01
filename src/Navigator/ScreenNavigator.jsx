@@ -14,10 +14,10 @@ const StackNav = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: '#283769' },
+        headerStyle: { backgroundColor: '#181d37' },
         headerTitleStyle: {
-          color: '#fff',
-          fontSize: 18,
+          color: '#d7eefa',
+          fontSize: 22,
           fontWeight: 'bold',
         },
       }}

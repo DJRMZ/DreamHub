@@ -1,85 +1,72 @@
+import { useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Keyboard, TouchableWithoutFeedback, StyleSheet, View } from "react-native";
 
 import { Home, Account, DreamLogger } from "../Screens";
 import DreamCalendar from "../Components/DreamCalendar";
 
-const Tab = createBottomTabNavigator();
+const { Navigator, Screen } = createBottomTabNavigator();
+
+const BottomTabBar = ({ navigation, state }) => {
+  const HomeIcon = (props) => <MaterialCommunityIcons name="home-circle" size={28} color='#d7eefa' />;
+  const DreamIcon = (props) => <MaterialCommunityIcons name="cloud-circle" size={28} color='#d7eefa' />;
+  const CalendarIcon = (props) => <MaterialCommunityIcons name="calendar-multiselect" size={28} color='#d7eefa' />;
+  const AccountIcon = (props) => <MaterialCommunityIcons name="account-circle" size={28} color='#d7eefa' />;
+
+  return (
+    <BottomNavigation
+      selectedIndex={state.index}
+      onSelect={index => navigation.navigate(state.routeNames[index])}>
+        <BottomNavigationTab style={styles.bottomNavigation} title="Home" icon={HomeIcon} />
+        <BottomNavigationTab style={styles.bottomNavigation} title="DreamStudio" icon={DreamIcon} />
+        <BottomNavigationTab style={styles.bottomNavigation} title="SleepCalendar" icon={CalendarIcon} />
+        <BottomNavigationTab style={styles.bottomNavigation} title="Account" icon={AccountIcon} />
+    </BottomNavigation>
+  );
+};
 
 export default function MainNavigator() {
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <Tab.Navigator
-        initialRouteName="Home"
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Navigator
+        tabBar={props => <BottomTabBar {...props} />}
         screenOptions={{
-          tabBarActiveTintColor: "#283769",
-          tabBarInactiveTintColor: "#000",
-          tabBarActiveBackgroundColor: "#ced8f7",
-          tabBarStyle: { height: 80 },
+          // headerShown: false,
+          headerBackground: () => (
+            <View style={styles.screen} />
+          ),
+          headerTitleStyle: {
+            color: '#181d37',
+            fontSize: 20,
+            fontWeight: 'bold',
+          },
+          headerStyle: {
+            backgroundColor: '#181d37',
+          },
+          headerShadowVisible: true,
+          headerTintColor: '#181d37',
+          headerTitleAlign: 'center',
+          // headerTransparent: true,
         }}
       >
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarLabel: "Home",
-            tabBarIcon: () => (
-              <MaterialCommunityIcons
-                name="home-circle"
-                color={"#000"}
-                size={26}
-              />
-            ),
-          }}
-          tabBarBadge={3}
-        />
-        <Tab.Screen
-          name="DreamStudio"
-          component={DreamLogger}
-          options={{
-            tabBarLabel: "DreamUI",
-            tabBarIcon: () => (
-              <MaterialCommunityIcons
-                name="cloud-circle"
-                color={"#000"}
-                size={26}
-              />
-            ),
-          }}
-          tabBarBadge={3}
-        />
-        <Tab.Screen
-          name="DreamCalendar"
-          component={DreamCalendar}
-          options={{
-            tabBarLabel: "DreamCalendar",
-            tabBarIcon: () => (
-              <MaterialCommunityIcons
-                name="calendar-multiselect"
-                color={"#000"}
-                size={26}
-              />
-            ),
-          }}
-          tabBarBadge={3}
-        />
-        <Tab.Screen
-          name="Account"
-          component={Account}
-          options={{
-            tabBarLabel: "Account",
-            tabBarIcon: () => (
-              <MaterialCommunityIcons
-                name="account-circle"
-                color={"#000"}
-                size={26}
-              />
-            ),
-          }}
-          tabBarBadge={3}
-        />
-      </Tab.Navigator>
+        <Screen name="Home" component={Home} style={styles.screen} />
+        <Screen name="DreamStudio" component={DreamLogger} style={styles.screen} />
+        <Screen name="SleepCalendar" component={DreamCalendar} style={styles.screen} />
+        <Screen name="Account" component={Account} style={styles.screen} />
+      </Navigator>
+
     </TouchableWithoutFeedback>
   );
 }
+
+const styles = StyleSheet.create({
+  bottomNavigation: {
+    paddingVertical: 12,
+    backgroundColor: '#181d37',
+  },
+  screen : {
+    backgroundColor: '#d7eefa',
+  },
+});
