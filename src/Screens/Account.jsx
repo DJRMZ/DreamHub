@@ -64,13 +64,7 @@ const AccountScreen = () => {
             </Button>
           </Card>
           <Card>
-            <Button
-              onPress={() => {
-                <SignOutButton />;
-              }}
-            >
-              Sign Out
-            </Button>
+          <SignOutButton />
           </Card>
 
           <View style={{ flex: 1 }}>
