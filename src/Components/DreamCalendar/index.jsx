@@ -1,13 +1,16 @@
-import * as React from "react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-expo";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Image } from "react-native";
+import * as FileSystem from "expo-file-system";
 import {
   Agenda,
-  DateData,
-  AgendaEntry,
-  AgendaSchedule,
+  // DateData,
+  // AgendaEntry,
+  // AgendaSchedule,
 } from "react-native-calendars";
+import { Card, Modal, Layout } from '@ui-kitten/components';
+import { Grid } from 'react-native-animated-spinkit'
+
 
 function transformData(data) {
   const result = {};
@@ -33,66 +36,106 @@ function transformData(data) {
 import supabaseCtor from "../../lib/supabaseClient";
 
 const DreamCalendar = () => {
-  const [items, setItems] = useState({});
-  const [token, setToken] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
+  const [items, setItems] = useState({});
+  const [images, setImages] = useState({
+    test: 'test',
+  });
+  const [image, setImage] = useState(null);
+  const [prompt, setPrompt] = useState(null);
+
+  const [loadingImage, setLoadingImage] = useState(false);
+
+  const [token, setToken] = useState("");
   const { getToken, userId } = useAuth();
 
   useEffect(() => {
     (async () => {
-      const token = await getToken({ template: 'supabase' });
-      console.log('🚀 ~ file: index.jsx:61 ~ token', token);
-      setToken(token);
+      const accessToken = await getToken({ template: 'supabase' });
+      console.log('🚀 ~ file: index.jsx:61 ~ token', accessToken);
+      setToken(accessToken);
+
+      const supabaseClient = await supabaseCtor(accessToken);
+
+      const { data, error } = await supabaseClient
+        .from('sleep_logs')
+        .select('*')
+        .eq('user_id', userId);
+
+      console.log('🚀 ~ file: index.jsx:35 ~ loadItems ~ data', data);
+
+      const items = transformData(data);
+      setItems(items);
+
+      await loadImage('user_2L3b8wg2IqNGTLGxaAWxyr5y2lS/2023-2-1_959118.png')
+      console.log('🚀 ~ file: index.jsx:66 ~ useEffect ~ images', images);
+      console.log('🚀 ~ file: index.jsx:67 ~ useEffect ~ image', image)
     })();
+  }, []);
 
-  }, [userId]);
+  // async function checkCache(link) {
+  //   const fileURL = FileSystem.cacheDirectory + link.split('/').join('__');
 
-  let today = new Date().toISOString().substring(0, 10);
-  // console.log(today);
+  //   await FileSystem.getInfoAsync(fileURL);
+  //   return fileURL;
+  // }
 
-  const loadItems = async (day) => {
+  async function loadImage(link) {
+    console.log(link);
+
     const supabaseClient = await supabaseCtor(token);
-    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
-
-    // console.log('USER ID', userId);
-
-    const { data, error } = await supabaseClient
-      .from('sleep_logs')
-      .select('*')
-      .eq('user_id', userId);
-
-    console.log('🚀 ~ file: index.jsx:35 ~ loadItems ~ data', data[0]);
-
-    const items = transformData(data);
-    setItems(items);
-  };
-
-  const loadImage = async (link) => {
-    const supabaseClient = await supabaseCtor(token);
-    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
-
     const { data, error } = await supabaseClient.storage
-      .from('dream_images')
+      .from('dream-images')
       .download(link);
 
-    console.log('🚀 ~ file: index.jsx:78 ~ loadImage ~ data', data);
-    console.log('🚀 ~ file: index.jsx:79 ~ loadImage ~ error', error);
+    // console.log('🚀 ~ file: index.jsx:78 ~ loadImage ~ data', data);
+    if (error) console.log('🚀 ~ file: index.jsx:79 ~ loadImage ~ error', error);
+
+    const fileURL = FileSystem.cacheDirectory + link.split('/').join('__');
+    console.log('🚀 ~ file: index.jsx:86 ~ loadImage ~ fileURL', fileURL);
+
+    console.log('trying to set state');
+
+
+
+    const reader = new FileReader();
+    reader.onload = async () => {
+      // console.log('🚀 ~ file: index.jsx:109 ~ loadImage ~ result', reader.result);
+      const base64 = reader.result.split(',').pop();
+
+      await FileSystem.writeAsStringAsync(
+        fileURL,
+        base64,
+        {
+          encoding: FileSystem.EncodingType.Base64,
+        }
+      );
+
+      setImage(fileURL);
+      setImages({
+        ...images,
+        [link]: fileURL,
+      });
+      setLoadingImage(false);
+      // setTimeout(() => {
+      //   setLoadingImage(false);
+      // }, 300);
+    };
+    reader.readAsDataURL(data);
   };
 
-  const renderItem = (item) => {
-    return (
-      <View style={[styles.item, { height: item.height }]}>
-        <Text>{item.title}</Text>
-        {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
-        <Text>Sleep Quality: {item.sleepQuality}</Text>
-        <Text>Length of Sleep: {item.sleepLength} hr</Text>
-        <Text>Notes: {item.notes}</Text>
-        <Text>Dream Prompt: {item.prompt}</Text>
-        <Text>Dream Image: {item.imageLink}</Text>
-        <Button title='View Image (BROKEN)' onPress={() => loadImage(item.imageLink)} />
-      </View>
-    );
-  };
+  async function showImage(link, prompt) {
+    setPrompt(prompt);
+    setShowModal(true);
+    setLoadingImage(true);
+    console.log('🚀 ~ file: index.jsx:129 ~ showImage ~ link', link);
+    if (images[link]) {
+      setImage(images[link]);
+    } else {
+      await loadImage(link);
+    }
+  }
 
   const renderEmptyDate = () => {
     return (
@@ -106,26 +149,61 @@ const DreamCalendar = () => {
     return row1.name !== row2.name;
   };
 
-  const timeToString = (time) => {
-    const date = new Date(time);
-    return date.toISOString().split("T")[0];
-  };
+  let today = new Date().toISOString().substring(0, 10);
 
   return (
-    <Agenda
-      items={items}
-      loadItemsForMonth={loadItems}
-      selected={today}
-      renderItem={renderItem}
-      renderEmptyDate={renderEmptyDate}
-      rowHasChanged={rowHasChanged}
-    />
+    <>
+      <Modal
+        visible={showModal}
+        backdropStyle={styles.backdrop}
+        style={styles.modal}
+        onBackdropPress={() => setShowModal(false)}
+      >
+        <Card disabled={true}>
+          <Text className='text-center text-lg text-violet-200'>{prompt}</Text>
+          {loadingImage ?
+            <View style={styles.loadingLayout}><Grid size={70} color='#d7eefa' /></View> :
+            <Image style={{ width: 300, height: 300 }} source={{ uri: image }} />
+          }
+          <Layout style={styles.layout} level='1'>
+            <Button title="Dismiss" onPress={() => setShowModal(false)} />
+          </Layout>
+        </Card>
+      </Modal>
+      <Agenda
+        items={items}
+        // loadItemsForMonth={loadItems}
+        selected={today}
+        renderItem={(item) => (
+          <View style={[styles.item, { height: item.height }]}>
+            <Text>{item.title}</Text>
+            {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
+            <Text>Sleep Quality: {item.sleepQuality}</Text>
+            <Text>Length of Sleep: {item.sleepLength} hr</Text>
+            <Text>Notes: {item.notes}</Text>
+            {/* <Text>Dream Prompt: {item.prompt}</Text>
+            <Text>Dream Image: {item.imageLink}</Text> */}
+            <Button
+              title='View Image (BROKEN)'
+              onPress={async () => showImage(item.imageLink, item.prompt)}
+            />
+            {images[item.imageLink] ? <Image style={{ width: 100, height: 100 }} source={{ uri: images[item.imageLink] }} /> : <Text>no image...</Text>}
+          </View>
+        )}
+        renderEmptyDate={renderEmptyDate}
+        rowHasChanged={rowHasChanged}
+      />
+    </>
   );
 }
 
 export default DreamCalendar;
 
 const styles = StyleSheet.create({
+  modal: {
+    width: '90%',
+    height: '80%',
+  },
   item: {
     backgroundColor: "white",
     flex: 1,
@@ -138,5 +216,13 @@ const styles = StyleSheet.create({
     height: 15,
     flex: 1,
     paddingTop: 30,
+  },
+  loadingLayout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    marginVertical: 50,
+    marginBottom: 60,
   },
 });
