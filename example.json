@@ -1,0 +1,135 @@
+{
+  "auth": {
+    "admin": {
+      "fetch": [Function anonymous
+      ],
+      "headers": [Object
+      ],
+      "mfa": [Object
+      ],
+      "url": "https://qlcbgogdfgqxdayxcdba.supabase.co/auth/v1"
+    },
+    "autoRefreshTicker": null,
+    "autoRefreshToken": true,
+    "detectSessionInUrl": true,
+    "fetch": [Function anonymous
+    ],
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbWV0YWRhdGEiOnt9LCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZW1haWwiOiJqdWxpYW4uYy5iYXJrZXJAZ21haWwuY29tIiwiZXhwIjoxNjc1MjI1MzE0LCJpYXQiOjE2NzUyMjUyNTQsImlzcyI6Imh0dHBzOi8vc21hc2hpbmctZ29zaGF3ay03Mi5jbGVyay5hY2NvdW50cy5kZXYiLCJqdGkiOiIyNWMzN2UwOTI0ZDQ5NmZlYTAwZSIsIm5iZiI6MTY3NTIyNTI0OSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzdWIiOiJ1c2VyXzJMM2I4d2cySXFOR1RMR3hhQVd4eXI1eTJsUyIsInVzZXJfbWV0YWRhdGEiOnt9fQ.79cGyCsobtZiFMK5M3JPoBPfEufXNNdi1BuGy8Bil4Q",
+      "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsY2Jnb2dkZmdxeGRheXhjZGJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzQ5NzE0MDUsImV4cCI6MTk5MDU0NzQwNX0.cYujJPc-3LDQMnqWYLX-yJ4ci5HC1mQDLjrAndNwHJE"
+    },
+    "inMemorySession": null,
+    "initializePromise": {
+      "_A": null,
+      "_x": 0,
+      "_y": 0,
+      "_z": null
+    },
+    "mfa": {
+      "challenge": [Function bound _challenge
+      ],
+      "challengeAndVerify": [Function bound _challengeAndVerify
+      ],
+      "enroll": [Function bound _enroll
+      ],
+      "getAuthenticatorAssuranceLevel": [Function bound _getAuthenticatorAssuranceLevel
+      ],
+      "listFactors": [Function bound _listFactors
+      ],
+      "unenroll": [Function bound _unenroll
+      ],
+      "verify": [Function bound _verify
+      ]
+    },
+    "persistSession": true,
+    "refreshingDeferred": null,
+    "stateChangeEmitters": Map {
+      "a53bff45-0b56-44c6-9aff-f25e8af35f65" => [Object
+      ]
+    },
+    "storage": {
+      "getItem": [Function getItem
+      ],
+      "removeItem": [Function removeItem
+      ],
+      "setItem": [Function setItem
+      ]
+    },
+    "storageKey": "sb-qlcbgogdfgqxdayxcdba-auth-token",
+    "url": "https://qlcbgogdfgqxdayxcdba.supabase.co/auth/v1"
+  },
+  "authUrl": "https://qlcbgogdfgqxdayxcdba.supabase.co/auth/v1",
+  "fetch": [Function anonymous
+  ],
+  "functionsUrl": "https://qlcbgogdfgqxdayxcdba.functions.supabase.co",
+  "headers": {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbWV0YWRhdGEiOnt9LCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZW1haWwiOiJqdWxpYW4uYy5iYXJrZXJAZ21haWwuY29tIiwiZXhwIjoxNjc1MjI1MzE0LCJpYXQiOjE2NzUyMjUyNTQsImlzcyI6Imh0dHBzOi8vc21hc2hpbmctZ29zaGF3ay03Mi5jbGVyay5hY2NvdW50cy5kZXYiLCJqdGkiOiIyNWMzN2UwOTI0ZDQ5NmZlYTAwZSIsIm5iZiI6MTY3NTIyNTI0OSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzdWIiOiJ1c2VyXzJMM2I4d2cySXFOR1RMR3hhQVd4eXI1eTJsUyIsInVzZXJfbWV0YWRhdGEiOnt9fQ.79cGyCsobtZiFMK5M3JPoBPfEufXNNdi1BuGy8Bil4Q"
+  },
+  "realtime": {
+    "accessToken": null,
+    "channels": [],
+    "conn": null,
+    "decode": [Function bound decode
+    ],
+    "encode": [Function anonymous
+    ],
+    "endPoint": "wss://qlcbgogdfgqxdayxcdba.supabase.co/realtime/v1/websocket",
+    "eventsPerSecondLimitMs": 100,
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbWV0YWRhdGEiOnt9LCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZW1haWwiOiJqdWxpYW4uYy5iYXJrZXJAZ21haWwuY29tIiwiZXhwIjoxNjc1MjI1MzE0LCJpYXQiOjE2NzUyMjUyNTQsImlzcyI6Imh0dHBzOi8vc21hc2hpbmctZ29zaGF3ay03Mi5jbGVyay5hY2NvdW50cy5kZXYiLCJqdGkiOiIyNWMzN2UwOTI0ZDQ5NmZlYTAwZSIsIm5iZiI6MTY3NTIyNTI0OSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzdWIiOiJ1c2VyXzJMM2I4d2cySXFOR1RMR3hhQVd4eXI1eTJsUyIsInVzZXJfbWV0YWRhdGEiOnt9fQ.79cGyCsobtZiFMK5M3JPoBPfEufXNNdi1BuGy8Bil4Q",
+      "X-Client-Info": "realtime-js/2.4.0"
+    },
+    "heartbeatIntervalMs": 30000,
+    "heartbeatTimer": undefined,
+    "inThrottle": false,
+    "logger": [Function noop
+    ],
+    "params": {
+      "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsY2Jnb2dkZmdxeGRheXhjZGJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzQ5NzE0MDUsImV4cCI6MTk5MDU0NzQwNX0.cYujJPc-3LDQMnqWYLX-yJ4ci5HC1mQDLjrAndNwHJE"
+    },
+    "pendingHeartbeatRef": null,
+    "reconnectAfterMs": [Function anonymous
+    ],
+    "reconnectTimer": {
+      "callback": [Function anonymous
+      ],
+      "timer": undefined,
+      "timerCalc": [Function anonymous
+      ],
+      "tries": 0
+    },
+    "ref": 0,
+    "sendBuffer": [],
+    "serializer": {
+      "HEADER_LENGTH": 1
+    },
+    "stateChangeCallbacks": {
+      "close": [Array
+      ],
+      "error": [Array
+      ],
+      "message": [Array
+      ],
+      "open": [Array
+      ]
+    },
+    "timeout": 10000,
+    "transport": [Function W3CWebSocket
+    ]
+  },
+  "realtimeUrl": "wss://qlcbgogdfgqxdayxcdba.supabase.co/realtime/v1",
+  "rest": {
+    "fetch": [Function anonymous
+    ],
+    "headers": {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbWV0YWRhdGEiOnt9LCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZW1haWwiOiJqdWxpYW4uYy5iYXJrZXJAZ21haWwuY29tIiwiZXhwIjoxNjc1MjI1MzE0LCJpYXQiOjE2NzUyMjUyNTQsImlzcyI6Imh0dHBzOi8vc21hc2hpbmctZ29zaGF3ay03Mi5jbGVyay5hY2NvdW50cy5kZXYiLCJqdGkiOiIyNWMzN2UwOTI0ZDQ5NmZlYTAwZSIsIm5iZiI6MTY3NTIyNTI0OSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzdWIiOiJ1c2VyXzJMM2I4d2cySXFOR1RMR3hhQVd4eXI1eTJsUyIsInVzZXJfbWV0YWRhdGEiOnt9fQ.79cGyCsobtZiFMK5M3JPoBPfEufXNNdi1BuGy8Bil4Q",
+      "X-Client-Info": "postgrest-js/1.3.0"
+    },
+    "schema": "public",
+    "url": "https://qlcbgogdfgqxdayxcdba.supabase.co/rest/v1"
+  },
+  "storageKey": "sb-qlcbgogdfgqxdayxcdba-auth-token",
+  "storageUrl": "https://qlcbgogdfgqxdayxcdba.supabase.co/storage/v1",
+  "supabaseKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsY2Jnb2dkZmdxeGRheXhjZGJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzQ5NzE0MDUsImV4cCI6MTk5MDU0NzQwNX0.cYujJPc-3LDQMnqWYLX-yJ4ci5HC1mQDLjrAndNwHJE",
+  "supabaseUrl": "https://qlcbgogdfgqxdayxcdba.supabase.co"
+}

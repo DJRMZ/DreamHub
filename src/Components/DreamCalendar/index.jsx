@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-expo";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, Image, FlatList } from "react-native";
+import * as FileSystem from "expo-file-system";
 import {
   Agenda,
   DateData,
@@ -33,8 +34,10 @@ function transformData(data) {
 import supabaseCtor from "../../lib/supabaseClient";
 
 const DreamCalendar = () => {
-  const [items, setItems] = useState({});
   const [token, setToken] = useState("");
+
+  const [items, setItems] = useState({});
+  const [images, setImages] = useState({});
 
   const { getToken, userId } = useAuth();
 
@@ -45,14 +48,14 @@ const DreamCalendar = () => {
       setToken(token);
     })();
 
-  }, [userId]);
+  }, []);
 
   let today = new Date().toISOString().substring(0, 10);
   // console.log(today);
 
   const loadItems = async (day) => {
     const supabaseClient = await supabaseCtor(token);
-    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
+    // console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
 
     // console.log('USER ID', userId);
 
@@ -61,7 +64,7 @@ const DreamCalendar = () => {
       .select('*')
       .eq('user_id', userId);
 
-    console.log('🚀 ~ file: index.jsx:35 ~ loadItems ~ data', data[0]);
+    console.log('🚀 ~ file: index.jsx:35 ~ loadItems ~ data', data);
 
     const items = transformData(data);
     setItems(items);
@@ -69,14 +72,27 @@ const DreamCalendar = () => {
 
   const loadImage = async (link) => {
     const supabaseClient = await supabaseCtor(token);
-    console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
+    // console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
+
+    console.log(link);
 
     const { data, error } = await supabaseClient.storage
-      .from('dream_images')
+      .from('dream-images')
       .download(link);
 
     console.log('🚀 ~ file: index.jsx:78 ~ loadImage ~ data', data);
     console.log('🚀 ~ file: index.jsx:79 ~ loadImage ~ error', error);
+
+    const fr = new FileReader();
+    fr.readAsDataURL(data);
+    fr.onload = () => {
+      setImages({
+        ...images,
+        [link]: fr.result,
+      });
+      console.log('🦖🦖🦖🦖🦖🦖🦖🦖 success!!! 🦖🦖🦖🦖🦖🦖🦖🦖');
+      // console.log(images);
+    };
   };
 
   const renderItem = (item) => {
@@ -90,6 +106,7 @@ const DreamCalendar = () => {
         <Text>Dream Prompt: {item.prompt}</Text>
         <Text>Dream Image: {item.imageLink}</Text>
         <Button title='View Image (BROKEN)' onPress={() => loadImage(item.imageLink)} />
+        {images[item.imageLink] ? <Image source={{ uri: images[item.imageLink] }} /> : <Text>no image...</Text>}
       </View>
     );
   };
@@ -112,14 +129,32 @@ const DreamCalendar = () => {
   };
 
   return (
-    <Agenda
-      items={items}
-      loadItemsForMonth={loadItems}
-      selected={today}
-      renderItem={renderItem}
-      renderEmptyDate={renderEmptyDate}
-      rowHasChanged={rowHasChanged}
-    />
+    <>
+      {/* <FlatList
+        data={Object.keys(images)}
+        renderItem={({ item }) => <Image source={{ uri: images[item] }} />}
+      /> */}
+      <Agenda
+        items={items}
+        loadItemsForMonth={loadItems}
+        selected={today}
+        renderItem={(item) => (
+          <View style={[styles.item, { height: item.height }]}>
+            <Text>{item.title}</Text>
+            {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
+            <Text>Sleep Quality: {item.sleepQuality}</Text>
+            <Text>Length of Sleep: {item.sleepLength} hr</Text>
+            <Text>Notes: {item.notes}</Text>
+            <Text>Dream Prompt: {item.prompt}</Text>
+            <Text>Dream Image: {item.imageLink}</Text>
+            <Button title='View Image (BROKEN)' onPress={() => loadImage(item.imageLink)} />
+            {images[item.imageLink] ? <Image source={{ uri: images[item.imageLink] }} /> : <Text>no image...</Text>}
+          </View>
+        )}
+        renderEmptyDate={renderEmptyDate}
+        rowHasChanged={rowHasChanged}
+      />
+    </>
   );
 }
 
