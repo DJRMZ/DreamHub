@@ -75,14 +75,18 @@ export default function SignInScreen({ navigation }) {
             required={true}
           />
           <TouchableOpacity onPress={onSignInPress} style={styles.buttonContainer}>
-            <Button onPress={onSignInPress} style={styles.button}>Sign In</Button>
+            <Button onPress={onSignInPress} style={styles.button}>
+              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Sign In</Text>}
+            </Button>
           </TouchableOpacity>
           <Divider />
           <Text category="s1" style={{ textAlign: "center", marginTop: 10 }}>
             No Account?
           </Text>
           <TouchableOpacity onPress={onSignUpPress} style={styles.buttonContainer}>
-            <Button onPress={onSignUpPress} style={styles.buttonSignUp}>Sign Up</Button>
+            <Button onPress={onSignUpPress} style={styles.buttonSignUp}>
+              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Sign Up</Text>}
+            </Button>
           </TouchableOpacity>
         </Card>
       </Layout>
@@ -120,14 +124,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    width: 200,
-    height: 45,
+    width: 180,
+    height: 50,
     marginVertical: 20,
     backgroundColor: '#181d37',
   },
   buttonSignUp: {
-    width: 200,
-    height: 45,
+    width: 180,
+    height: 50,
     marginTop: 10,
     backgroundColor: '#181d37',
   },

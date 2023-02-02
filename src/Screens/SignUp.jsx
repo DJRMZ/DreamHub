@@ -24,6 +24,7 @@ export default function SignUpScreen({ navigation }) {
   const [lastName, setLastName] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const onSignUpPress = async () => {
     if (!isLoaded) {
@@ -67,7 +68,7 @@ export default function SignUpScreen({ navigation }) {
               OR
             </Text>
             <Divider />
-            <View style={styles.inputView}>
+            {/* <View style={styles.inputView}>
               <Input
                 style={{ marginTop: 10 }}
                 value={firstName}
@@ -83,8 +84,8 @@ export default function SignUpScreen({ navigation }) {
                 required={true}
                 onChangeText={(lastName) => setLastName(lastName)}
               />
-            </View>
-            <View style={styles.inputView}>
+            </View> */}
+            <View style={styles.inputViewTop}>
               <Input
                 autoCapitalize="none"
                 value={emailAddress}
@@ -102,9 +103,18 @@ export default function SignUpScreen({ navigation }) {
                 onChangeText={(password) => setPassword(password)}
               />
             </View>
+            <View style={styles.inputView}>
+              <Input
+                value={password}
+                placeholder="Confirm Password"
+                required={true}
+                secureTextEntry={true}
+                onChangeText={(password) => setConfirmPassword(password)}
+              />
+            </View>
             <TouchableOpacity style={styles.buttonContainer} onPress={onSignUpPress}>
               <Button style={styles.buttonSignUp} onPress={onSignUpPress}>
-                Sign Up
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Sign Up</Text>}
               </Button>
             </TouchableOpacity>
             <Divider />
@@ -115,7 +125,7 @@ export default function SignUpScreen({ navigation }) {
                 onPress={onSignInPress}
               >
                 <Button style={styles.button} onPress={onSignInPress}>
-                  Sign In
+                  {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Sign In</Text>}
                 </Button>
               </TouchableOpacity>
             </View>
@@ -155,6 +165,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
   },
+  inputViewTop: {
+    marginTop: 20,
+    marginBottom: 10,
+  },
   inputView: {
     marginVertical: 10,
   },
@@ -164,14 +178,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   button: {
-    width: 100,
-    height: 45,
+    width: 120,
+    height: 50,
     marginTop: 20,
     backgroundColor: '#181d37',
   },
   buttonSignUp: {
-    width: 200,
-    height: 45,
+    width: 180,
+    height: 50,
     marginTop: 5,
     marginBottom: 20,
     backgroundColor: '#181d37',
