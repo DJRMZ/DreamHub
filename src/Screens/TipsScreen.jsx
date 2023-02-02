@@ -23,7 +23,7 @@ const DreamIcon = (props) => (
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
-const Home = () => {
+const TipsScreen = () => {
   return (
     <>
       <Layout style={styles.layout}>
@@ -117,7 +117,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default TipsScreen;
 
 const styles = StyleSheet.create({
   layout: {
