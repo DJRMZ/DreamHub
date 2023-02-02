@@ -57,20 +57,27 @@ const Home = () => {
               id: 1,
               header: `Where Your Dreams \nAre Reimagined`,
               title: "How to use DreamHub",
-              text1: "DreamStudio",
-              text2: "SleepCalendar",
+              text1:
+                "DreamStudio gives you the power of AI at your fingertips to create a visual representation of your dream.",
+              text2:
+                "SleepCalendar gives you access to saved images and entries",
             },
             {
               id: 2,
               header: "DreamStudio",
-              title: "Quick start: Click START HERE! on the DreamStudio tab.",
-              text1:
+              title: "Quick start:",
+              text1: "Click START HERE! on the DreamStudio tab.",
+              text2:
                 "Answer our prompts to log and create an image of you dream. Enjoy!",
             },
             {
               id: 3,
               header: "SleepCalendar",
               title: "How To Use DreamHub with SleepCalendar",
+              text1:
+                "Click on the SleepCalendar tab at the bottom of the screen.",
+              text2:
+                "View the calendar and navigate to saved entries by clicking on the entry.",
             },
           ]}
           keyExtractor={(item) => item.id.toString()}
