@@ -177,7 +177,9 @@ const AIDreamGen = () => {
           <View style={styles.iconRound}>
             <DreamIcon />
           </View>
-          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>START HERE!</Button>
+          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>
+            {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Create New Dream</Text>}
+          </Button>
         </View>
       </View>
       <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -247,7 +249,7 @@ const AIDreamGen = () => {
             </Layout>
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
-                DISMISS
+              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
               </Button>
               <Button
                 style={styles.buttonNext}
@@ -266,7 +268,7 @@ const AIDreamGen = () => {
                   }
                 }}
               >
-                {hadDream ? 'NEXT' : 'SUBMIT'}
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>{hadDream ? 'Next' : 'Submit'}</Text>}
               </Button>
             </Layout>
           </Card>
@@ -306,7 +308,7 @@ const AIDreamGen = () => {
 
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
-                DISMISS
+              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
               </Button>
               <Button
                 style={styles.buttonNext}
@@ -316,7 +318,7 @@ const AIDreamGen = () => {
                   handleSubmitDream();
                 }}
               >
-                NEXT
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Next</Text>}
               </Button>
             </Layout>
           </Card>
@@ -365,7 +367,7 @@ const AIDreamGen = () => {
             )}
             <View style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal3(false)}>
-                DISMISS
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
               </Button>
               <Button
                 style={styles.buttonNext}
@@ -376,7 +378,7 @@ const AIDreamGen = () => {
                   handleSubmitLog();
                 }}
               >
-                SAVE
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Save</Text>}
               </Button>
             </View>
           </Card>
@@ -498,7 +500,7 @@ const styles = StyleSheet.create({
   },
   buttonCreate: {
     marginVertical: 18,
-    width: 175,
+    width: 210,
     backgroundColor: '#181d37',
   },
   loadingLayout: {
