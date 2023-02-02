@@ -47,7 +47,7 @@ const AIDreamGen = () => {
 
   const [notes, setNotes] = useState({
     bedtime_mood: '',
-    wakeup_mood: '',
+    sleep_quality: '',
     hours_sleep: 0,
     date: new Date(),
 
@@ -189,7 +189,7 @@ const AIDreamGen = () => {
         user_id: userId,
         date: notes.date,
         bedtime_mood: notes.bedtime_mood,
-        wakeup_mood: notes.wakeup_mood,
+        sleep_quality: notes.sleep_quality,
         hours_sleep: notes.hours_sleep,
         dream_prompt: dream.prompt,
         dream_link: imagePath,
@@ -280,7 +280,7 @@ const AIDreamGen = () => {
                   setNotes({
                     date: new Date(),
                     bedtime_mood: '', // Must change!
-                    wakeup_mood: '', // Must change!
+                    sleep_quality: '', // Must change!
                     hours_sleep: hours,
                   })
                   if (hadDream) {

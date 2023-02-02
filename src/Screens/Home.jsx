@@ -1,5 +1,3 @@
-import AIDreamGen from "../Components/AIDreamGen";
-import DreamCalendar from "../Components/DreamCalendar";
 import Camera from "./Camera";
 import { Button, Card, Modal, Text } from "@ui-kitten/components";
 import { StyleSheet } from "react-native";
