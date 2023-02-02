@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { View, Image, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
 import { Button, Card, Modal, Text, Input, IndexPath, Select, SelectItem, Radio, Layout, Divider } from '@ui-kitten/components';
@@ -8,6 +8,8 @@ import * as FileSystem from 'expo-file-system';
 import { decode } from 'base64-arraybuffer';
 import ViewShot from "react-native-view-shot";
 import { Grid } from 'react-native-animated-spinkit'
+import debounce from "lodash/debounce";
+
 
 
 import { OPENAI_API_KEY } from "@env";
@@ -18,7 +20,7 @@ const configuration = new Configuration({
 });
 
 function dateToFileName(date) {
-  console.log('🚀 ~ file: index.jsx:19 ~ dateToFileName ~ date', date);
+  // console.log('🚀 ~ file: index.jsx:19 ~ dateToFileName ~ date', date);
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
@@ -29,29 +31,22 @@ const AIDreamGen = () => {
   const [writing, setWriting] = useState(false); // async state for writing to the database
 
   const [selectedSleepIndex, setSelectedSleepIndex] = useState(new IndexPath(0));
-  const [selectedFeelingsIndex, setSelectedFeelingsIndex] = useState([new IndexPath(0)]);
+  // const [selectedFeelingsIndex, setSelectedFeelingsIndex] = useState([new IndexPath(0)]);
+
   const [hours, setHours] = useState('');
+  const [quality, setQuality] = useState(10);
+  const [mood, setMood] = useState('');
+
   const [hadDream, setHadDream] = useState(false);
   const [dreamContent, setDreamContent] = useState('');
   const [dreamFeelings, setDreamFeelings] = useState('');
   const [dreamImg, setDreamImg] = useState('');
-
-  const [downloadProgress, setDownloadProgress] = useState(0);
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
 
-  const ref = useRef();
-
-  const [notes, setNotes] = useState({
-    bedtime_mood: '',
-    sleep_quality: '',
-    hours_sleep: 0,
-    date: new Date(),
-
-  });
   const [dream, setDream] = useState({
     prompt: '',
     imageUrl: '',
@@ -64,7 +59,7 @@ const AIDreamGen = () => {
   useEffect(() => {
     (async () => {
       const token = await getToken({ template: 'supabase' });
-      console.log('🚀 ~ file: index.jsx:61 ~ token', token);
+      // console.log('🚀 ~ file: index.jsx:61 ~ token', token);
       setToken(token);
     })();
 
@@ -88,14 +83,9 @@ const AIDreamGen = () => {
       console.error(e);
     });
 
-    // console.log('🚀 ~ file: index.jsx:89 ~ saveImage ~ file', file, '\n');
-
     const decodedFile = decode(file);
-    // console.log('🚀 ~ file: index.jsx:124 ~ saveImage ~ decodedFile', decodedFile);
 
     const supabaseClient = await supabaseCtor(token);
-    // console.log('🚀 ~ file: index.jsx:103 ~ saveImage ~ supabaseClient', supabaseClient, '\n');
-
     const { data, error } = await supabaseClient.storage
       .from('dream-images')
       .upload(`${userId}/${fileName}`, decodedFile, {
@@ -119,38 +109,22 @@ const AIDreamGen = () => {
     'More than 14 hours',
   ];
 
-  // const feelingsData = [
-  //   'happy',
-  //   'scared',
-  //   'angry',
-  //   'sad',
-  //   'confused',
-  //   'excited',
-  //   'bored',
-  //   'tired',
-  //   'relaxed',
-  //   'anxious',
-  //   'frustrated',
-  //   'lonely',
-  //   'guilty',
-  //   'ashamed',
-  //   'disgusted',
-  //   'proud',
-  //   'hopeful',
-  //   'jealous',
-  //   'surprised',
-  // ];
-
   const displayValue = hoursData[selectedSleepIndex.row];
-  // const displayFeelingsValue = feelingsData[selectedFeelingsIndex.row];
 
   const openai = new OpenAIApi(configuration);
   // console.log('OPENAI', openai);
 
-  const handleContentChange = (input) => {
-    setDreamContent(input);
-    // console.log("DREAM CONTENT", dreamContent);
-  };
+  const handleMoodChange = useCallback(debounce((value) => {
+    setMood(value);
+  }, 300), []);
+
+  const handleQualityChange = useCallback(debounce((value) => {
+    setQuality(value);
+  }, 300), []);
+
+  const handleContentChange = useCallback(debounce((value) => {
+    setDreamContent(value);
+  }, 300), []);
 
   const handleSubmitDream = async () => {
     setLoading(true);
@@ -180,17 +154,18 @@ const AIDreamGen = () => {
     const supabaseClient = await supabaseCtor(token);
     console.log('🚀 ~ file: index.jsx:144 ~ handleSubmitLog ~ supabaseClient', supabaseClient, '\n');
 
-    const localFileName = dateToFileName(notes.date);
+    const date = new Date();
+    const localFileName = dateToFileName(date);
     const imagePath = dream.imageUrl ? await saveImage(dream.imageUrl, 'png', localFileName) : null;
 
     const { data, error } = await supabaseClient
       .from('sleep_logs')
       .insert({
         user_id: userId,
-        date: notes.date,
-        bedtime_mood: notes.bedtime_mood,
-        sleep_quality: notes.sleep_quality,
-        hours_sleep: notes.hours_sleep,
+        date: date,
+        bedtime_mood: mood,
+        sleep_quality: quality,
+        hours_sleep: hours,
         dream_prompt: dream.prompt,
         dream_link: imagePath,
       })
@@ -252,8 +227,20 @@ const AIDreamGen = () => {
             <Input
               style={styles.input}
               size='medium'
-              placeholder='well-rested, groggy, energetic... ?'
+              placeholder='on a scale of 1-10...'
             />
+            <Select
+              style={styles.input}
+              placeholder='On a scale of 1-10...'
+              value={quality}
+              onSelect={index => {
+                setQuality(index.row + 1);
+              }}
+            >
+              {new Array(10).fill(0).map((_, index) => (
+                <SelectItem key={index} title={index} />
+              ))}
+            </Select>
             <Text style={styles.text} category='h6'>Did you have a dream?</Text>
             <Layout style={styles.layout} level='1'>
               <Radio
@@ -277,12 +264,12 @@ const AIDreamGen = () => {
                 style={styles.buttonNext}
                 onPress={() => {
                   setShowModal(false);
-                  setNotes({
-                    date: new Date(),
-                    bedtime_mood: '', // Must change!
-                    sleep_quality: '', // Must change!
-                    hours_sleep: hours,
-                  })
+                  // setNotes({
+                  //   date: new Date(),
+                  //   bedtime_mood: '', // Must change!
+                  //   sleep_quality: '', // Must change!
+                  //   hours_sleep: hours,
+                  // })
                   if (hadDream) {
                     setShowModal2(true);
                   } else {
@@ -321,22 +308,6 @@ const AIDreamGen = () => {
               onChangeText={handleContentChange}
             />
             <Text style={styles.text} category='h6'>How did your dream make you feel?</Text>
-            {/* <Select
-              style={styles.input}
-              placeholder='Default'
-              multiSelect={true}
-              value={displayFeelingsValue}
-              selectedIndex={selectedFeelingsIndex}
-              onSelect={index => {
-                setSelectedFeelingsIndex(index);
-                setDreamFeelings(selectedFeelingsIndex.map((el, idx) => feelingsData[idx]).join(', '))
-              }}
-            >
-              {feelingsData.map((title) => (
-                <SelectItem key={title} title={title} />
-              ))}
-              
-            </Select> */}
             <Input
               style={styles.input}
               size='medium'
