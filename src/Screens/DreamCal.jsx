@@ -1,11 +1,11 @@
-import { View, Text } from 'react-native';
-import DreamCalendar from '../Components/DreamCalendar'
+import { View, Text } from "react-native";
+import DreamCalendar from "../Components/DreamCalendar";
 
 const Calendar = () => (
-  <View>
+  <View testID="dream-calendar">
     <>
-    <Text>Calendar</Text>
-    < DreamCalendar />
+      <Text>Calendar</Text>
+      <DreamCalendar />
     </>
   </View>
 );
