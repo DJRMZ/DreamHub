@@ -1,5 +1,6 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+// import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent } from "jest-expo";
 // import AIDreamGen from './AIDreamGen';
 import AIDreamGen from "../../Components/AIDreamGen/index";
 

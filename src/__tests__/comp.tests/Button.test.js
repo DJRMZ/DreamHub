@@ -1,5 +1,6 @@
 import * as React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+// import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent } from "jest-expo";
 // import Button from "./Button";
 import Button from "../../Components/Button/Button";
 
