@@ -206,7 +206,7 @@ const AIDreamGen = () => {
             <Select
               style={styles.input}
               placeholder='Default'
-              value={hoursData[selectedSleepIndex.row]}
+              value={hoursData[selectedSleepIndex.row || 0]}
               selectedIndex={selectedSleepIndex}
               onSelect={index => {
                 setSelectedSleepIndex(index);
@@ -223,7 +223,7 @@ const AIDreamGen = () => {
               placeholder='On a scale of 1-10...'
               value={quality}
               onSelect={index => {
-                setQuality(index.row + 1);
+                setQuality(index.row);
               }}
             >
               {new Array(10).fill(0).map((_, index) => (
