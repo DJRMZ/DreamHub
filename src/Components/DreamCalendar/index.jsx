@@ -183,10 +183,13 @@ const DreamCalendar = () => {
             <Text>Notes: {item.notes}</Text>
             {/* <Text>Dream Prompt: {item.prompt}</Text>
             <Text>Dream Image: {item.imageLink}</Text> */}
-            <Button
-              title='View Image (BROKEN)'
-              onPress={async () => showImage(item.imageLink, item.prompt)}
-            />
+            {item.imageLink ?
+              <Button
+                title='View Image' // In Progress
+                onPress={async () => showImage(item.imageLink, item.prompt)}
+              /> :
+              null
+            }
             {images[item.imageLink] ? <Image style={{ width: 100, height: 100 }} source={{ uri: images[item.imageLink] }} /> : <Text>no image...</Text>}
           </View>
         )}
