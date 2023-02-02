@@ -209,7 +209,7 @@ const AIDreamGen = () => {
             color={'#d7eefa'}
             size={70}
           />
-          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>CREATE NEW DREAM INSTANCE</Button>
+          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>Log Your Dream!</Button>
         </View>
       </View>
       <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -227,7 +227,7 @@ const AIDreamGen = () => {
                 size={40}
               />
             </View>
-            <Text style={styles.text} category='h6'>How did you sleep?</Text>
+            <Text style={styles.text} category='h6'>How did you feel when you went to bed?</Text>
             <Input
               style={styles.input}
               size='medium'
@@ -248,7 +248,7 @@ const AIDreamGen = () => {
                 <SelectItem key={title} title={title} />
               ))}
             </Select>
-            <Text style={styles.text} category='h6'>How did you feel when you woke up?</Text>
+            <Text style={styles.text} category='h6'>Please rate the quality of your sleep?</Text>
             <Input
               style={styles.input}
               size='medium'
