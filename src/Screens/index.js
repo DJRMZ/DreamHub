@@ -1,4 +1,4 @@
-import Home from "./Home";
+import Home from "../Components/Home";
 import DreamLogger from "./DreamLogger";
 import Account from "./Account";
 import SignIn from "./SignIn";
