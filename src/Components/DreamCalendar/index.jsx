@@ -74,13 +74,6 @@ const DreamCalendar = () => {
     })();
   }, []);
 
-  // async function checkCache(link) {
-  //   const fileURL = FileSystem.cacheDirectory + link.split('/').join('__');
-
-  //   await FileSystem.getInfoAsync(fileURL);
-  //   return fileURL;
-  // }
-
   async function loadImage(link) {
     console.log(link);
 
@@ -89,20 +82,16 @@ const DreamCalendar = () => {
       .from('dream-images')
       .download(link);
 
-    // console.log('🚀 ~ file: index.jsx:78 ~ loadImage ~ data', data);
     if (error) console.log('🚀 ~ file: index.jsx:79 ~ loadImage ~ error', error);
 
     const fileURL = FileSystem.cacheDirectory + link.split('/').join('__');
     console.log('🚀 ~ file: index.jsx:86 ~ loadImage ~ fileURL', fileURL);
-
     console.log('trying to set state');
-
-
 
     const reader = new FileReader();
     reader.onload = async () => {
       // console.log('🚀 ~ file: index.jsx:109 ~ loadImage ~ result', reader.result);
-      const base64 = reader.result.split(',').pop();
+      const base64 = reader.result.split(',').pop(); // data:image/png;base64,
 
       await FileSystem.writeAsStringAsync(
         fileURL,
@@ -139,7 +128,7 @@ const DreamCalendar = () => {
 
   const renderEmptyDate = () => {
     return (
-      <View style={styles.emptyDate}>
+      <View>
         <Text>No logs for this day...</Text>
       </View>
     );
@@ -181,19 +170,18 @@ const DreamCalendar = () => {
             <Text>Sleep Quality: {item.sleepQuality}</Text>
             <Text>Length of Sleep: {item.sleepLength} hr</Text>
             <Text>Notes: {item.notes}</Text>
-            {/* <Text>Dream Prompt: {item.prompt}</Text>
-            <Text>Dream Image: {item.imageLink}</Text> */}
             {item.imageLink ?
               <Button
-                title='View Image' // In Progress
+                title='View Your Dream' // In Progress
                 onPress={async () => showImage(item.imageLink, item.prompt)}
               /> :
-              null
+              <Text>You didn't record a dream this night.</Text>
             }
-            {images[item.imageLink] ? <Image style={{ width: 100, height: 100 }} source={{ uri: images[item.imageLink] }} /> : <Text>no image...</Text>}
           </View>
         )}
+
         renderEmptyDate={renderEmptyDate}
+        renderEmptyData={renderEmptyDate}
         rowHasChanged={rowHasChanged}
       />
     </>
