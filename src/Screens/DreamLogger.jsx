@@ -3,19 +3,20 @@ import { LinearGradient } from "expo-linear-gradient";
 import DreamGenerator from "../Components/AIDreamGen";
 
 const DreamLogger = () => {
-
   return (
     <>
       <LinearGradient
+
         colors={['#232f4f','#232f4f']}
+
         style={{
-          position: 'absolute',
+          position: "absolute",
           inset: 0,
-          height: '100%',
-          width: '100%',
+          height: "100%",
+          width: "100%",
         }}
       />
-      <DreamGenerator />
+      <DreamGenerator testID="dream-logger" />
       {/* <ScrollView>
         <SleepNotes
           hadDream={hadDream}
