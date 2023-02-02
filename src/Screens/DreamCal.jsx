@@ -4,7 +4,9 @@ import DreamCalendar from "../Components/DreamCalendar";
 const Calendar = () => (
   <View testID="dream-calendar">
     <>
+
       <Text>Calendar</Text>
+
       <DreamCalendar />
     </>
   </View>

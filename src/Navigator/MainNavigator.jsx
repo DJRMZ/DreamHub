@@ -4,7 +4,9 @@ import { BottomNavigation, BottomNavigationTab } from '@ui-kitten/components';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Keyboard, TouchableWithoutFeedback, StyleSheet, View } from "react-native";
 
-import { Home, Account, DreamLogger } from "../Screens";
+import { Account, DreamLogger } from "../Screens";
+import Home from "../Components/Home";
+
 import DreamCalendar from "../Components/DreamCalendar";
 
 const { Navigator, Screen } = createBottomTabNavigator();
