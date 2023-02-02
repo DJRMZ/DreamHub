@@ -63,8 +63,9 @@ const Home = () => {
             {
               id: 2,
               header: "DreamStudio",
-              title:
-                "Quick start: Click START HERE! on the DreamStudio tab. Answer our prompts to log and create an image of you dream. Enjoy!",
+              title: "Quick start: Click START HERE! on the DreamStudio tab.",
+              text1:
+                "Answer our prompts to log and create an image of you dream. Enjoy!",
             },
             {
               id: 3,
