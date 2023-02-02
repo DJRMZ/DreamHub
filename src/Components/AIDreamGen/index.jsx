@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { View, Image, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Configuration, OpenAIApi } from "openai";
-import { Button, Card, Modal, Text, Input } from '@ui-kitten/components';
-import { IndexPath, Select, SelectItem, Radio, Layout, Divider } from '@ui-kitten/components';
+import { Button, Card, Modal, Text, Input, IndexPath, Select, SelectItem, Radio, Layout, Divider } from '@ui-kitten/components';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "@clerk/clerk-expo";
 import * as FileSystem from 'expo-file-system';
@@ -71,7 +70,7 @@ const AIDreamGen = () => {
 
     // saveImage();
   }, []);
-  
+
   const tempName = () => Math.trunc(Math.random() * 1000000).toString();
 
   async function saveImage(link = 'https://picsum.photos/500.jpg', format = 'jpg', name = tempName()) {
@@ -156,7 +155,7 @@ const AIDreamGen = () => {
   const handleSubmitDream = async () => {
     setLoading(true);
     let dreamObject = {
-      prompt: `From the perspective of a dreamer, ${dreamContent}. My dream made me feel ${dreamFeelings}.`, // dream from state
+      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings + '.'}`, // dream from state
       n: 1, // number of images to generate
       size: "1024x1024",
     };
@@ -168,7 +167,7 @@ const AIDreamGen = () => {
       let image_url = response.data.data[0].url;
       setDreamImg(image_url);
       setDream({
-        prompt: `${dreamContent}. My dream made me feel ${dreamFeelings}`,
+        prompt: `${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings + '.'}`,
         imageUrl: image_url
       });
     } catch (error) {
@@ -397,8 +396,8 @@ const AIDreamGen = () => {
                 </View>
                 <View className='mx-auto w-5/6'>
                   <Card style={styles.dreamPrompt} >
-                    <Text style={{fontSize: 16, fontWeight: "bold"}}>Your Dream:</Text>
-                    <Text style={{fontStyle: "italic", marginVertical: 4}} category='s1'>"{dreamContent}"</Text>
+                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>Your Dream:</Text>
+                    <Text style={{ fontStyle: "italic", marginVertical: 4 }} category='s1'>"{dreamContent}"</Text>
                     {/* <Text style={styles.input} category='s1'>{dreamFeelings}</Text> */}
                   </Card>
                 </View>
