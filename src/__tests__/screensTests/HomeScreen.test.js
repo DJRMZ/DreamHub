@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import HomeScreen from "./HomeScreen";
+import HomeScreen from "../../Screens/Home";
 
 describe("HomeScreen", () => {
   it("renders the welcome message", () => {
@@ -17,18 +17,26 @@ describe("HomeScreen", () => {
   });
 
   it('navigates to the DreamGen component when the "Create an Image" button is pressed', () => {
-    // To-do: write a test to check if the component is rendered and navigated to.
+    const { getByText, queryByText } = render(<HomeScreen />);
+    fireEvent.press(getByText("Create an Image"));
+    expect(queryByText("DreamGen")).toBeTruthy();
   });
 
   it('navigates to the Notes component when the "Journal/Notes" button is pressed', () => {
-    // To-do: write a test to check if the component is rendered and navigated to.
+    const { getByText, queryByText } = render(<HomeScreen />);
+    fireEvent.press(getByText("Journal/Notes"));
+    expect(queryByText("Notes")).toBeTruthy();
   });
 
   it('navigates to the Camera component when the "Take a picture" button is pressed', () => {
-    // To-do: write a test to check if the component is rendered and navigated to.
+    const { getByText, queryByText } = render(<HomeScreen />);
+    fireEvent.press(getByText("Take a picture"));
+    expect(queryByText("Camera")).toBeTruthy();
   });
 
   it('navigates to the DreamCal component when the "Calendar" button is pressed', () => {
-    // To-do: write a test to check if the component is rendered and navigated to.
+    const { getByText, queryByText } = render(<HomeScreen />);
+    fireEvent.press(getByText("Calendar"));
+    expect(queryByText("DreamCal")).toBeTruthy();
   });
 });

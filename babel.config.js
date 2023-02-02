@@ -13,6 +13,7 @@ module.exports = function (api) {
         },
       ],
       "nativewind/babel",
+      "@babel/plugin-syntax-jsx",
     ],
   };
 };

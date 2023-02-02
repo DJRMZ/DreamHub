@@ -108,7 +108,7 @@ const Gallery = () => {
         renderItem={({ item }) => {
           return (
             <View style={styles.imageView}>
-              <Image source={{ uri: item.image }} />
+              <Image source={{ uri: item.image }} testID={`image-${i}`} />
             </View>
           );
         }}

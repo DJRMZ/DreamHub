@@ -8,15 +8,15 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "test": "jest"
+    "test": "jest "
   },
-  "jest": {
-    "preset": "jest-expo",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "!**/coverage/**"
-    ]
-  },
+"jest": {
+  "preset": "jest-expo",
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "!**/coverage/**"
+  ]
+},
   "dependencies": {
     "@clerk/clerk-expo": "^0.11.6",
     "@eva-design/eva": "^2.1.1",
