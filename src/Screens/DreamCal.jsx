@@ -5,7 +5,7 @@ const Calendar = () => (
   <View>
     <>
     <Text>Calendar</Text>
-    < DreamCalendar />
+      <DreamCalendar />
     </>
   </View>
 );

@@ -6,9 +6,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useAuth } from "@clerk/clerk-expo";
 import * as FileSystem from 'expo-file-system';
 import { decode } from 'base64-arraybuffer';
-import ViewShot from "react-native-view-shot";
 import { Grid } from 'react-native-animated-spinkit'
-
 
 import { OPENAI_API_KEY } from "@env";
 import supabaseCtor from "../../lib/supabaseClient";
@@ -21,6 +19,10 @@ function dateToFileName(date) {
   console.log('🚀 ~ file: index.jsx:19 ~ dateToFileName ~ date', date);
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
+
+const DreamIcon = (props) => (
+  <MaterialCommunityIcons name="cloud-circle" size={60} color='#d7eefa' />
+);
 
 const AIDreamGen = () => {
   const [token, setToken] = useState('');
@@ -204,12 +206,10 @@ const AIDreamGen = () => {
     <>
       <View style={styles.container}>
         <View style={styles.newDreamLayout}>
-          <MaterialCommunityIcons
-            name="cloud-circle"
-            color={'#d7eefa'}
-            size={70}
-          />
-          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>Log Your Dream!</Button>
+          <View style={styles.iconRound}>
+            <DreamIcon />
+          </View>
+          <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>START HERE!</Button>
         </View>
       </View>
       <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -449,7 +449,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     color: '#d7eefa',
-    backgroundColor: '#232f4f',
+    backgroundColor: '#333c59',
     borderRadius: 10,
     paddingVertical: 20,
     paddingTop: 35,
@@ -461,6 +461,21 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
+    elevation: 5,
+  },
+  iconRound: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#181d37',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
     elevation: 5,
   },
   card: {
@@ -523,7 +538,7 @@ const styles = StyleSheet.create({
   },
   buttonCreate: {
     marginVertical: 18,
-    width: '75%',
+    width: 175,
     backgroundColor: '#181d37',
   },
   loadingLayout: {
