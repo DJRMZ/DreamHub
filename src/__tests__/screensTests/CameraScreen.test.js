@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, act } from "@testing-library/react-native";
-import CameraScreen from "./CameraScreen";
+import CameraScreen from "../../Screens/Camera";
 import * as MediaLibrary from "expo-media-library";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";

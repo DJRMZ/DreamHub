@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, act } from "@testing-library/react-native";
-import SignInScreen from "./SignInScreen";
+import SignInScreen from "../../Screens/SignIn";
 
 jest.mock("@clerk/clerk-expo", () => ({
   useSignIn: jest.fn(() => ({

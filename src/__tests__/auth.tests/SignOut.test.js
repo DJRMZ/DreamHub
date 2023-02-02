@@ -1,6 +1,5 @@
 import React from "react";
 import { render, fireEvent } from "react-native-testing-library";
-// import SignOutButton from "./SignOutButton";
 import SignOutButton from "../../Auth/SignOut";
 import { useClerk } from "@clerk/clerk-expo/dist";
 

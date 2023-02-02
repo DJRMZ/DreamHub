@@ -1,7 +1,8 @@
 import React from "react";
 import { render, fireEvent } from "react-testing-library";
-import AccountScreen from "./AccountScreen";
+import AccountScreen from "../../Screens/Account";
 import SignOutButton from "../Auth/SignOut";
+import SignOutButton from "../../Auth/SignOut";
 
 describe("AccountScreen", () => {
   it("renders the correct content", () => {

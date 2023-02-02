@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react-native";
 import { useSignIn, useSignUp } from "@clerk/clerk-expo";
-// import * as AuthSession from 'expo-auth-session';
+import * as AuthSession from "expo-auth-session";
 
 jest.mock("expo-auth-session", () => ({
   makeRedirectUri: jest.fn().mockReturnValue("redirect_uri"),
