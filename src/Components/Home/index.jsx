@@ -15,22 +15,33 @@ import {
   Text,
   Divider,
   ViewPager,
-} from '@ui-kitten/components';
+} from "@ui-kitten/components";
 
-import { View, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Dimensions,
+  FlatList,
+  Image,
+} from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import space from '../../assets/spaceial.jpg';
+import space from "../../assets/spaceial.jpg";
 
 const DreamIcon = (props) => (
-  <MaterialCommunityIcons name="cloud-circle" size={50} color='#d7eefa' />
+  <MaterialCommunityIcons name="cloud-circle" size={50} color="#d7eefa" />
 );
 
 const CalendarIcon = (props) => (
-  <MaterialCommunityIcons name="calendar-multiselect" size={50} color='#d7eefa' />
+  <MaterialCommunityIcons
+    name="calendar-multiselect"
+    size={50}
+    color="#d7eefa"
+  />
 );
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 const Home = () => {
   return (
@@ -42,11 +53,26 @@ const Home = () => {
         </View>
         <FlatList
           data={[
-            { id: 1, header: `Where Your Dreams \nAre Reimagined`, title: 'How to use DreamHub', text1: 'DreamStudio', text2: 'SleepCalendar' },
-            { id: 2, header: 'DreamStudio', title: 'How To Use DreamHub with DreamStudio' },
-            { id: 3, header: 'SleepCalendar', title: 'How To Use DreamHub with SleepCalendar' },
+            {
+              id: 1,
+              header: `Where Your Dreams \nAre Reimagined`,
+              title: "How to use DreamHub",
+              text1: "DreamStudio",
+              text2: "SleepCalendar",
+            },
+            {
+              id: 2,
+              header: "DreamStudio",
+              title:
+                "Quick start: Click START HERE! on the DreamStudio tab. Answer our prompts to log and create an image of you dream. Enjoy!",
+            },
+            {
+              id: 3,
+              header: "SleepCalendar",
+              title: "How To Use DreamHub with SleepCalendar",
+            },
           ]}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={(item) => item.id.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
           style={styles.scrollView}
@@ -55,9 +81,9 @@ const Home = () => {
             <Card style={styles.viewPager}>
               <View style={styles.cardLayout}>
                 <View style={styles.iconLayout}>
-                  {(item.id === 1) && <DreamIcon />}
-                  {(item.id === 2) && <DreamIcon />}
-                  {(item.id === 3) && <CalendarIcon/>}
+                  {item.id === 1 && <DreamIcon />}
+                  {item.id === 2 && <DreamIcon />}
+                  {item.id === 3 && <CalendarIcon />}
                 </View>
                 <Text style={styles.cardTextHeader}>{item.header}</Text>
                 <Text style={styles.cardText}>{item.title}</Text>
@@ -74,68 +100,67 @@ const Home = () => {
 
 export default Home;
 
-
 const styles = StyleSheet.create({
   layout: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '100%',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
     // paddingTop: 20,
-    backgroundColor: '#232f4f',
+    backgroundColor: "#232f4f",
   },
   cardLayout: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   hero: {
-    width: '100%',
+    width: "100%",
     height: 120,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     // maxWidth: 400,
     // paddingHorizontal: 14,
     // paddingBottom: 16,
     // padding: 10,
-    backgroundColor: '#333c59',
+    backgroundColor: "#333c59",
     // borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 1, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 10,
-    alignItems: 'center',
-    borderBottomColor: '#181d37',
+    alignItems: "center",
+    borderBottomColor: "#181d37",
     borderBottomWidth: 1,
   },
   heroText: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontWeight: "bold",
+    color: "#fff",
   },
   heroImage: {
-    width: '100%',
+    width: "100%",
     height: 120,
     maxHeight: 120,
-    resizeMode: 'cover',
+    resizeMode: "cover",
     // borderRadius: 10,
   },
   iconLayout: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#181d37',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#181d37",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 8,
     marginTop: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -146,16 +171,16 @@ const styles = StyleSheet.create({
     height: "100%",
     marginHorizontal: width * 0.02,
   },
-  viewPager: {  
+  viewPager: {
     width: width * 0.89,
     maxWidth: width * 0.89,
     height: height * 0.5,
     maxHeight: height * 0.5,
     marginTop: 30,
-    backgroundColor: '#333c59',
+    backgroundColor: "#333c59",
     borderRadius: 10,
     marginHorizontal: width * 0.01,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -163,18 +188,16 @@ const styles = StyleSheet.create({
     // marginRight: 16,
     // marginLeft: 16,
     // paddingRight: 16,
-    
   },
   cardTextHeader: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     padding: 10,
-    textAlign: 'center',
-
+    textAlign: "center",
   },
   cardText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 20,
     padding: 10,
   },
@@ -282,7 +305,3 @@ const styles = StyleSheet.create({
 //     marginBottom: 16,
 //   },
 // });
-
-
-
-
