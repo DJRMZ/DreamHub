@@ -1,18 +1,23 @@
-import { View, Image } from "react-native";
 import SignOutButton from "../Auth/SignOut";
-import { ScrollView } from "react-native-gesture-handler";
-import AIDreamGen from "../Components/AIDreamGen";
-import DreamCalendar from "../Components/DreamCalendar";
-import { Button, Card, Modal, Text } from "@ui-kitten/components";
-import { StyleSheet } from "react-native";
-import * as React from "react";
-import { Dimensions } from "react-native";
-// import Carousel from "react-native-reanimated-carousel";
+import {
+  Card,
+  Layout,
+  Text,
+  Divider,
+} from '@ui-kitten/components';
 
-// import exampleImage from "../../assets/example.png";
+import { View, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, Image } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import space from '../../assets/spaceial.jpg';
+
+const DreamIcon = (props) => (
+  <MaterialCommunityIcons name="cloud-circle" size={50} color='#d7eefa' />
+);
+
+const width = Dimensions.get("window").width;
+const height = Dimensions.get("window").height;
 
 const AccountScreen = () => {
-  const width = Dimensions.get("window").width;
 
   return (
     <View style={styles.backdrop}>
@@ -68,28 +73,6 @@ const AccountScreen = () => {
           </Card>
 
           <View style={{ flex: 1 }}>
-            {/* <Carousel
-            loop
-            width={width}
-            height={width / 2}
-            autoPlay={true}
-            data={[...new Array(6).keys()]}
-            scrollAnimationDuration={1000}
-            onSnapToItem={(index) => console.log("current index:", index)}
-            renderItem={({ index }) => (
-              <View
-              style={{
-                flex: 1,
-                borderWidth: 1,
-                justifyContent: "center",
-              }}
-              >
-              <Text style={{ textAlign: "center", fontSize: 30 }}>
-              {index}
-              </Text>
-              </View>
-              )}
-            /> */}
           </View>
         </View>
       </ScrollView>

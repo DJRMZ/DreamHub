@@ -1,20 +1,8 @@
-import { ScrollView } from "react-native-gesture-handler";
-
-// import AIDreamGen from "../AIDreamGen";
-// import DreamCalendar from "../DreamCalendar";
-// import Camera from "../../Screens/Camera";
-// import Gallery from "../Gallery";
-// import { Link } from "@react-navigation/native";
-// import Carousel from "react-native-reanimated-carousel";
-// import exampleImage from "../../assets/example.png";
-
 import {
-  Button,
   Card,
   Layout,
   Text,
   Divider,
-  ViewPager,
 } from '@ui-kitten/components';
 
 import { View, StyleSheet, TouchableWithoutFeedback, Dimensions, FlatList, Image } from "react-native";
