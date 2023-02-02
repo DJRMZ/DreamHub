@@ -26,6 +26,15 @@ const DreamIcon = (props) => (
   <MaterialCommunityIcons name="cloud-circle" size={60} color='#d7eefa' />
 );
 
+const hoursData = [
+  'Less than 4 hours',
+  '4 - 6 hours',
+  '6 - 8 hours',
+  '8 - 10 hours',
+  '10 - 14 hours',
+  'More than 14 hours',
+];
+
 const AIDreamGen = () => {
   const [token, setToken] = useState('');
 
@@ -102,26 +111,11 @@ const AIDreamGen = () => {
     return data.path;
   };
 
-  const hoursData = [
-    'Less than 4 hours',
-    '4 - 6 hours',
-    '6 - 8 hours',
-    '8 - 10 hours',
-    '10 - 14 hours',
-    'More than 14 hours',
-  ];
-
-  const displayValue = hoursData[selectedSleepIndex.row];
-
   const openai = new OpenAIApi(configuration);
   // console.log('OPENAI', openai);
 
   const handleMoodChange = useCallback(debounce((value) => {
     setMood(value);
-  }, 300), []);
-
-  const handleQualityChange = useCallback(debounce((value) => {
-    setQuality(value);
   }, 300), []);
 
   const handleContentChange = useCallback(debounce((value) => {
@@ -174,7 +168,6 @@ const AIDreamGen = () => {
       .select();
     console.log('DATA', data);
     console.log('ERROR', error);
-
   }
 
   return (
@@ -207,16 +200,17 @@ const AIDreamGen = () => {
               style={styles.input}
               size='medium'
               placeholder='stressed, relaxed...?'
+              onChangeText={handleMoodChange}
             />
             <Text style={styles.text} category='h6'>How long did you sleep?</Text>
             <Select
               style={styles.input}
               placeholder='Default'
-              value={displayValue}
+              value={hoursData[selectedSleepIndex.row]}
               selectedIndex={selectedSleepIndex}
               onSelect={index => {
                 setSelectedSleepIndex(index);
-                setHours(hoursData[index]);
+                setHours(hoursData[index.row]);
               }}
             >
               {hoursData.map((title) => (
@@ -224,11 +218,6 @@ const AIDreamGen = () => {
               ))}
             </Select>
             <Text style={styles.text} category='h6'>Please rate the quality of your sleep?</Text>
-            <Input
-              style={styles.input}
-              size='medium'
-              placeholder='on a scale of 1-10...'
-            />
             <Select
               style={styles.input}
               placeholder='On a scale of 1-10...'
