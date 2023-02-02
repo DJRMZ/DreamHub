@@ -69,9 +69,34 @@ const Home = () => {
             },
             {
               id: 6,
-              title: "Card 3: Stress Management",
+              title: "Card 6: Quality Mattress, pillow(s) and bedding",
               content:
-                "Creating and managing a daily routine can help with sleep, stress and a multitude of other things. Journaling, taking notes, working on resolving issues and concerns before bedtime will improve the chances and quality of good sleep.",
+                "Having a good qaulity mattress that fits your needs can make or break a good night's rest. Having good quality bedding and pillows can complete the comfort and ensure better rest and sleep. Spend some time researching and finding which products will suit your needs, i.e. back sleeper vs. side sleeper and firm vs. soft mattress/pillows. ",
+            },
+            {
+              id: 7,
+              title: "Card 7: Reserve the bed for sleeping",
+              content:
+                "Although it might be comfortable and tempting to use this area to hangout when not sleeping, this can affect how the environment and your routinge is affected. It is best to keep work at a work station, reserve the bed for sleeping and leisure separate from those areas. This will assist in building good routines and helping your body adapt.",
+            },
+            {
+              id: 8,
+              title: "Card 8: Journal or keep a daily sleep diary",
+              content:
+                "Keeping track of how you slept, how long you slept, etc. can help you identify areas for improvement or better diagnose things that could be hindering your sleep. This can be especially handy when changing up the routine or adding something new.",
+            },
+            {
+              id: 9,
+              title: "Card 9: Check in with your Doctor",
+              content:
+                "It can be helpful to get with your primary doctor and get their input on how to get help with sleep issues and/or improving you sleep habits. Sleeping to litte or too much can be harmful and could piont to other underlying issues or areas of concern.",
+            },
+            {
+              id: 10,
+              title:
+                "Card 10: Increase your exposure to bright light during the day",
+              content:
+                "Our body's circadian rhythm is our natural time-keeping clock. Getting more exposure to light during the day and less at night can help your body keep better time and be ready to rest at night. Lowering exposure to blue light from digital devices, monitors and tv screens especially later in the day can greatly improve quality of sleep as well.",
             },
           ]}
           keyExtractor={(item) => item.id.toString()}
