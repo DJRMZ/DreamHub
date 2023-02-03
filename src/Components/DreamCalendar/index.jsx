@@ -7,7 +7,6 @@ import { Card, Modal, Layout, Icon, Button as KittenButton } from '@ui-kitten/co
 import { Grid } from 'react-native-animated-spinkit'
 import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
 import moment from "moment";
-import { useFocusEffect, useIsFocused } = "@react-navigation/native";
 
 import supabaseCtor from "../../lib/supabaseClient";
 

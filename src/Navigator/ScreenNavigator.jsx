@@ -19,11 +19,12 @@ const StackNav = () => {
           color: '#d7eefa',
           fontSize: 22,
           fontWeight: 'bold',
+          textAlign: 'center',
         },
       }}
     >
       {signedIn ? (
-        <Stack.Screen name="App" component={MainNavigator} options={{ title: 'Welcome to DreamHub' }} headerTitleStyle={{ alignSelf: 'center', justifyContent: 'center' }}/>
+        <Stack.Screen name="App" component={MainNavigator} options={{ title: 'Welcome to DreamHub' }} headerTitleStyle={{ alignSelf: 'center', justifyContent: 'center' }} />
       ) : (
         <>
           <Stack.Screen name="Welcome" component={SignIn} />
