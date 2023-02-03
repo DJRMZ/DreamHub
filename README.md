@@ -8,7 +8,7 @@ Megan Faith Seibert-Hughes
 
 ## Features
 
-## Dream / Sleep Mobile App with AI intergration
+### Dream / Sleep Mobile App with AI intergration
 
 ---
 
@@ -23,7 +23,7 @@ Megan Faith Seibert-Hughes
 - API integration (openAI)
 - Clean UI/UX
 - Functional and fully designed front-end components
--
+
 
 3. Stretch goals
 
@@ -33,7 +33,6 @@ Megan Faith Seibert-Hughes
   - Sleep tips
   - Sleep journals to saved to account
   - Stored dream entries along with calander tracking
-  -
 
 4. What is the minimum required for you to present on your demo day?
 

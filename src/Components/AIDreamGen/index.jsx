@@ -120,28 +120,6 @@ const AIDreamGen = () => {
     'More than 14 hours',
   ];
 
-  // const feelingsData = [
-  //   'happy',
-  //   'scared',
-  //   'angry',
-  //   'sad',
-  //   'confused',
-  //   'excited',
-  //   'bored',
-  //   'tired',
-  //   'relaxed',
-  //   'anxious',
-  //   'frustrated',
-  //   'lonely',
-  //   'guilty',
-  //   'ashamed',
-  //   'disgusted',
-  //   'proud',
-  //   'hopeful',
-  //   'jealous',
-  //   'surprised',
-  // ];
-
   const displayValue = hoursData[selectedSleepIndex.row];
   // const displayFeelingsValue = feelingsData[selectedFeelingsIndex.row];
 
