@@ -9,7 +9,6 @@ import { decode } from 'base64-arraybuffer';
 import { Grid } from 'react-native-animated-spinkit'
 import debounce from "lodash/debounce";
 
-
 import { OPENAI_API_KEY } from "@env";
 import supabaseCtor from "../../lib/supabaseClient";
 
@@ -175,7 +174,7 @@ const AIDreamGen = () => {
             <DreamIcon />
           </View>
           <Button style={styles.buttonCreate} onPress={() => setShowModal(true)}>
-            {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Create New Dream</Text>}
+            {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>How'd You Sleep?</Text>}
           </Button>
         </View>
       </View>

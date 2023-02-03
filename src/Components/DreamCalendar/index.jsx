@@ -6,7 +6,8 @@ import { Agenda } from "react-native-calendars";
 import { Card, Modal, Layout, Icon, Button as KittenButton } from '@ui-kitten/components';
 import { Grid } from 'react-native-animated-spinkit'
 import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
-const { useFocusEffect, useIsFocused } = require("@react-navigation/native");
+import moment from "moment";
+import { useFocusEffect, useIsFocused } = "@react-navigation/native";
 
 import supabaseCtor from "../../lib/supabaseClient";
 
@@ -220,7 +221,9 @@ const DreamCalendar = ({ navigation }) => {
     return row1.name !== row2.name;
   };
 
-  let today = new Date().toISOString().substring(0, 10);
+  // let today = new Date().toISOString().substring(0, 10);
+  let time = moment();
+  let today = time.format("YYYY-MM-DD");
 
 
   //////////////////////
@@ -259,7 +262,7 @@ const DreamCalendar = ({ navigation }) => {
         renderItem={(item) => (
           <View style={[styles.item, { height: item.height }]}>
             <View className='flex flex-row justify-between items-center'>
-              <Text className='text-xl text-white font-bold'>Stats</Text>
+              <Text className='text-xl text-white font-bold'>Dream Stats</Text>
               <KittenButton
                 appearance="ghost"
                 accessoryLeft={TrashIcon}

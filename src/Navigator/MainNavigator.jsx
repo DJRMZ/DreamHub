@@ -34,8 +34,10 @@ export default function MainNavigator() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Navigator
         tabBar={props => <BottomTabBar {...props} />}
+        headerTitleStyle={styles.screen}
+        headerBackground={styles.screen}
         screenOptions={{
-          // headerShown: false,
+          headerShown: false,
           headerBackground: () => (
             <View style={styles.screen} />
           ),
