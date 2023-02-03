@@ -39,7 +39,7 @@ const SaveIcon = (props) => (
 );
 
 const ShareIcon = (props) => (
-  <MaterialCommunityIcons name="share" size={26} color="#d7eefa" />
+  <MaterialCommunityIcons name="share-variant" size={25} color="#d7eefa" />
 );
 
 const TrashIcon = (props) => (
@@ -348,7 +348,7 @@ const DreamCalendar = ({ navigation }) => {
                 style={{ backgroundColor: '#181d37', marginTop: 18, marginBottom: 6 }}
                 onPress={async () => showImage(item.imageLink, item.prompt)}
               >
-                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: '#d7eefa' }}>Recall Your Dream</Text>}
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: '#d7eefa' }}>ReCall Your Dream</Text>}
               </KittenButton>
               :
               <Text style={{ color: '#d7eefa', fontSize: 18, fontWeight: "italic", textAlign: 'center' }}>You didn't record a dream this night.</Text>

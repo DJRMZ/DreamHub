@@ -31,7 +31,7 @@ const height = Dimensions.get("window").height;
 const TipsScreen = ({ visible, setVisible }) => {
   return (
     <>
-      <Modal style={styles.layout} visible={visible} >
+      <Modal style={styles.layout} visible={visible} backdropStyle={styles.backdrop}>
         <View style={styles.iconLayout}>
           <DreamIcon />
         </View>
@@ -135,6 +135,9 @@ const styles = StyleSheet.create({
     height: "72.5%",
     // paddingTop: 20,
   },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
   hero: {
     width: "90%",
     maxWidth: 400,
@@ -179,7 +182,7 @@ const styles = StyleSheet.create({
   viewPager: {
     width: width * 0.89,
     maxWidth: width * 0.89,
-    height: height * 0.43,
+    height: height * 0.45,
     marginTop: 26,
     backgroundColor: '#333c59',
     borderRadius: 10,
@@ -195,7 +198,8 @@ const styles = StyleSheet.create({
   },
   cardTextHeader: {
     color: "#d7eefa",
-    fontSize: 18,
+    fontSize: 20,
+    // marginTop: 1,
     fontWeight: "bold",
     paddingBottom: 12,
   },
@@ -209,14 +213,14 @@ const styles = StyleSheet.create({
   cardText: {
     color: "#fff",
     fontSize: 16,
-    paddingVertical: 8,
-    lineHeight: 21,
+    paddingVertical: 7,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    lineHeight: 23,
+
   },
   button: {
-    // marginVertical: 16,
     width: '40%',
     backgroundColor: '#181d37',
   },

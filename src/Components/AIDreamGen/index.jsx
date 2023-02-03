@@ -334,7 +334,7 @@ const AIDreamGen = () => {
               placeholder="happy, scared, confused, angry...?"
               onChangeText={(feelings) => setDreamFeelings(feelings)}
             />
-            <Text style={styles.text} category='h6'>Reimagine dream in the style of</Text>
+            <Text style={styles.text} category='h6'>ReImagine dream in the style of</Text>
             <Select
               style={styles.input}
               placeholder='Default'

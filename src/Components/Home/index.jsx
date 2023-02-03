@@ -45,7 +45,7 @@ const Home = () => {
       <Layout style={styles.layout}>
         <View style={styles.hero}>
           <View style={styles.heroLayout} />
-          <Text style={styles.heroText}>Where Your Dreams Are Reimagined</Text>
+          <Text style={styles.heroText}>Where Your Dreams Are ReImagined</Text>
           <Image source={space} style={styles.heroImage} />
         </View>
         <FlatList
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
   },
   heroText: {
     fontSize: 24,
-    paddingHorizontal: 80,
+    paddingHorizontal: 85,
     position: 'absolute',
     top: '26%',
     opacity: 0.85,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontStyle: 'italic',
     fontFamily: 'sans-serif',
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
