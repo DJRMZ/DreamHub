@@ -9,7 +9,6 @@ import {
 import {
   View,
   StyleSheet,
-  TouchableWithoutFeedback,
   Dimensions,
   FlatList,
   Image,
@@ -61,7 +60,7 @@ const Home = () => {
             {
               id: 2,
               header: "DreamStudio",
-              text1: "Access the DreamStudio tab and select \"Create New Dream\" to begin the Dream Prompts.",
+              text1: "Access the DreamStudio tab and select \"How'd You Sleep?\" to begin the Dream Prompts.",
               text2: "Answer each question to create your dream and save it to your SleepCalendar!",
             },
             {

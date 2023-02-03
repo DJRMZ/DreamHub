@@ -17,16 +17,6 @@ const DreamLogger = () => {
         }}
       />
       <DreamGenerator testID="dream-logger" />
-      {/* <ScrollView>
-        <SleepNotes
-          hadDream={hadDream}
-          setHadDream={setHadDream}
-          notes={notes}
-          setNotes={setNotes}
-        />
-        <DreamGenerator />
-        <Button title='submit' onPress={handleSubmit}>Save Log Entry</Button>
-      </ScrollView> */}
     </>
   );
 };

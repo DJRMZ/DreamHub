@@ -5,13 +5,11 @@ import {
   Text,
   Divider,
   Modal,
-  ViewPager,
 } from "@ui-kitten/components";
 
 import {
   View,
   StyleSheet,
-  TouchableWithoutFeedback,
   Dimensions,
   FlatList,
 } from "react-native";

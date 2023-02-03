@@ -9,7 +9,7 @@ import {
   Button,
 } from '@ui-kitten/components';
 
-import { View, StyleSheet, TouchableWithoutFeedback, Dimensions, Image } from "react-native";
+import { View, StyleSheet, Dimensions, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import space from '../assets/spaceial2.jpg';
 
