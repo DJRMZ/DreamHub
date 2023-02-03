@@ -286,14 +286,16 @@ const DreamCalendar = () => {
           agendaTodayColor: '#232f4f',
           backgroundColor: '#fff',
           calendarBackground: '#232f4f',
-          selectedDayBackgroundColor: '#bed9f8',
+          selectedDayBackgroundColor: '#D7EEFA',
           selectedDayTextColor: '#232f4f',
           todayTextColor: '#232f4f',
           selectedDotColor: '#232f4f',
           dotColor: '#232f4f',
-          todayBackgroundColor: '#aac3dd',
+          todayBackgroundColor: '#a3b9d8',
           dayTextColor: '#fff',
           textDisabledColor: '#777',
+          monthTextColor: '#D7EEFA',
+          yearTextColor: '#D7EEFA',
         }}
       />
     </>
