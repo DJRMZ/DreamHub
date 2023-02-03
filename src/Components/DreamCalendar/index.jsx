@@ -273,7 +273,7 @@ const DreamCalendar = ({ navigation }) => {
             </View> */}
             <Text className='text-lg text-blue-50'>Length of Sleep: {item.sleepLength}</Text>
             <Text className='text-lg text-blue-50'>Sleep Quality: {item.sleepQuality || 'not rated'}</Text>
-            <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || 'no notes'}</Text>
+            <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || '---'}</Text>
             {item.imageLink ?
               <Button
                 title='View Your Dream' // In Progress
@@ -297,7 +297,8 @@ const DreamCalendar = ({ navigation }) => {
           selectedDayTextColor: '#232f4f',
           todayTextColor: '#232f4f',
           selectedDotColor: '#232f4f',
-          dotColor: '#232f4f',
+          todayDotColor: '#232f4f',
+          dotColor: '#D7EEFA',
           todayBackgroundColor: '#a3b9d8',
           dayTextColor: '#fff',
           textDisabledColor: '#777',
