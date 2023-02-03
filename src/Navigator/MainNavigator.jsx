@@ -21,10 +21,10 @@ const BottomTabBar = ({ navigation, state }) => {
     <BottomNavigation
       selectedIndex={state.index}
       onSelect={index => navigation.navigate(state.routeNames[index])}>
-        <BottomNavigationTab style={styles.bottomNavigation} title="Home" icon={HomeIcon} />
-        <BottomNavigationTab style={styles.bottomNavigation} title="DreamStudio" icon={DreamIcon} />
-        <BottomNavigationTab style={styles.bottomNavigation} title="SleepCalendar" icon={CalendarIcon} />
-        <BottomNavigationTab style={styles.bottomNavigation} title="Account" icon={AccountIcon} />
+      <BottomNavigationTab style={styles.bottomNavigation} title="Home" icon={HomeIcon} />
+      <BottomNavigationTab style={styles.bottomNavigation} title="DreamStudio" icon={DreamIcon} />
+      <BottomNavigationTab style={styles.bottomNavigation} title="SleepCalendar" icon={CalendarIcon} />
+      <BottomNavigationTab style={styles.bottomNavigation} title="Account" icon={AccountIcon} />
     </BottomNavigation>
   );
 };
@@ -50,7 +50,6 @@ export default function MainNavigator() {
           headerShadowVisible: true,
           headerTintColor: '#181d37',
           headerTitleAlign: 'center',
-          // headerTransparent: true,
         }}
       >
         <Screen name="Home" component={Home} style={styles.screen} />
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: '#181d37',
   },
-  screen : {
+  screen: {
     backgroundColor: '#d7eefa',
   },
 });
