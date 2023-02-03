@@ -62,13 +62,19 @@ DreamHub allows users to keep track of what goes on in their subconscious minds 
 
 ![SignIn Page](./assets/SignInPage.PNG)
 
+![Sign Out Example](./assets/LogoutScreen.jpeg)
+
 2. Once signed in, users will have access to thier account with their journal entries and images they create. Images and entries will be saved to a database to store and be available to the user.
+
+![Example ](./assets/ExampleFour.PNG)
 
 3. Users are able to save sign in information and stay logged into the application. Users will not see content unless they are signed into the application.
 
 4. Users can use DreamStudio to create AI generated images from user input and dream descriptions. Images can be saved to our database and are shown in the calendar component.
 
 ![Journal](./assets/Journal.PNG)
+
+![Example ](./assets/ExampleFive.PNG)
 
 5. Users can share their images through text and/or other compatible applications.
 
