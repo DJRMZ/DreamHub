@@ -12,9 +12,9 @@ import debounce from "lodash/debounce";
 import { OPENAI_API_KEY } from "@env";
 import supabaseCtor from "../../lib/supabaseClient";
 
-const configuration = new Configuration({
+const openai = new OpenAIApi(new Configuration({
   apiKey: OPENAI_API_KEY,
-});
+}));
 
 function dateToFileName(date) {
   // console.log('🚀 ~ file: index.jsx:19 ~ dateToFileName ~ date', date);
@@ -109,9 +109,6 @@ const AIDreamGen = () => {
     }
     return data.path;
   };
-
-  const openai = new OpenAIApi(configuration);
-  // console.log('OPENAI', openai);
 
   const handleMoodChange = useCallback(debounce((value) => {
     setMood(value);
@@ -248,7 +245,7 @@ const AIDreamGen = () => {
             </Layout>
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
-              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
               </Button>
               <Button
                 style={styles.buttonNext}
@@ -307,7 +304,7 @@ const AIDreamGen = () => {
 
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
-              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Dismiss</Text>}
               </Button>
               <Button
                 style={styles.buttonNext}

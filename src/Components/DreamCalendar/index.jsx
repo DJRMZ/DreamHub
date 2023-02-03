@@ -7,6 +7,7 @@ import { Card, Modal, Layout, Icon, Button as KittenButton } from '@ui-kitten/co
 import { Grid } from 'react-native-animated-spinkit'
 import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
 import moment from "moment";
+import { useFocusEffect, useIsFocused } = "@react-navigation/native";
 
 import supabaseCtor from "../../lib/supabaseClient";
 
@@ -45,7 +46,7 @@ const TrashIcon = (props) => (
 );
 
 
-const DreamCalendar = () => {
+const DreamCalendar = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
 
   const [items, setItems] = useState({});
@@ -61,8 +62,12 @@ const DreamCalendar = () => {
   const { getToken, userId } = useAuth();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   function handleShare() {
     Share.share({
@@ -131,9 +136,10 @@ const DreamCalendar = () => {
 
   async function fetchData() {
     const accessToken = await getToken({ template: 'supabase' });
-    // console.log('🚀 ~ file: index.jsx:59 ~ token', accessToken);
-    setToken(accessToken);
+    console.log('🚀 ~ file: index.jsx:59 ~ token', accessToken);
+    console.log('🚀 ~ file: index.jsx:149 ~ fetchData ~ userId', userId);
 
+    setToken(accessToken);
     const supabaseClient = await supabaseCtor(accessToken);
 
     const { data, error } = await supabaseClient
@@ -142,6 +148,7 @@ const DreamCalendar = () => {
       .eq('user_id', userId);
 
     if (error) console.log('🚀 ~ file: index.jsx:69 ~ fetchData ~ error', error);
+    console.log('🚀 ~ file: index.jsx:69 ~ fetchData ~ data', data);
 
     const items = transformData(data);
     setItems(items);
@@ -269,7 +276,7 @@ const DreamCalendar = () => {
             </View> */}
             <Text className='text-lg text-blue-50'>Length of Sleep: {item.sleepLength}</Text>
             <Text className='text-lg text-blue-50'>Sleep Quality: {item.sleepQuality || 'not rated'}</Text>
-            <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || 'no notes'}</Text>
+            <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || '---'}</Text>
             {item.imageLink ?
               <Button
                 title='View Your Dream' // In Progress
@@ -289,14 +296,17 @@ const DreamCalendar = () => {
           agendaTodayColor: '#232f4f',
           backgroundColor: '#fff',
           calendarBackground: '#232f4f',
-          selectedDayBackgroundColor: '#bed9f8',
+          selectedDayBackgroundColor: '#D7EEFA',
           selectedDayTextColor: '#232f4f',
           todayTextColor: '#232f4f',
           selectedDotColor: '#232f4f',
-          dotColor: '#232f4f',
-          todayBackgroundColor: '#aac3dd',
+          todayDotColor: '#232f4f',
+          dotColor: '#D7EEFA',
+          todayBackgroundColor: '#a3b9d8',
           dayTextColor: '#fff',
           textDisabledColor: '#777',
+          monthTextColor: '#D7EEFA',
+          yearTextColor: '#D7EEFA',
         }}
       />
     </>
