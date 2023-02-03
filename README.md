@@ -32,7 +32,7 @@ Megan Faith Seibert-Hughes
   - Sleep tracking
   - Sleep tips
   - Sleep journals to saved to account
-  - Stored dream entries along with calander tracking
+  - Stored dream entries along with calandar tracking
 
 4. What is the minimum required for you to present on your demo day?
 
