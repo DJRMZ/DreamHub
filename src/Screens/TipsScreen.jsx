@@ -21,15 +21,19 @@ const MoonIcon = (props) => (
   <MaterialCommunityIcons name="weather-night" size={50} color="#d7eefa" />
 );
 
+const DreamIcon = (props) => (
+  <MaterialCommunityIcons name="cloud-circle" size={50} color="#d7eefa" />
+);
+
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const TipsScreen = ({ visible, setVisible }) => {
   return (
     <>
-      <Modal style={styles.layout} visible={visible} >
+      <Modal style={styles.layout} visible={visible} backdropStyle={styles.backdrop}>
         <View style={styles.iconLayout}>
-          <MoonIcon />
+          <DreamIcon />
         </View>
         <FlatList
           data={[
@@ -42,20 +46,20 @@ const TipsScreen = ({ visible, setVisible }) => {
             {
               id: 2,
               title:
-                "Plan accordingly with your routine what and when you eat and drink",
+                "Plan accordingly with your routine what & when you eat & drink",
               content:
                 "Try not to go to bed hungry or to full. Either can make getting to sleep and staying asleep uncomfortable. Drugs such as caffeine, alcohol and nicotine can have a major affect on the ability to fall asleep and stay asleep. Even if you do fall asleep, it could still be considered 'bad' sleep.",
             },
             {
               id: 3,
               title:
-                "Create an environment that promotes rest and relaxation.",
+                "Create an environment that promotes rest & relaxation.",
               content:
                 "Having a bedroom that is dark, quiet and a comfortable temperature can promote calming rest and relaxation.",
             },
             {
               id: 4,
-              title: "Regular exercise and staying active",
+              title: "Regular exercise & staying active",
               content:
                 "Spending time outdoors and being active throughout the day can help with better sleep at night.",
             },
@@ -67,7 +71,7 @@ const TipsScreen = ({ visible, setVisible }) => {
             },
             {
               id: 6,
-              title: "Quality Mattress, pillow(s) and bedding",
+              title: "Quality Mattress, pillow & bedding",
               content:
                 "Having a good quality mattress that fits your needs can make or break a good night's rest. Having good quality bedding and pillows can complete the comfort and ensure better rest and sleep. Spend some time researching and finding which products will suit your needs, i.e. back sleeper vs. side sleeper and firm vs. soft mattress/pillows. ",
             },
@@ -106,7 +110,7 @@ const TipsScreen = ({ visible, setVisible }) => {
             <Card style={styles.viewPager}>
               <Text style={styles.cardTextHeader}>Sleep Tip #{item.id}</Text>
               <Divider />
-                <Text style={styles.cardTextTitle}>{item.title}</Text>
+                <Text style={styles.cardTextTitle}>{item.title.toUpperCase()}</Text>
                 <Divider />
                 <Text style={styles.cardText}>{item.content}</Text>
             </Card>
@@ -130,6 +134,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: "72.5%",
     // paddingTop: 20,
+  },
+  backdrop: {
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
   hero: {
     width: "90%",
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
   viewPager: {
     width: width * 0.89,
     maxWidth: width * 0.89,
-    height: height * 0.43,
+    height: height * 0.45,
     marginTop: 26,
     backgroundColor: '#333c59',
     borderRadius: 10,
@@ -191,7 +198,8 @@ const styles = StyleSheet.create({
   },
   cardTextHeader: {
     color: "#d7eefa",
-    fontSize: 18,
+    fontSize: 20,
+    // marginTop: 1,
     fontWeight: "bold",
     paddingBottom: 12,
   },
@@ -205,14 +213,14 @@ const styles = StyleSheet.create({
   cardText: {
     color: "#fff",
     fontSize: 16,
-    paddingVertical: 8,
-    lineHeight: 21,
+    paddingVertical: 7,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    lineHeight: 23,
+
   },
   button: {
-    // marginVertical: 16,
     width: '40%',
     backgroundColor: '#181d37',
   },

@@ -34,17 +34,25 @@ const hoursData = [
   'More than 14 hours',
 ];
 
-const artStyles = [
-  'None',
-  'Abstract',
-  'Baroque',
-  'Cubism',
-  'Expressionism',
-  'Impressionism',
-  'Minimalism',
-  'Modern',
-  'Pop Art',
-  'Realism',
+const reImagineData = [
+  "Realistic",
+  "Abstract",
+  "Impressionistic",
+  "Minimalistic",
+  "Gothic",
+  "Vintage",
+  "Pop Art",
+  "Graffiti",
+  "Victorian",
+  "Futuristic",
+  "Impressionist",
+  "Expressionist",
+  "Cubist",
+  "Romantic",
+  "Photorealistic",
+  "Surrealistic",
+  "Geometric",
+  "Fantasy",
 ];
 
 const AIDreamGen = () => {
@@ -54,6 +62,7 @@ const AIDreamGen = () => {
   const [writing, setWriting] = useState(false); // async state for writing to the database
 
   const [selectedSleepIndex, setSelectedSleepIndex] = useState(new IndexPath(0));
+  const [selectedReImaginedIndex, setSelectedReImaginedIndex] = useState(new IndexPath(0));
   // const [selectedFeelingsIndex, setSelectedFeelingsIndex] = useState([new IndexPath(0)]);
 
   const [hours, setHours] = useState('');
@@ -63,7 +72,8 @@ const AIDreamGen = () => {
   const [hadDream, setHadDream] = useState(false);
   const [dreamContent, setDreamContent] = useState('');
   const [dreamFeelings, setDreamFeelings] = useState('');
-  const [style, setStyle] = useState('None');
+  const [dreamReImagined, setDreamReImagined] = useState('');
+
   const [dreamImg, setDreamImg] = useState('');
 
   const [showModal, setShowModal] = useState(false);
@@ -71,10 +81,16 @@ const AIDreamGen = () => {
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
 
+  const [isKeyboardVisible, setKeyboardVisibility] = useState(false);
+
   const [dream, setDream] = useState({
     prompt: '',
     imageUrl: '',
   });
+
+  const onPress = () => {
+    Keyboard.dismiss();
+  };
 
   const { getToken, userId } = useAuth();
   // console.log('🚀 ~ file: index.jsx:48 ~ AIDreamGen ~ userId', userId);
@@ -135,7 +151,7 @@ const AIDreamGen = () => {
   const handleSubmitDream = async () => {
     setLoading(true);
     let dreamObject = {
-      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings.toLowerCase}.${style !== 'None' && ' In the style of ' + style.toLowerCase()}`, // dream from state
+      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings}.${dreamReImagined && ' In the style of ' + dreamReImagined}.`, // dream from state
       n: 1, // number of images to generate
       size: "1024x1024",
     };
@@ -204,7 +220,7 @@ const AIDreamGen = () => {
               <MaterialCommunityIcons
                 name="cloud-circle"
                 color={'#d7eefa'}
-                size={40}
+                size={50}
               />
             </View>
             <Text style={styles.text} category='h6'>How did you feel when you went to bed?</Text>
@@ -213,6 +229,7 @@ const AIDreamGen = () => {
               size='medium'
               placeholder='stressed, relaxed...?'
               onChangeText={handleMoodChange}
+              blurOnSubmit={true}
             />
             <Text style={styles.text} category='h6'>How long did you sleep?</Text>
             <Select
@@ -224,6 +241,7 @@ const AIDreamGen = () => {
                 setSelectedSleepIndex(index);
                 setHours(hoursData[index.row]);
               }}
+              onFocus={() => Keyboard.dismiss()}
             >
               {hoursData.map((title) => (
                 <SelectItem key={title} title={title} />
@@ -237,6 +255,7 @@ const AIDreamGen = () => {
               onSelect={index => {
                 setQuality(index.row);
               }}
+              onFocus={() => Keyboard.dismiss()}
             >
               {new Array(10).fill(0).map((_, index) => (
                 <SelectItem key={index} title={index} />
@@ -291,7 +310,7 @@ const AIDreamGen = () => {
               <MaterialCommunityIcons
                 name="cloud-circle"
                 color={'#d7eefa'}
-                size={40}
+                size={50}
               />
             </View>
             <Text style={styles.text} category='h6'>What happened in your dream?</Text>
@@ -301,6 +320,7 @@ const AIDreamGen = () => {
               textStyle={{ minHeight: 64 }}
               placeholder='Please describe your dream here...'
               onChangeText={handleContentChange}
+              
             />
             <Text style={styles.text} category='h6'>How did your dream make you feel?</Text>
             <Input
@@ -309,17 +329,21 @@ const AIDreamGen = () => {
               placeholder="happy, scared, confused, angry...?"
               onChangeText={(feelings) => setDreamFeelings(feelings)}
             />
-            <Text style={styles.text} category='h6'>Would you like to choose a style?</Text>
+
+            <Text style={styles.text} category='h6'>Style your dream?</Text>
             <Select
               style={styles.input}
               placeholder='choose an art style'
-              value={style}
+              value={reImagineData[selectedReImaginedIndex.row || 0]}
+              selectedIndex={selectedReImaginedIndex}
               onSelect={index => {
-                setStyle(artStyles[index.row]);
+                setSelectedReImaginedIndex(index);
+                setDreamReImagined(reImagineData[index.row]);
               }}
+              onFocus={() => Keyboard.dismiss()}
             >
-              {artStyles.map((el, index) => (
-                <SelectItem key={index} title={el} />
+              {reImagineData.map((title) => (
+                <SelectItem key={title} title={title} />
               ))}
             </Select>
 
@@ -349,18 +373,20 @@ const AIDreamGen = () => {
           size="lg"
         >
           <Card style={styles.card} disabled={true}>
-            <View style={styles.iconLayout}>
+            <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: 'center', marginBottom: 10 }}>Your Dream</Text>
+            <Divider style={{ backgroundColor: '#232f4f' }} />
+            {/* <View style={styles.iconLayout}>
               <MaterialCommunityIcons
                 name="cloud-circle"
                 color={'#d7eefa'}
                 size={50}
               />
-            </View>
+            </View> */}
             {loading ? (
               <>
                 <View style={styles.loadingLayout}>
                   <Grid
-                    size={70}
+                    size={68}
                     color='#d7eefa'
                   />
                 </View>
@@ -369,14 +395,13 @@ const AIDreamGen = () => {
               <>
                 <View className='mx-auto mb-4'>
                   <Image
-                    className='h-72 w-72 rounded-lg shadow-lg shadow-black'
+                    className='h-72 w-72 rounded-lg shadow-lg shadow-black mt-4'
                     source={{ uri: dream.imageUrl }}
                   />
                 </View>
-                <View className='mx-auto w-5/6'>
+                <View className='mx-auto'>
                   <Card style={styles.dreamPrompt} >
-                    <Text style={{ fontSize: 16, fontWeight: "bold" }}>Your Dream:</Text>
-                    <Text style={{ fontStyle: "italic", marginVertical: 4 }} category='s1'>"{dreamContent}"</Text>
+                    <Text style={{ fontStyle: "italic" }} category='s1'>"{dreamContent}"</Text>
                     {/* <Text style={styles.input} category='s1'>{dreamFeelings}</Text> */}
                   </Card>
                 </View>
@@ -458,7 +483,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   card: {
-    backgroundColor: '#232f4f',
+    backgroundColor: '#181D37',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -467,10 +492,11 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   dreamPrompt: {
-    flexDirection: 'column',
-    flexWrap: 'wrap',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
+    // flexDirection: 'column',
+    // flexWrap: 'wrap',
+    // justifyContent: 'space-evenly',
+    // alignItems: 'center',
+    width: '95%',
     color: '#d7eefa',
     backgroundColor: '#232f4f',
     borderRadius: 10,
@@ -485,25 +511,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    maxHeight: 200,
+    maxHeight: 150,
     overflow: 'scroll',
+    marginBottom: 4,
   },
   iconLayout: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    marginBottom: 10,
-    marginTop: 2,
+    marginBottom: 20,
+    marginTop: 8,
   },
   modal: {
     width: '90%',
+    top: '13%',
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   input: {
-    marginVertical: 12,
+    marginVertical: 14,
   },
   buttonDismiss: {
     marginVertical: 16,
