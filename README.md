@@ -14,6 +14,14 @@
 
 DreamHub allows users to keep track of what goes on in their subconscious minds while sleeping. The power of AI allows users to generate an AI image of their journal entries or dreams upon rising. The app also provides useful sleep tips and recommendations and keeps track of sleeping patterns and dreams through the year on a calender.
 
+## UMLs
+
+![UML One](./assets//UMLOne.png)
+
+![UML Two](./assets//UMLTwo.png)
+
+![UML Three](./assets//UMLThree.png)
+
 ## Links
 
 ### Project DreamCatcher
@@ -65,6 +73,7 @@ DreamHub allows users to keep track of what goes on in their subconscious minds 
 5. Users can share their images through text and/or other compatible applications.
 
 ![Eaxmple One](./assets/ExampleOne.PNG)
+
 ![Eaxmple Two](./assets/ExampleTwo.PNG)
 
 ## Tests
@@ -122,7 +131,6 @@ TailwindCSS - Utility-first styling library - [Docs](https://tailwindcss.com/doc
   - Sleep tips
   - Sleep journals to saved to account
   - Stored dream entries along with calander tracking
-  -
 
 4. What is the minimum required for you to present on your demo day?
 
