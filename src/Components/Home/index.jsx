@@ -19,6 +19,10 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import space from "../../assets/spaceial.jpg";
 
+const MoonIcon = (props) => (
+  <MaterialCommunityIcons name="weather-night" size={50} color="#d7eefa" />
+);
+
 const DreamIcon = (props) => (
   <MaterialCommunityIcons name="cloud-circle" size={50} color="#d7eefa" />
 );
@@ -47,28 +51,27 @@ const Home = () => {
             {
               id: 1,
               header: `Where Your Dreams \nAre Reimagined`,
-              title: "How to use DreamHub",
+              // title: "How to use DreamHub",
               text1:
                 "DreamStudio gives you the power of AI at your fingertips to create a visual representation of your dream.",
               text2:
-                "SleepCalendar gives you access to saved images and entries",
+                "SleepCalendar gives you access to saved images and entries.",
             },
             {
               id: 2,
               header: "DreamStudio",
-              title: "Quick start:",
-              text1: "Click START HERE! on the DreamStudio tab.",
-              text2:
-                "Answer our prompts to log and create an image of you dream. Enjoy!",
+              // title: "Quick Start Guide",
+              text1: "Access the DreamStudio tab and select \"Create New Dream\" to begin the Dream Prompts.",
+              text2: "Answer each question to create your dream and save it to your SleepCalendar!",
             },
             {
               id: 3,
               header: "SleepCalendar",
-              title: "How To Use DreamHub with SleepCalendar",
+              // title: "How To Use DreamHub with SleepCalendar",
               text1:
                 "Click on the SleepCalendar tab at the bottom of the screen.",
               text2:
-                "View the calendar and navigate to saved entries by clicking on the entry.",
+                "View the calendar and navigate to saved entries by selecting the date of your dream instance.",
             },
           ]}
           keyExtractor={(item) => item.id.toString()}
@@ -80,12 +83,11 @@ const Home = () => {
             <Card style={styles.viewPager}>
               <View style={styles.cardLayout}>
                 <View style={styles.iconLayout}>
-                  {item.id === 1 && <DreamIcon />}
+                  {item.id === 1 && <MoonIcon />}
                   {item.id === 2 && <DreamIcon />}
                   {item.id === 3 && <CalendarIcon />}
                 </View>
                 <Text style={styles.cardTextHeader}>{item.header}</Text>
-                <Text style={styles.cardText}>{item.title}</Text>
                 <Text style={styles.cardText}>{item.text1}</Text>
                 <Text style={styles.cardText}>{item.text2}</Text>
               </View>
@@ -173,8 +175,8 @@ const styles = StyleSheet.create({
   viewPager: {
     width: width * 0.89,
     maxWidth: width * 0.89,
-    height: height * 0.5,
-    maxHeight: height * 0.5,
+    height: height * 0.53,
+    maxHeight: height * 0.53,
     marginTop: 30,
     backgroundColor: "#333c59",
     borderRadius: 10,
@@ -199,6 +201,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 20,
     padding: 10,
+    textAlign: "center",
   },
 });
 
