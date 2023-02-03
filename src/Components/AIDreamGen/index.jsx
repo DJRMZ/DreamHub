@@ -34,6 +34,19 @@ const hoursData = [
   'More than 14 hours',
 ];
 
+const artStyles = [
+  'None',
+  'Abstract',
+  'Baroque',
+  'Cubism',
+  'Expressionism',
+  'Impressionism',
+  'Minimalism',
+  'Modern',
+  'Pop Art',
+  'Realism',
+];
+
 const AIDreamGen = () => {
   const [token, setToken] = useState('');
 
@@ -50,6 +63,7 @@ const AIDreamGen = () => {
   const [hadDream, setHadDream] = useState(false);
   const [dreamContent, setDreamContent] = useState('');
   const [dreamFeelings, setDreamFeelings] = useState('');
+  const [style, setStyle] = useState('None');
   const [dreamImg, setDreamImg] = useState('');
 
   const [showModal, setShowModal] = useState(false);
@@ -121,7 +135,7 @@ const AIDreamGen = () => {
   const handleSubmitDream = async () => {
     setLoading(true);
     let dreamObject = {
-      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings + '.'}`, // dream from state
+      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings.toLowerCase}.${style !== 'None' && ' In the style of ' + style.toLowerCase()}`, // dream from state
       n: 1, // number of images to generate
       size: "1024x1024",
     };
@@ -251,12 +265,6 @@ const AIDreamGen = () => {
                 style={styles.buttonNext}
                 onPress={() => {
                   setShowModal(false);
-                  // setNotes({
-                  //   date: new Date(),
-                  //   bedtime_mood: '', // Must change!
-                  //   sleep_quality: '', // Must change!
-                  //   hours_sleep: hours,
-                  // })
                   if (hadDream) {
                     setShowModal2(true);
                   } else {
@@ -301,6 +309,19 @@ const AIDreamGen = () => {
               placeholder="happy, scared, confused, angry...?"
               onChangeText={(feelings) => setDreamFeelings(feelings)}
             />
+            <Text style={styles.text} category='h6'>Would you like to choose a style?</Text>
+            <Select
+              style={styles.input}
+              placeholder='choose an art style'
+              value={style}
+              onSelect={index => {
+                setStyle(artStyles[index.row]);
+              }}
+            >
+              {artStyles.map((el, index) => (
+                <SelectItem key={index} title={el} />
+              ))}
+            </Select>
 
             <Layout style={styles.layout} level='1'>
               <Button style={styles.buttonDismiss} onPress={() => setShowModal2(false)}>
