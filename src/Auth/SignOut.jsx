@@ -8,7 +8,7 @@ const SignOutButton = () => {
   return (
     <>
       <Button title="Sign Out" style={styles.button} onPress={() => signOut()} >
-        {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Sign Out</Text>}
+        {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: "#d7eefa" }}>Sign Out</Text>}
       </Button>
     </>
   );
@@ -18,9 +18,8 @@ export default SignOutButton;
 
 const styles = StyleSheet.create({
   button: {
-    marginVertical: 18,
-    width: 140,
-    
-    backgroundColor: '#181d37',
+    marginTop: 4,
+    width: 160,
+    backgroundColor: "#333c59",
   },
 });

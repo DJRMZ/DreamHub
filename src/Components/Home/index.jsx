@@ -17,7 +17,7 @@ import {
   Image,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import space from "../../assets/spaceial.jpg";
+import space from "../../assets/spaceial2.jpg";
 
 const MoonIcon = (props) => (
   <MaterialCommunityIcons name="weather-night" size={50} color="#d7eefa" />
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   hero: {
     width: "100%",
-    height: 120,
+    height: 150,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -146,9 +146,10 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     width: "100%",
-    height: 120,
-    maxHeight: 120,
-    resizeMode: "cover",
+    height: 150,
+    maxHeight: 150,
+    // resizeMode: "cover",
+    // objectFill: "cover",
     // borderRadius: 10,
   },
   iconLayout: {
@@ -175,7 +176,7 @@ const styles = StyleSheet.create({
   viewPager: {
     width: width * 0.89,
     maxWidth: width * 0.89,
-    height: height * 0.53,
+    height: height * 0.51,
     maxHeight: height * 0.53,
     marginTop: 30,
     backgroundColor: "#333c59",
@@ -192,14 +193,14 @@ const styles = StyleSheet.create({
   },
   cardTextHeader: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 21,
     fontWeight: "bold",
     padding: 10,
     textAlign: "center",
   },
   cardText: {
     color: "#fff",
-    fontSize: 20,
+    fontSize: 18,
     padding: 10,
     textAlign: "center",
   },

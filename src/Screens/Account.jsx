@@ -1,14 +1,17 @@
+import { useState } from "react";
+import TipsScreen from "./TipsScreen";
 import SignOutButton from "../Auth/SignOut";
 import {
   Card,
   Layout,
   Text,
   Divider,
+  Button,
 } from '@ui-kitten/components';
 
 import { View, StyleSheet, TouchableWithoutFeedback, Dimensions, Image } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import space from '../../assets/spaceial.jpg';
+import space from '../assets/spaceial2.jpg';
 
 const AccountIcon = (props) => <MaterialCommunityIcons name="account-circle" size={50} color='#d7eefa' />;
 
@@ -16,6 +19,8 @@ const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const AccountScreen = () => {
+  const [visible, setVisible] = useState(false);
+
   return (
     <>
       <Layout style={styles.layout}>
@@ -25,6 +30,15 @@ const AccountScreen = () => {
         <View style={styles.cardLayout}>
           <View style={styles.iconLayout}>
             <AccountIcon />
+          </View>
+          <View>
+            <Button
+              style={styles.button}
+              onPress={() => setVisible(true)}
+            >
+              {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold" }}>Sleep Tips</Text>}
+            </Button>
+            <TipsScreen visible={visible} setVisible={setVisible} />
           </View>
           <SignOutButton style={styles.button} />
         </View>
@@ -46,7 +60,7 @@ const styles = StyleSheet.create({
   },
   hero: {
     width: '100%',
-    height: 120,
+    height: 150,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -68,7 +82,8 @@ const styles = StyleSheet.create({
   },
   heroImage: {
     width: width,
-    height: 120,
+    height: 150,
+    maxHeight: 150,
     resizeMode: "cover",
   },
   cardLayout: {
@@ -86,8 +101,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
-    marginTop: 8,
+    marginBottom: 18,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
@@ -107,7 +121,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginVertical: 18,
-    width: 175,
+    width: 160,
     backgroundColor: '#181d37',
   },
 });
