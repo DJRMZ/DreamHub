@@ -4,8 +4,8 @@
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
-          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "photosPermission": "Allow DreamHub to access your photos.",
+          "savePhotosPermission": "Allow DreamHub to save photos.",
           "isAccessMediaLocationEnabled": true
         }
       ]

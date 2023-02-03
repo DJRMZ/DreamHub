@@ -55,8 +55,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-view-shot": "3.4.0",
     "react-native-web": "~0.18.7",
-    "url": "^0.11.0",
-    "react-native-svg": "13.4.0"
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

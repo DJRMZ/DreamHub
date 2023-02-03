@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-expo";
-import { StyleSheet, Text, View, Button, Image, Share } from "react-native";
+import { StyleSheet, Text, View, Image, Share } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { Agenda } from "react-native-calendars";
-import { Card, Modal, Layout, Icon, Button as KittenButton, Divider } from '@ui-kitten/components';
+import { Card, Modal, Layout, Button as KittenButton, Divider } from '@ui-kitten/components';
 import { Grid } from 'react-native-animated-spinkit'
-import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
+import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync, saveToLibraryAsync } from "expo-media-library";
 import moment from "moment";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -78,7 +78,7 @@ const DreamCalendar = ({ navigation }) => {
   async function handleSave(image) {
     const permissions = await getPermissionsAsync();
     console.log('🚀 ~ file: index.jsx:69 ~ handleSave ~ permissions', permissions);
-    if (permissions.accessPrivileges === 'none') {
+    if (permissions.status !== 'granted') {
       console.log('attempting to request permissions');
       const response = await requestPermissionsAsync();
       console.log('🚀 ~ file: index.jsx:73 ~ handleSave ~ response', response);
@@ -87,21 +87,41 @@ const DreamCalendar = ({ navigation }) => {
         return;
       }
     }
-
+  
     setSavingImage(true);
-    const album = await getAlbumAsync('DreamHub');
-    console.log('🚀 ~ file: index.jsx:68 ~ handleSave ~ album', album);
-    if (album) {
-      await addAssetsToAlbumAsync(image, album);
-      console.log('SUCCESS ADDING TO ALBUM!')
-    } else {
-      const asset = await createAssetAsync(image);
-      await createAlbumAsync('DreamHub', asset);
-      console.log('SUCCESS CREATING ALBUM!')
-    }
     // await saveToLibraryAsync(image);
+    await createAssetAsync(image);
+    console.log('SUCCESS SAVING IMAGE!');
     console.log('COMPLETE');
   }
+
+  // async function handleSave(image) {
+  //   const permissions = await getPermissionsAsync();
+  //   console.log('🚀 ~ file: index.jsx:69 ~ handleSave ~ permissions', permissions);
+  //   if (permissions.accessPrivileges === 'none') {
+  //     console.log('attempting to request permissions');
+  //     const response = await requestPermissionsAsync();
+  //     console.log('🚀 ~ file: index.jsx:73 ~ handleSave ~ response', response);
+  //     if (response.accessPrivileges === 'none') {
+  //       console.log('ACCESS DENIED');
+  //       return;
+  //     }
+  //   }
+
+  //   setSavingImage(true);
+  //   const album = await getAlbumAsync('DreamHub');
+  //   console.log('🚀 ~ file: index.jsx:68 ~ handleSave ~ album', album);
+  //   if (album) {
+  //     await addAssetsToAlbumAsync(image, album);
+  //     console.log('SUCCESS ADDING TO ALBUM!')
+  //   } else {
+  //     const asset = await createAssetAsync(image);
+  //     await createAlbumAsync('DreamHub', asset);
+  //     console.log('SUCCESS CREATING ALBUM!')
+  //   }
+  //   // await saveToLibraryAsync(image);
+  //   console.log('COMPLETE');
+  // }
 
   async function handleDelete(item) {
     setDeleting(true);
@@ -208,11 +228,11 @@ const DreamCalendar = ({ navigation }) => {
 
   //////////////////////
   // Agenda functions
-
+  '#394668'
   const renderEmptyDate = () => {
     return (
-      <View style={{ backgroundColor: '#d7eefa', padding: 90 }} className='flex-1 flex justify-center items-center'>
-        <Text style={{ textAlign: 'center', fontSize: 18, color: '#181d37' }}>You have no sleep details for the selected day.</Text>
+      <View style={{ backgroundColor: '#394668', padding: 90 }} className='flex-1 flex justify-center items-center'>
+        <Text style={{ textAlign: 'center', fontSize: 18, color: '#d7eefa' }}>You have no sleep details for the selected day.</Text>
       </View>
     );
   };
@@ -302,11 +322,11 @@ const DreamCalendar = ({ navigation }) => {
         rowHasChanged={rowHasChanged}
         theme={{
           todayBackgroundColor: '#53a3fd',
-          agendaTodayColor: '#232f4f',
+          agendaTodayColor: '#D7EEFA',
           backgroundColor: '#D7EEFA',
           'stylesheet.agenda.main': {
             reservations: {
-            backgroundColor: '#D7EEFA',
+            backgroundColor: '#394668',
             flex: 1,
             marginTop: 104,
             },
@@ -326,34 +346,37 @@ const DreamCalendar = ({ navigation }) => {
           yearTextColor: '#D7EEFA',
         }}
         renderItem={(item) => (
-          <View style={[styles.item, { height: item.height }]}>
-            <View className='flex flex-row justify-between items-center'>
-              <Text style={{ color: '#d7eefa', fontSize: 20, fontWeight: "bold" }}>Sleep Details</Text>
-              <KittenButton
-                accessoryLeft={TrashIcon}
-                onPress={() => handleDelete(item)}
-                style={{ backgroundColor: '#181d37' }}
-              />
+          <>
+            <View style={[styles.item, { height: item.height }]}>
+              <View className='flex flex-row justify-between items-center'>
+                <Text style={{ color: '#d7eefa', fontSize: 20, fontWeight: "bold" }}>Sleep Details</Text>
+                <KittenButton
+                  accessoryLeft={TrashIcon}
+                  onPress={() => handleDelete(item)}
+                  style={{ backgroundColor: '#181d37', marginBottom: 4 }}
+                />
+              </View>
+              {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
+              {/* <View className='flex flex-row justify-between'>
+                <Text>Sleep Quality:</Text>
+                <Text>{item.sleepQuality}</Text>
+              </View> */}
+              <Text style={{ color: '#d7eefa', fontSize: 18 }}>Sleep Duration: {item.sleepLength}</Text>
+              <Text style={{ color: '#d7eefa', fontSize: 18 }}>Sleep Rating: {item.sleepQuality || 'Not Rated'}</Text>
+              {/* <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || '---'}</Text> */}
+              {item.imageLink ?
+                <KittenButton
+                  style={{ backgroundColor: '#181d37', marginTop: 18, marginBottom: 6 }}
+                  onPress={async () => showImage(item.imageLink, item.prompt)}
+                >
+                  {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: '#d7eefa' }}>Recall Your Dream</Text>}
+                </KittenButton>
+                :
+                <Text style={{ color: '#d7eefa', fontSize: 18, fontWeight: "italic", textAlign: 'center' }}>You didn't record a dream this night.</Text>
+              }
             </View>
-            {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
-            {/* <View className='flex flex-row justify-between'>
-              <Text>Sleep Quality:</Text>
-              <Text>{item.sleepQuality}</Text>
-            </View> */}
-            <Text style={{ color: '#d7eefa', fontSize: 18 }}>Sleep Duration: {item.sleepLength}</Text>
-            <Text style={{ color: '#d7eefa', fontSize: 18 }}>Sleep Rating: {item.sleepQuality || 'Not Rated'}</Text>
-            {/* <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || '---'}</Text> */}
-            {item.imageLink ?
-              <KittenButton
-                style={{ backgroundColor: '#181d37', marginTop: 18, marginBottom: 6 }}
-                onPress={async () => showImage(item.imageLink, item.prompt)}
-              >
-                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: '#d7eefa' }}>ReCall Your Dream</Text>}
-              </KittenButton>
-              :
-              <Text style={{ color: '#d7eefa', fontSize: 18, fontWeight: "italic", textAlign: 'center' }}>You didn't record a dream this night.</Text>
-            }
-          </View>
+            <Divider style={{ marginRight: 10 }}/>
+          </>
         )}
       />
     </>
@@ -420,12 +443,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#232f4f',
   },
   item: {
-    backgroundColor: '#394668',
+    backgroundColor: '#232f4f',
     flex: 1,
     borderRadius: 5,
     padding: 16,
     marginRight: 10,
-    marginTop: 17,
+    marginVertical: 14,
   },
   emptyDate: {
     height: 15,
