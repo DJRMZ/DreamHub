@@ -5,7 +5,7 @@ import * as FileSystem from "expo-file-system";
 import { Agenda } from "react-native-calendars";
 import { Card, Modal, Layout, Icon, Button as KittenButton } from '@ui-kitten/components';
 import { Grid } from 'react-native-animated-spinkit'
-import { usePermissions, requestPermissionsAsync, getPermissionsAsync, saveToLibraryAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
+import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
 
 import supabaseCtor from "../../lib/supabaseClient";
 
@@ -17,6 +17,7 @@ function transformData(data) {
       result[date] = [];
     }
     result[date].push({
+      id: item.id,
       createdAt: item.created_at,
       title: item.date,
       sleepQuality: item.sleep_quality,
@@ -38,6 +39,11 @@ const ShareIcon = (props) => (
   <Icon {...props} name='share' />
 );
 
+const TrashIcon = (props) => (
+  <Icon {...props} style={{ width: 20, height: 20 }} name='trash-2-outline' />
+);
+
+
 const DreamCalendar = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -48,11 +54,10 @@ const DreamCalendar = () => {
 
   const [loadingImage, setLoadingImage] = useState(false);
   const [savingImage, setSavingImage] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const [token, setToken] = useState('');
   const { getToken, userId } = useAuth();
-
-  const [permission, askPermission] = usePermissions({ writeOnly: true });
 
   useEffect(() => {
     fetchData();
@@ -91,6 +96,34 @@ const DreamCalendar = () => {
     // await saveToLibraryAsync(image);
     console.log('COMPLETE');
   }
+
+  async function handleDelete(item) {
+    setDeleting(true);
+    console.log('🚀 ~ file: index.jsx:68 ~ handleDelete ~ item', item);
+    const supabaseClient = await supabaseCtor(token);
+
+    const { error: storageError } = await supabaseClient.storage
+      .from('dream-images')
+      .remove([item.imageLink]);
+    if (storageError) console.log('🚀 ~ file: index.jsx:69 ~ fetchData ~ error', storageError);
+
+    const { error: dbError } = await supabaseClient
+      .from('sleep_logs')
+      .delete()
+      .eq('id', item.id);
+    if (dbError) console.log('🚀 ~ file: index.jsx:69 ~ fetchData ~ error', dbError);
+
+    console.log('DELETED');
+
+    console.log(items[item.date]);
+
+    setItems({
+      ...items,
+      [item.date]: items[item.date].filter((i) => i.id !== item.id),
+    });
+    setDeleting(false);
+  };
+
 
   //////////////////////
   // Image functions
@@ -170,8 +203,8 @@ const DreamCalendar = () => {
 
   const renderEmptyDate = () => {
     return (
-      <View>
-        <Text>No logs for this day...</Text>
+      <View className='flex-1 flex justify-center items-center'>
+        <Text className='text-xl font-semibold'>No logs for this day...</Text>
       </View>
     );
   };
@@ -211,27 +244,35 @@ const DreamCalendar = () => {
           </Card>
         </Modal>
       </View>
+
       <Agenda
         items={items}
         // loadItemsForMonth={loadItems}
         selected={today}
         renderItem={(item) => (
           <View style={[styles.item, { height: item.height }]}>
-            <Text className='text-xl font-bold'>Stats</Text>
+            <View className='flex flex-row justify-between items-center'>
+              <Text className='text-xl text-white font-bold'>Stats</Text>
+              <KittenButton
+                appearance="ghost"
+                accessoryLeft={TrashIcon}
+                onPress={() => handleDelete(item)}
+              />
+            </View>
             {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
             {/* <View className='flex flex-row justify-between'>
               <Text>Sleep Quality:</Text>
               <Text>{item.sleepQuality}</Text>
             </View> */}
-            <Text className='text-lg'>Length of Sleep: {item.sleepLength}</Text>
-            <Text className='text-lg'>Sleep Quality: {item.sleepQuality || 'not rated'}</Text>
-            <Text className='text-lg'>Notes: {item.notes || 'no notes'}</Text>
+            <Text className='text-lg text-blue-50'>Length of Sleep: {item.sleepLength}</Text>
+            <Text className='text-lg text-blue-50'>Sleep Quality: {item.sleepQuality || 'not rated'}</Text>
+            <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || 'no notes'}</Text>
             {item.imageLink ?
               <Button
                 title='View Your Dream' // In Progress
                 onPress={async () => showImage(item.imageLink, item.prompt)}
               /> :
-              <Text>You didn't record a dream this night.</Text>
+              <Text className='text-lg text-blue-50 text-center'>You didn't record a dream this night.</Text>
             }
           </View>
         )}
@@ -240,6 +281,20 @@ const DreamCalendar = () => {
         renderEmptyDate={renderEmptyDate}
         renderEmptyData={renderEmptyDate}
         rowHasChanged={rowHasChanged}
+        theme={{
+          todayBackgroundColor: '#53a3fd',
+          agendaTodayColor: '#232f4f',
+          backgroundColor: '#fff',
+          calendarBackground: '#232f4f',
+          selectedDayBackgroundColor: '#bed9f8',
+          selectedDayTextColor: '#232f4f',
+          todayTextColor: '#232f4f',
+          selectedDotColor: '#232f4f',
+          dotColor: '#232f4f',
+          todayBackgroundColor: '#aac3dd',
+          dayTextColor: '#fff',
+          textDisabledColor: '#777',
+        }}
       />
     </>
   );
@@ -259,7 +314,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
   item: {
-    backgroundColor: '#e7e6ff',
+    backgroundColor: '#394668',
     flex: 1,
     borderRadius: 5,
     padding: 16,
