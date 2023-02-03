@@ -6,6 +6,7 @@ import { Agenda } from "react-native-calendars";
 import { Card, Modal, Layout, Icon, Button as KittenButton } from '@ui-kitten/components';
 import { Grid } from 'react-native-animated-spinkit'
 import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
+const { useFocusEffect, useIsFocused } = require("@react-navigation/native");
 
 import supabaseCtor from "../../lib/supabaseClient";
 
@@ -44,7 +45,7 @@ const TrashIcon = (props) => (
 );
 
 
-const DreamCalendar = () => {
+const DreamCalendar = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
 
   const [items, setItems] = useState({});
@@ -60,8 +61,12 @@ const DreamCalendar = () => {
   const { getToken, userId } = useAuth();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetchData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   function handleShare() {
     Share.share({
@@ -130,9 +135,10 @@ const DreamCalendar = () => {
 
   async function fetchData() {
     const accessToken = await getToken({ template: 'supabase' });
-    // console.log('🚀 ~ file: index.jsx:59 ~ token', accessToken);
-    setToken(accessToken);
+    console.log('🚀 ~ file: index.jsx:59 ~ token', accessToken);
+    console.log('🚀 ~ file: index.jsx:149 ~ fetchData ~ userId', userId);
 
+    setToken(accessToken);
     const supabaseClient = await supabaseCtor(accessToken);
 
     const { data, error } = await supabaseClient
@@ -141,6 +147,7 @@ const DreamCalendar = () => {
       .eq('user_id', userId);
 
     if (error) console.log('🚀 ~ file: index.jsx:69 ~ fetchData ~ error', error);
+    console.log('🚀 ~ file: index.jsx:69 ~ fetchData ~ data', data);
 
     const items = transformData(data);
     setItems(items);
