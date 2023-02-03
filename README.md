@@ -22,6 +22,10 @@ DreamHub allows users to keep track of what goes on in their subconscious minds 
 
 ![UML Three](./assets//UMLThree.png)
 
+![UML Home Screen](./assets/UMLFour.png)
+
+![UML Account screen](./assets/UMLFive.png)
+
 ## Links
 
 ### Project DreamCatcher

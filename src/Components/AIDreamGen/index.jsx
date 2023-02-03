@@ -73,6 +73,7 @@ const AIDreamGen = () => {
   const [dreamContent, setDreamContent] = useState('');
   const [dreamFeelings, setDreamFeelings] = useState('');
   const [dreamReImagined, setDreamReImagined] = useState('');
+
   const [dreamImg, setDreamImg] = useState('');
 
   const [showModal, setShowModal] = useState(false);
@@ -150,7 +151,7 @@ const AIDreamGen = () => {
   const handleSubmitDream = async () => {
     setLoading(true);
     let dreamObject = {
-      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings + '.'}${dreamReImagined && ' My dream had a ' + dreamReImagined + ' style.'}`, // dream from state
+      prompt: `From the perspective of a dreamer, ${dreamContent}.${dreamFeelings && ' My dream made me feel ' + dreamFeelings}.${dreamReImagined && ' In the style of ' + dreamReImagined}.`, // dream from state
       n: 1, // number of images to generate
       size: "1024x1024",
     };
@@ -283,12 +284,6 @@ const AIDreamGen = () => {
                 style={styles.buttonNext}
                 onPress={() => {
                   setShowModal(false);
-                  // setNotes({
-                  //   date: new Date(),
-                  //   bedtime_mood: '', // Must change!
-                  //   sleep_quality: '', // Must change!
-                  //   hours_sleep: hours,
-                  // })
                   if (hadDream) {
                     setShowModal2(true);
                   } else {
@@ -334,10 +329,11 @@ const AIDreamGen = () => {
               placeholder="happy, scared, confused, angry...?"
               onChangeText={(feelings) => setDreamFeelings(feelings)}
             />
-            <Text style={styles.text} category='h6'>ReImagine dream in the style of</Text>
+
+            <Text style={styles.text} category='h6'>Style your dream?</Text>
             <Select
               style={styles.input}
-              placeholder='Default'
+              placeholder='choose an art style'
               value={reImagineData[selectedReImaginedIndex.row || 0]}
               selectedIndex={selectedReImaginedIndex}
               onSelect={index => {
