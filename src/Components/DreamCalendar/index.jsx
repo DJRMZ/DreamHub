@@ -3,11 +3,12 @@ import { useAuth } from "@clerk/clerk-expo";
 import { StyleSheet, Text, View, Button, Image, Share } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { Agenda } from "react-native-calendars";
-import { Card, Modal, Layout, Icon, Button as KittenButton } from '@ui-kitten/components';
+import { Card, Modal, Layout, Icon, Button as KittenButton, Divider } from '@ui-kitten/components';
 import { Grid } from 'react-native-animated-spinkit'
 import { usePermissions, requestPermissionsAsync, getPermissionsAsync, createAssetAsync, createAlbumAsync, getAlbumAsync, addAssetsToAlbumAsync } from "expo-media-library";
 import moment from "moment";
-import { useFocusEffect, useIsFocused } = "@react-navigation/native";
+
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import supabaseCtor from "../../lib/supabaseClient";
 
@@ -34,17 +35,16 @@ function transformData(data) {
 }
 
 const SaveIcon = (props) => (
-  <Icon {...props} name='save' />
+  <MaterialCommunityIcons name="tray-arrow-down" size={26} color="#d7eefa" />
 );
 
 const ShareIcon = (props) => (
-  <Icon {...props} name='share' />
+  <MaterialCommunityIcons name="share" size={26} color="#d7eefa" />
 );
 
 const TrashIcon = (props) => (
-  <Icon {...props} style={{ width: 20, height: 20 }} name='trash-2-outline' />
+  <MaterialCommunityIcons name="trash-can-outline" size={20} color="#d7eefa" />
 );
-
 
 const DreamCalendar = ({ navigation }) => {
   const [showModal, setShowModal] = useState(false);
@@ -211,8 +211,8 @@ const DreamCalendar = ({ navigation }) => {
 
   const renderEmptyDate = () => {
     return (
-      <View className='flex-1 flex justify-center items-center'>
-        <Text className='text-xl font-semibold'>No logs for this day...</Text>
+      <View style={{ backgroundColor: '#d7eefa', padding: 90 }} className='flex-1 flex justify-center items-center'>
+        <Text style={{ textAlign: 'center', fontSize: 18, color: '#181d37' }}>You have no sleep details for the selected day.</Text>
       </View>
     );
   };
@@ -224,7 +224,6 @@ const DreamCalendar = ({ navigation }) => {
   // let today = new Date().toISOString().substring(0, 10);
   let time = moment();
   let today = time.format("YYYY-MM-DD");
-
 
   //////////////////////
   // Render
@@ -238,63 +237,81 @@ const DreamCalendar = ({ navigation }) => {
           style={styles.modal}
           onBackdropPress={() => setShowModal(false)}
         >
-          <Card disabled={true}>
-            <Text className='text-center text-lg text-violet-200'>{prompt}</Text>
-            {loadingImage ?
-              <View style={styles.loadingLayout}><Grid size={70} color='#d7eefa' /></View> :
-              <Image style={{ width: 300, height: 300, objectFit: 'contain' }} source={{ uri: image }} />
-            }
-            <Layout style={styles.layout} level='1'>
-              <Button title="Dismiss" onPress={() => setShowModal(false)} />
-              <Layout style={styles.layout} level='1'>
-                <KittenButton appearance="ghost" accessoryLeft={SaveIcon} onPress={() => handleSave(image)} />
-                <KittenButton appearance="ghost" accessoryLeft={ShareIcon} onPress={() => handleShare()} />
-              </Layout>
-            </Layout>
+          <Card style={styles.card} disabled={true}>
+            <Text style={{ fontSize: 20, fontWeight: "bold", textAlign: 'center', marginBottom: 10, color: '#d7eefa' }}>Your Dream</Text>
+            <Divider style={{ backgroundColor: '#232f4f' }} />
+            {/* <View style={styles.iconLayout}>
+              <MaterialCommunityIcons
+                name="cloud-circle"
+                color={'#d7eefa'}
+                size={50}
+              />
+            </View> */}
+            {loadingImage ? (
+              <>
+                <View style={styles.loadingLayout}>
+                  <Grid
+                    size={68}
+                    color='#d7eefa'
+                  />
+                </View>
+              </>
+            ) : (
+              <>
+                <View className='mx-auto mb-4'>
+                  <Image
+                    className='h-72 w-72 rounded-lg shadow-lg shadow-black mt-4'
+                    source={{ uri: image }}
+                  />
+                </View>
+                <View className='mx-auto'>
+                  <Card style={styles.dreamPrompt} >
+                    <Text style={{ fontStyle: "italic", color: '#fff' }} category='s1'>"{prompt}"</Text>
+                    {/* <Text style={styles.input} category='s1'>{dreamFeelings}</Text> */}
+                  </Card>
+                </View>
+              </>
+            )}
+            <View style={styles.layout} level='1'>
+              <KittenButton style={styles.buttonDismiss} onPress={() => setShowModal(false)}>
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: '#d7eefa' }}>Dismiss</Text>}
+              </KittenButton>
+              {loadingImage ? null : (
+                <>
+                  <View style={styles.layout} level='1'>
+                    <KittenButton appearance="ghost" accessoryLeft={SaveIcon} onPress={() => handleSave(image)} />
+                    <KittenButton appearance="ghost" accessoryLeft={ShareIcon} onPress={() => handleShare()} />
+                  </View>
+                </>
+              )}
+            </View>
           </Card>
         </Modal>
       </View>
+      
 
       <Agenda
         items={items}
         // loadItemsForMonth={loadItems}
         selected={today}
-        renderItem={(item) => (
-          <View style={[styles.item, { height: item.height }]}>
-            <View className='flex flex-row justify-between items-center'>
-              <Text className='text-xl text-white font-bold'>Dream Stats</Text>
-              <KittenButton
-                appearance="ghost"
-                accessoryLeft={TrashIcon}
-                onPress={() => handleDelete(item)}
-              />
-            </View>
-            {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
-            {/* <View className='flex flex-row justify-between'>
-              <Text>Sleep Quality:</Text>
-              <Text>{item.sleepQuality}</Text>
-            </View> */}
-            <Text className='text-lg text-blue-50'>Length of Sleep: {item.sleepLength}</Text>
-            <Text className='text-lg text-blue-50'>Sleep Quality: {item.sleepQuality || 'not rated'}</Text>
-            <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || '---'}</Text>
-            {item.imageLink ?
-              <Button
-                title='View Your Dream' // In Progress
-                onPress={async () => showImage(item.imageLink, item.prompt)}
-              /> :
-              <Text className='text-lg text-blue-50 text-center'>You didn't record a dream this night.</Text>
-            }
-          </View>
-        )}
-        minDate={'2023-01-01'}
-        futureScrollRange={1}
+        minDate={'2022-01-01'}
+        pastScrollRange={24}
+        futureScrollRange={2}
         renderEmptyDate={renderEmptyDate}
         renderEmptyData={renderEmptyDate}
         rowHasChanged={rowHasChanged}
         theme={{
           todayBackgroundColor: '#53a3fd',
           agendaTodayColor: '#232f4f',
-          backgroundColor: '#fff',
+          backgroundColor: '#D7EEFA',
+          'stylesheet.agenda.main': {
+            reservations: {
+            backgroundColor: '#D7EEFA',
+            flex: 1,
+            marginTop: 104,
+            },
+          },
+          agendaKnobColor: '#D7EEFA',
           calendarBackground: '#232f4f',
           selectedDayBackgroundColor: '#D7EEFA',
           selectedDayTextColor: '#232f4f',
@@ -302,12 +319,42 @@ const DreamCalendar = ({ navigation }) => {
           selectedDotColor: '#232f4f',
           todayDotColor: '#232f4f',
           dotColor: '#D7EEFA',
-          todayBackgroundColor: '#a3b9d8',
+          todayBackgroundColor: '#D7EEFA',
           dayTextColor: '#fff',
           textDisabledColor: '#777',
           monthTextColor: '#D7EEFA',
           yearTextColor: '#D7EEFA',
         }}
+        renderItem={(item) => (
+          <View style={[styles.item, { height: item.height }]}>
+            <View className='flex flex-row justify-between items-center'>
+              <Text style={{ color: '#d7eefa', fontSize: 20, fontWeight: "bold" }}>Sleep Details</Text>
+              <KittenButton
+                accessoryLeft={TrashIcon}
+                onPress={() => handleDelete(item)}
+                style={{ backgroundColor: '#181d37' }}
+              />
+            </View>
+            {item.bedtime_mood ? <Text>You were "{item.bedtimeMood}" when you went to bed.</Text> : null}
+            {/* <View className='flex flex-row justify-between'>
+              <Text>Sleep Quality:</Text>
+              <Text>{item.sleepQuality}</Text>
+            </View> */}
+            <Text style={{ color: '#d7eefa', fontSize: 18 }}>Sleep Duration: {item.sleepLength}</Text>
+            <Text style={{ color: '#d7eefa', fontSize: 18 }}>Sleep Rating: {item.sleepQuality || 'Not Rated'}</Text>
+            {/* <Text className='mb-4 text-lg text-blue-50'>Notes: {item.notes || '---'}</Text> */}
+            {item.imageLink ?
+              <KittenButton
+                style={{ backgroundColor: '#181d37', marginTop: 18, marginBottom: 6 }}
+                onPress={async () => showImage(item.imageLink, item.prompt)}
+              >
+                {evaProps => <Text {...evaProps} style={{ fontSize: 18, fontWeight: "bold", color: '#d7eefa' }}>Recall Your Dream</Text>}
+              </KittenButton>
+              :
+              <Text style={{ color: '#d7eefa', fontSize: 18, fontWeight: "italic", textAlign: 'center' }}>You didn't record a dream this night.</Text>
+            }
+          </View>
+        )}
       />
     </>
   );
@@ -325,6 +372,52 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
+  },
+  layout: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  card: {
+    backgroundColor: '#181D37',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  dreamPrompt: {
+    // flexDirection: 'column',
+    // flexWrap: 'wrap',
+    // justifyContent: 'space-evenly',
+    // alignItems: 'center',
+    width: '100%',
+    color: '#d7eefa',
+    backgroundColor: '#232f4f',
+    borderRadius: 10,
+    // paddingVertical: 20,
+    // paddingTop: 25,
+    // paddingHorizontal: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    maxHeight: 150,
+    overflow: 'scroll',
+    marginBottom: 4,
+  },
+  buttonDismiss: {
+    marginTop: 16,
+    marginBottom: 8,
+    marginLeft: 4,
+    width: 116,
+    backgroundColor: '#232f4f',
   },
   item: {
     backgroundColor: '#394668',
@@ -352,5 +445,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 50,
     marginBottom: 60,
+    marginHorizontal: 75,
   },
 });

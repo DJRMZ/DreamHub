@@ -4,9 +4,7 @@ import {
   Text,
   Divider,
   ViewPager,
-
 } from '@ui-kitten/components';
-
 
 import {
   View,
@@ -16,6 +14,7 @@ import {
   FlatList,
   Image,
 } from "react-native";
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import space from "../../assets/spaceial2.jpg";
 
@@ -38,20 +37,22 @@ const CalendarIcon = (props) => (
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
+const { width: heroTextWidth, height: heroTextHeight } = Dimensions.get('window');
+
 const Home = () => {
   return (
     <>
       <Layout style={styles.layout}>
         <View style={styles.hero}>
-          {/* <Text style={styles.heroText}>Hero Section Image</Text> */}
+          <View style={styles.heroLayout} />
+          <Text style={styles.heroText}>Where Your Dreams Are Reimagined</Text>
           <Image source={space} style={styles.heroImage} />
         </View>
         <FlatList
           data={[
             {
               id: 1,
-              header: `Where Your Dreams \nAre Reimagined`,
-              // title: "How to use DreamHub",
+              header: 'Quick Start Guide',
               text1:
                 "DreamStudio gives you the power of AI at your fingertips to create a visual representation of your dream.",
               text2:
@@ -60,14 +61,12 @@ const Home = () => {
             {
               id: 2,
               header: "DreamStudio",
-              // title: "Quick Start Guide",
               text1: "Access the DreamStudio tab and select \"Create New Dream\" to begin the Dream Prompts.",
               text2: "Answer each question to create your dream and save it to your SleepCalendar!",
             },
             {
               id: 3,
               header: "SleepCalendar",
-              // title: "How To Use DreamHub with SleepCalendar",
               text1:
                 "Click on the SleepCalendar tab at the bottom of the screen.",
               text2:
@@ -120,16 +119,8 @@ const styles = StyleSheet.create({
   hero: {
     width: "100%",
     height: 150,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    // maxWidth: 400,
-    // paddingHorizontal: 14,
-    // paddingBottom: 16,
-    // padding: 10,
+    position: 'relative',
     backgroundColor: "#333c59",
-    // borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 1, height: 4 },
     shadowOpacity: 0.1,
@@ -141,16 +132,52 @@ const styles = StyleSheet.create({
   },
   heroText: {
     fontSize: 24,
-    fontWeight: "bold",
-    color: "#fff",
+    paddingHorizontal: 80,
+    position: 'absolute',
+    top: '26%',
+    opacity: 0.85,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    fontFamily: 'sans-serif',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 10,
+    textAlign: 'center',
+    color: '#d7eefa',
+    zIndex: 2,
+  },
+  heroLayout: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#181d37",
+    position: 'absolute',
+    top: '1.5%',
+    opacity: 0.55,
+    borderColor: "#000",
+    borderWidth: 1,
+    marginBottom: 8,
+    marginTop: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    zIndex: 1,
   },
   heroImage: {
     width: "100%",
     height: 150,
     maxHeight: 150,
-    // resizeMode: "cover",
-    // objectFill: "cover",
-    // borderRadius: 10,
+    resizeMode: "cover",
+    borderBottomColor: "#181d37",
+    borderBottomWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 10,
+    zIndex: 0,
   },
   iconLayout: {
     width: 100,
@@ -176,9 +203,9 @@ const styles = StyleSheet.create({
   viewPager: {
     width: width * 0.89,
     maxWidth: width * 0.89,
-    height: height * 0.51,
+    height: height * 0.49,
     maxHeight: height * 0.53,
-    marginTop: 30,
+    marginTop: 32,
     backgroundColor: "#333c59",
     borderRadius: 10,
     marginHorizontal: width * 0.01,
